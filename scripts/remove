@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+
+app=$YNH_APP_INSTANCE_NAME
+
+#=================================================
+# REMOVE DEPENDENCIES
+#=================================================
+ynh_remove_app_dependencies
+
+#=================================================
+# REMOVE FILES
+#=================================================
+ynh_remove_systemd_config
+ynh_secure_remove "/etc/systemd/system/$app.timer"
+ynh_secure_remove "/usr/local/bin/backup-with-$app"
+ynh_secure_remove "/etc/yunohost/hooks.d/backup_method/05-$app"

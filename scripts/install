@@ -1,0 +1,80 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
+export app=$YNH_APP_INSTANCE_NAME
+
+# Retrieve arguments
+ynh_export server ssh_user passphrase on_calendar conf data apps
+
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+ynh_save_args server ssh_user passphrase on_calendar conf data apps
+
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+ynh_install_app_dependencies $pkg_dependencies
+pip3 install setuptools --upgrade
+pip3 install borgbackup
+
+#=================================================
+# ACTIVATE BACKUP METHODS
+#=================================================
+mkdir -p /etc/yunohost/hooks.d/backup_method
+mkdir -p /usr/share/yunohost/backup_method
+
+#=================================================
+# SETUP THE BACKUP METHOD
+#=================================================
+ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-$app"
+
+#=================================================
+# CONFIGURE CRON
+#=================================================
+ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
+chmod u+x "/usr/local/bin/backup-with-$app"
+ynh_add_systemd_config
+ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
+
+#=================================================
+# GENERATE SSH KEY
+#=================================================
+private_key="/root/.ssh/id_${app}_ed25519"
+test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
+
+#=================================================
+# SEND A README FOR THE ADMIN
+#=================================================
+ynh_print_OFF
+message="You should now install the \"Borg Server\" app on $server and fill questions like this:
+User: ${ssh_suser}
+Public key: $(cat ${private_key}.pub)
+
+Or if you want to use cli:
+
+yunohost app install https://github.com/YunoHost-Apps/borg_server_ynh -a \"ssh_user=$(ssh_user)&public_key=$(cat ${private_key}.pub)\"
+
+If you facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/borg_ynh"
+
+ynh_send_readme_to_admin "$message" "root"
+ynh_print_ON
+

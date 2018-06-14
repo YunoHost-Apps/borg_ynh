@@ -1,0 +1,86 @@
+{
+    "name": "Borg",
+    "id": "borg",
+    "packaging_format": 1,
+    "description": {
+        "en": "Backup your server with borg.",
+        "fr": "Sauvegarder votre serveur avec borg."
+    },
+    "version": "1.0",
+    "url": "https://borgbackup.readthedocs.io",
+    "license": "BSD-3-Clause",
+    "maintainer": {
+        "name": "ljf",
+        "email": "ljf+borg_ynh@reflexlibre.net",
+        "url": "https://reflexlibre.net"
+    },
+    "requirements": {
+        "yunohost": ">= 2.7.2"
+    },
+    "multi_instance": true,
+    "services": [],
+    "arguments": {
+        "install" : [
+            {
+                "name": "server",
+                "ask": {
+                    "en": "Indicate the server where you want put your backups",
+                    "fr": "Indiquez le serveur où vous voulez faire vos sauvegardes"
+                },
+                "example": "example.com:22"
+            },
+            {
+                "name": "ssh_user",
+                "ask": {
+                    "en": "Indicate the ssh user to use to connect on this server",
+                    "fr": "Indiquez l'utilisateur ssh à utiliser pour se connecter au serveur"
+                },
+                "example": "john"
+            },
+            {
+                "name": "passphrase",
+                "type": "password",
+                "ask": {
+                    "en": "Indicate a strong passphrase, that you will keep preciously if you want to be able to use your backups",
+                    "fr": "Indiquez une phrase de passe forte que vous garderez précieusement si vous voulez être en mesure d'utiliser vos sauvegardes"
+                }
+            },
+			{
+				"name": "conf",
+				"type": "boolean",
+				"ask": {
+					"en": "Would you like to backup your YunoHost configuration ?",
+					"fr": "Souhaitez-vous effectuer des sauvegardes des configurations du système YunoHost ?"
+				},
+				"default": true
+			},
+			{
+				"name": "data",
+				"type": "boolean",
+				"ask": {
+					"en": "Would you like to backup mails and user home directory ?",
+					"fr": "Souhaitez-vous effectuer des sauvegardes des mails et des répertoire des utilisateurs ?"
+				},
+				"default": true
+			},
+			{
+				"name": "apps",
+				"type": "boolean",
+				"ask": {
+					"en": "Which apps would you backup (list separated by comma or 'all') ?",
+					"fr": "Souhaitez-vous effectuer des sauvegardes de vos applications ?"
+				},
+				"default": "all"
+            },
+            {
+                "name": "on_calendar",
+                "ask": {
+                    "en": "Indicate the backup frequency (see systemd OnCalendar format)",
+                    "fr": "Indiquez la fréquence de la sauvegarde (voir le format OnCalendar de systemd)"
+                },
+                "example": "Daily",
+                "default": "Daily"
+            }
+        ]
+    }
+}
