@@ -45,7 +45,7 @@ mkdir -p /usr/share/yunohost/backup_method
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
-ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-$app"
+ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 #=================================================
 # CONFIGURE CRON
@@ -54,6 +54,9 @@ ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
 ynh_add_systemd_config
 ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
+yunohost service add $app.timer
+yunohost service enable $app.timer
+yunohost service start $app.timer
 
 #=================================================
 # GENERATE SSH KEY
@@ -62,16 +65,25 @@ private_key="/root/.ssh/id_${app}_ed25519"
 test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
 
 #=================================================
+# Display key
+#=================================================
+
+echo "You should now install the \"Borg Server\" app on $server and fill questions like this:
+User: ${ssh_user}
+Public key: $(cat ${private_key}.pub)"
+
+
+#=================================================
 # SEND A README FOR THE ADMIN
 #=================================================
 ynh_print_OFF
 message="You should now install the \"Borg Server\" app on $server and fill questions like this:
-User: ${ssh_suser}
+User: ${ssh_user}
 Public key: $(cat ${private_key}.pub)
 
 Or if you want to use cli:
 
-yunohost app install https://github.com/YunoHost-Apps/borg_server_ynh -a \"ssh_user=$(ssh_user)&public_key=$(cat ${private_key}.pub)\"
+yunohost app install https://github.com/YunoHost-Apps/borg_server_ynh -a \"ssh_user=${ssh_user}&public_key=$(cat ${private_key}.pub)\"
 
 If you facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/borg_ynh"
 

@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Adapt this script to different API 2.x vs 3.x
+if yunohost -v | grep "version: 2." > /dev/null; then
+    ignore_apps="--ignore-apps"
+    ignore_system="--ignore-system"
+else
+    ignore_apps=""
+    ignore_system=""
+fi
+
 filter_hooks() {
     ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq
 }
@@ -8,20 +17,20 @@ filter_hooks() {
 conf=$(yunohost app setting {{ app }} conf)
 if [ "$conf" = "true" ]
 then
-    yunohost backup create --ignore-apps -n auto_conf --method {{ app }} --system $(filter_hooks conf)
+    yunohost backup create $ignore_apps -n auto_conf --method {{ app }}_app --system $(filter_hooks conf)
 fi
 
 # Backup system data
 data=$(yunohost app setting {{ app }} data)
 if [ "$data" = "true" ]
 then
-    yunohost backup create --ignore-apps -n auto_data --method {{ app }} --system $(filter_hooks data)
+    yunohost backup create $ignore_apps -n auto_data --method {{ app }}_app --system $(filter_hooks data)
 fi
 
 # Backup all apps independently
 apps=$(yunohost app setting {{ app }} apps)
 for app in $(yunohost app list --installed -b | grep id: | cut -d: -f2); do
-    if [ "$apps" ?? "$app," ] || [ "$apps" = "all" ]; then
-        yunohost backup create --ignore-system -n auto_$app --method {{ app }} --apps $app
+    if [[ "$apps" = *"$app,"* ]] || [ "$apps" = "all" ]; then
+        yunohost backup create $ignore_system -n auto_$app --method {{ app }}_app --apps $app
     fi
 done

@@ -52,6 +52,9 @@ ynh_restore
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
 yunohost service add $app
+yunohost service add $app.timer
+yunohost service enable $app.timer
+yunohost service start $app.timer
 
 #=================================================
 # RESTORE SYSTEMD

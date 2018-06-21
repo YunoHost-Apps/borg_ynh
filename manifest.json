@@ -65,7 +65,6 @@
 			},
 			{
 				"name": "apps",
-				"type": "boolean",
 				"ask": {
 					"en": "Which apps would you backup (list separated by comma or 'all') ?",
 					"fr": "Souhaitez-vous effectuer des sauvegardes de vos applications ?"

@@ -25,6 +25,6 @@ app=$YNH_APP_INSTANCE_NAME
 ynh_backup "/usr/local/bin/backup-with-$app"
 ynh_backup "/etc/systemd/system/$app.service"
 ynh_backup "/etc/systemd/system/$app.timer"
-ynh_backup "/etc/yunohost/hooks.d/backup_method/05-$app"
+ynh_backup "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 ynh_backup "/root/.ssh/id_${app}_ed25519"
 ynh_backup "/root/.ssh/id_${app}_ed25519.pub"

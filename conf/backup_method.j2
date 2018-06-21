@@ -3,7 +3,11 @@
 set -e
 
 BORG_PASSPHRASE="{{ passphrase }}"
-BORG_RSH="ssh -i /root/.ssh/id_{{ app }}_ed25519 -oStrictHostKeyChecking=accept-new "
+if grep "{{ server }}" ~/.ssh/known_hosts; then
+    BORG_RSH="ssh -i /root/.ssh/id_{{ app }}_ed25519 -oStrictHostKeyChecking=yes "
+else
+    BORG_RSH="ssh -i /root/.ssh/id_{{ app }}_ed25519 -oStrictHostKeyChecking=no "
+fi
 repo=ssh://{{ ssh_user }}@{{ server }}/~/backup   #$4
 
 do_need_mount() {
@@ -13,6 +17,7 @@ do_need_mount() {
 do_backup() {
     
     export BORG_PASSPHRASE
+    export BORG_RSH
     work_dir=$1
     name=$2
     repo=$3
@@ -34,6 +39,7 @@ do_backup() {
 
 do_mount() {
     export BORG_PASSPHRASE
+    export BORG_RSH
     work_dir=$1
     name=$2
     repo=$3
