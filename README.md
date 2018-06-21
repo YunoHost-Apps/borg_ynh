@@ -21,11 +21,17 @@ Indicate the backup frequency (see systemd OnCalendar format) (default: Daily):
 You can schedule your backup by choosing an other frequency. Some example:
 
 Monthly : 
+
 Weekly : 
+
 Daily : Daily at midnight
+
 Hourly : Hourly o Clock
+
 Sat *-*-1..7 18:00:00 : The first saturday of every month at 18:00
+
 4:00 : Every day at 4 AM
+
 5,17:00 : Every day at 5 AM and at 5 PM
 
 See here for more info : https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer
@@ -35,6 +41,7 @@ At the end of the installation, the app display you the public_key and the user 
 You should now install the "Borg Server" app on serverb.local and fill questions like this:
 User: servera
 Public key: ssh-ed25519 AAAA[...] root@servera.local
+```
 
 If you don't find the mail and you don't see the message in the log bar you can found the public_key with this command:
 ```
