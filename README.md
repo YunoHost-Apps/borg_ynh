@@ -8,7 +8,7 @@ If you want to backup your server A onto the server B.
 Firstly set up this app on the server A you want to backup:
 
 ```
-yunohost app install https://github.com/YunoHost-Apps/borg_ynh
+$ yunohost app install https://github.com/YunoHost-Apps/borg_ynh
 Indicate the server where you want put your backups: serverB.local
 Indicate the ssh user to use to connect on this server: servera
 Indicate a strong passphrase, that you will keep preciously if you want to be able to use your backups: N0tAW3akp4ssw0rdYoloMacN!guets
@@ -45,13 +45,14 @@ Public key: ssh-ed25519 AAAA[...] root@servera.local
 
 If you don't find the mail and you don't see the message in the log bar you can found the public_key with this command:
 ```
-cat /root/.ssh/id_borg_ed25519.pub
+$ cat /root/.ssh/id_borg_ed25519.pub
+ssh-ed25519 AAAA[...] root@servera.local
 ```
 
 ## Setup Borg Server app on Server B
 
 ```
-yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh
+$ yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh
 Indicate the ssh user to create: servera
 Indicate the public key given by borg_ynh app: ssh-ed25519 AAAA[...] root@servera.local
 ```
@@ -61,13 +62,20 @@ At this step your backup should schedule.
 
 If you want to be sure, you can test it by running on server A:
 ```
-service borg start
+$ service borg start
 ```
 
 Next you can check, your backup on server B
 ```
-borg list /home/servera/backup
+$ borg list /home/servera/backup
 ```
 
 YOU SHOULD CHECK REGULARLY THAT YOUR BACKUP ARE STILL WORKING.
 
+## Edit the apps list to backup
+
+yunohost app setting borg apps -v "nextcloud,wordpress"
+
+## Backup on different server, and apply distinct schedule for apps
+
+You can setup the borg apps several times on the same server so you can backup on several server or manage your frequency backup differently for specific part of your server.
