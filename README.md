@@ -55,6 +55,7 @@ ssh-ed25519 AAAA[...] root@servera.local
 $ yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh
 Indicate the ssh user to create: servera
 Indicate the public key given by borg_ynh app: ssh-ed25519 AAAA[...] root@servera.local
+Indicate the storage quota: 5G
 ```
 
 ## Test
