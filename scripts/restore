@@ -31,11 +31,16 @@ server=$(ynh_app_setting_get $app server)
 ssh_user=$(ynh_app_setting_get $app ssh_user)
 
 #=================================================
-# STORE SETTINGS FROM MANIFEST
+# CONFIGURE BACKPORTS
+#=================================================
+# We need borg 1.1+ available only in backports
+ynh_install_backports
+
+#=================================================
+# INSTALL DEPENDENCIES
 #=================================================
 ynh_install_app_dependencies $pkg_dependencies
-pip3 install setuptools --upgrade
-pip3 install borgbackup
+ynh_package_install -t stretch-backports borgbackup
 
 #=================================================
 # ACTIVATE BACKUP METHODS

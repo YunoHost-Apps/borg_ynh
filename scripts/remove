@@ -21,6 +21,11 @@ app=$YNH_APP_INSTANCE_NAME
 ynh_remove_app_dependencies
 
 #=================================================
+# REMOVE BACKPORTS
+#=================================================
+ynh_remove_backports
+
+#=================================================
 # REMOVE FILES
 #=================================================
 yunohost service stop $app.timer

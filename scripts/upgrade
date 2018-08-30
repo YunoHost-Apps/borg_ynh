@@ -16,6 +16,11 @@ source /usr/share/yunohost/helpers
 app=$YNH_APP_INSTANCE_NAME
 
 #=================================================
+# CHECK IF AN UPGRADE IS NEEDED
+#=================================================
+ynh_check_app_version_changed
+
+#=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
 
