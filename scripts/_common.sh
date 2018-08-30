@@ -6,7 +6,7 @@
 # App package root directory should be the parent folder
 PKG_DIR=$(cd ../; pwd)
 
-pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python-jinja2"
+pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python-jinja2 python3-setuptools"
 
 #=================================================
 # COMMON HELPERS
@@ -131,4 +131,70 @@ $(yunohost tools diagnosis | grep -B 100 "services:" | sed '/services:/d')"
 
 	# Send the email to the recipients
 	echo "$mail_message" | $mail_bin -a "Content-Type: text/plain; charset=UTF-8" -s "$mail_subject" "$recipients"
+}
+
+# Read the value of a key in a ynh manifest file
+#
+# usage: ynh_read_manifest manifest key
+# | arg: manifest - Path of the manifest to read
+# | arg: key - Name of the key to find
+ynh_read_manifest () {
+	manifest="$1"
+	key="$2"
+	python3 -c "import sys, json;print(json.load(open('$manifest', encoding='utf-8'))['$key'])"
+}
+
+
+# Checks the app version to upgrade with the existing app version and returns:
+# - UPGRADE_APP if the upstream app version has changed
+# - UPGRADE_PACKAGE if only the YunoHost package has changed
+#
+## It stops the current script without error if the package is up-to-date
+#
+# This helper should be used to avoid an upgrade of an app, or the upstream part
+# of it, when it's not needed
+#
+# To force an upgrade, even if the package is up to date,
+# you have to set the variable YNH_FORCE_UPGRADE before.
+# example: sudo YNH_FORCE_UPGRADE=1 yunohost app upgrade MyApp
+
+# usage: ynh_check_app_version_changed
+ynh_check_app_version_changed () {
+  local force_upgrade=${YNH_FORCE_UPGRADE:-0}
+  local package_check=${PACKAGE_CHECK_EXEC:-0}
+
+  # By default, upstream app version has changed
+  local return_value="UPGRADE_APP"
+
+  local current_version=$(ynh_read_manifest "/etc/yunohost/apps/$YNH_APP_INSTANCE_NAME/manifest.json" "version" || echo 1.0)
+  local current_upstream_version="${current_version/~ynh*/}"
+  local update_version=$(ynh_read_manifest "../manifest.json" "version" || echo 1.0)
+  local update_upstream_version="${update_version/~ynh*/}"
+
+  if [ "$current_version" == "$update_version" ] ; then
+      # Complete versions are the same
+      if [ "$force_upgrade" != "0" ]
+      then
+        echo "Upgrade forced by YNH_FORCE_UPGRADE." >&2
+        unset YNH_FORCE_UPGRADE
+      elif [ "$package_check" != "0" ]
+      then
+        echo "Upgrade forced for package check." >&2
+      else
+        ynh_die "Up-to-date, nothing to do" 0
+      fi
+  elif [ "$current_upstream_version" == "$update_upstream_version" ] ; then
+    # Upstream versions are the same, only YunoHost package versions differ
+    return_value="UPGRADE_PACKAGE"
+  fi
+  echo $return_value
+}
+
+
+ynh_install_backports () {
+    echo "deb http://httpredir.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/$app-stretch-backports.list
+}
+
+ynh_remove_backports () {
+    rm /etc/apt/sources.list.d/$app-stretch-backports.list
 }
