@@ -20,7 +20,7 @@ ynh_export () {
             ynh_arg="PATH"
         fi
         ynh_arg="YNH_APP_ARG_$ynh_arg"
-        export $var=${!ynh_arg}
+        export $var="${!ynh_arg}"
     done
 }
 # Save listed var in YunoHost app settings 
