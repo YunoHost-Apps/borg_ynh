@@ -48,7 +48,7 @@ ynh_render_template() {
    local template_path=$1
    local output_path=$2
    # Taken from https://stackoverflow.com/a/35009576
-   python2.7 -c 'import os, sys, jinja2; sys.stdout.write(
+   python3 -c 'import os, sys, jinja2; sys.stdout.write(
                     jinja2.Template(sys.stdin.read()
                  ).render(os.environ));' < $template_path > $output_path
 }
