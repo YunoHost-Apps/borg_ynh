@@ -48,6 +48,7 @@ else
         /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup
         echo "#!/bin/bash
     /opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
+    chmod u+x /usr/local/bin/borg
     fi
 fi
 
