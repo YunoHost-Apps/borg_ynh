@@ -15,7 +15,7 @@
         "url": "https://reflexlibre.net"
     },
     "requirements": {
-        "yunohost": ">= 3.1"
+        "yunohost": ">= 2.7.14"
     },
     "multi_instance": true,
     "services": [],

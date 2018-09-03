@@ -33,13 +33,23 @@ ynh_save_args server ssh_user passphrase on_calendar conf data apps
 # CONFIGURE BACKPORTS
 #=================================================
 # We need borg 1.1+ available only in backports
-ynh_install_backports
-
+if is_stretch; then
+    ynh_install_backports
+fi
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
 ynh_install_app_dependencies $pkg_dependencies
-ynh_package_install -t stretch-backports borgbackup
+if is_stretch; then
+    ynh_package_install -t stretch-backports borgbackup
+else
+    if [ ! -d /opt/borg-env ]; then
+        virtualenv --python=python3 /opt/borg-env
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup
+        echo "#!/bin/bash
+    /opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
+    fi
+fi
 
 #=================================================
 # ACTIVATE BACKUP METHODS
