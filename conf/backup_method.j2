@@ -35,7 +35,7 @@ do_backup() {
 	    evaluated_time=$(($size / ($speed * 1000 / 8) / 3600))
 	    echo "Hello,
 
-Your first backup on $repo is starting. The backup size is evaluated to $human_size. If connectivity is 1Mbps between the 2 servers, it will take about $evaluated_time hour⋅s to transmit.
+Your first backup on $repo is starting. The backup size is evaluated to $human_size. If connectivity is 1Mbps between the 2 servers, it will take about $evaluated_time hour(s) to transmit.
 
 This is an automated message from your beloved YunoHost server." | /usr/bin/mail.mailutils -a "Content-Type: text/plain; charset=UTF-8" -s "[YNH] First backup is starting" "root"
     fi
