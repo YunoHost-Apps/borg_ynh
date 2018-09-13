@@ -6,7 +6,7 @@
 # App package root directory should be the parent folder
 PKG_DIR=$(cd ../; pwd)
 
-pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python-jinja2 python3-setuptools python-virtualenv"
+pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python3-jinja2 python3-setuptools python-virtualenv"
 
 #=================================================
 # COMMON HELPERS
