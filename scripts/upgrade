@@ -33,3 +33,6 @@ ynh_clean_setup () {
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
+yunohost service remove $app.timer
+systemctl enable $app.timer
+systemctl start $app.timer
