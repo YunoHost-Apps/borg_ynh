@@ -70,9 +70,11 @@ ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
 ynh_add_systemd_config
 ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
-yunohost service add $app.timer
-yunohost service enable $app.timer
-yunohost service start $app.timer
+systemctl enable $app.timer
+systemctl start $app.timer
+#yunohost service add $app.timer
+#yunohost service enable $app.timer
+#yunohost service start $app.timer
 
 #=================================================
 # GENERATE SSH KEY

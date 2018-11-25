@@ -6,7 +6,7 @@
         "en": "Backup your server with borg.",
         "fr": "Sauvegarder votre serveur avec borg."
     },
-    "version": "1.0.1",
+    "version": "1.0.2",
     "url": "https://borgbackup.readthedocs.io",
     "license": "BSD-3-Clause",
     "maintainer": {
