@@ -33,6 +33,7 @@ ynh_clean_setup () {
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
+
 if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
     yunohost service remove $app.timer
     systemctl enable $app.timer
