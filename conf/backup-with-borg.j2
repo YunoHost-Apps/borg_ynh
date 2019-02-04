@@ -15,14 +15,14 @@ filter_hooks() {
 
 # Backup system part conf
 conf=$(yunohost app setting {{ app }} conf)
-if [ "$conf" = "true" ]
+if [ $conf -eq 1 ]
 then
     yunohost backup create $ignore_apps -n auto_conf --method {{ app }}_app --system $(filter_hooks conf)
 fi
 
 # Backup system data
 data=$(yunohost app setting {{ app }} data)
-if [ "$data" = "true" ]
+if [ $data -eq 1 ]
 then
     yunohost backup create $ignore_apps -n auto_data --method {{ app }}_app --system $(filter_hooks data)
 fi
