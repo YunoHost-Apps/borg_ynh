@@ -3,7 +3,7 @@
 set -e
 
 BORG_PASSPHRASE="{{ passphrase }}"
-if grep "{{ server }}" ~/.ssh/known_hosts; then
+if ssh-keygen -F "{{ server }}" >/dev/null ; then
     BORG_RSH="ssh -i /root/.ssh/id_{{ app }}_ed25519 -oStrictHostKeyChecking=yes "
 else
     BORG_RSH="ssh -i /root/.ssh/id_{{ app }}_ed25519 -oStrictHostKeyChecking=no "
