@@ -27,6 +27,10 @@
                     "en": "Indicate the server where you want put your backups",
                     "fr": "Indiquez le serveur où vous voulez faire vos sauvegardes"
                 },
+                "help":{
+                    "en": "If the ssh remote server doesn't use a standard port, you could specify it with DOMAIN:PORT",
+                    "fr": "Si le serveur ssh n'utilise pas un port standard, vous pouvez le spécifier avec DOMAIN:PORT"
+                },
                 "example": "example.com:22"
             },
             {
