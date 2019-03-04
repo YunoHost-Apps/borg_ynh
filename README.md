@@ -1,10 +1,21 @@
-# borg_ynh
+# Borg for Yunohost
+
+[![Latest Version](https://img.shields.io/badge/version-1.0.3-green.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/releases)
+[![Status](https://img.shields.io/badge/status-testing-yellow.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/milestones)
+[![Integration level](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg)
+[![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat)](https://raw.githubusercontent.com/YunoHost-Apps/borg_ynh/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/YunoHost-Apps/borg_ynh.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/issues)
+
+[![Install Borg with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=borg)
+
 An experimental borg implementation for yunohost
 
 ## Usage
+
 If you want to backup your server A onto the server B.
 
 ## Setup borg app on Server A
+
 Firstly set up this app on the server A you want to backup:
 
 ```
@@ -20,9 +31,9 @@ Indicate the backup frequency (see systemd OnCalendar format) (default: Daily):
 
 You can schedule your backup by choosing an other frequency. Some example:
 
-Monthly : 
+Monthly :
 
-Weekly : 
+Weekly :
 
 Daily : Daily at midnight
 
