@@ -10,7 +10,7 @@ else
 fi
 
 filter_hooks() {
-    ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq
+    ls /usr/share/yunohost/hooks/backup_method/ /etc/yunohost/hooks.d/backup_method/ | grep "\-$1_" | cut -d"-" -f2 | uniq
 }
 
 # Backup system part conf
