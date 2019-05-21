@@ -8,6 +8,18 @@ PKG_DIR=$(cd ../; pwd)
 
 pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python3-jinja2 python3-setuptools python-virtualenv"
 
+# Install borg with pip if borg is not here
+install_borg_with_pip () {
+    if [ ! -d /opt/borg-env ]; then
+        virtualenv --python=python3 /opt/borg-env
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup=1.1.10
+        echo "#!/bin/bash
+    /opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
+        chmod u+x /usr/local/bin/borg
+    fi
+}
+
+
 #=================================================
 # COMMON HELPERS
 #=================================================
