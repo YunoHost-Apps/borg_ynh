@@ -30,14 +30,7 @@ ynh_export server ssh_user passphrase on_calendar conf data apps
 ynh_save_args server ssh_user passphrase on_calendar conf data apps
 
 #=================================================
-# CONFIGURE BACKPORTS
-#=================================================
-# We need borg 1.1+ available only in backports
-if is_stretch; then
-    ynh_install_backports
-fi
-#=================================================
-# STORE SETTINGS FROM MANIFEST
+# INSTALL DEPENDENCIES
 #=================================================
 ynh_install_app_dependencies $pkg_dependencies
 
