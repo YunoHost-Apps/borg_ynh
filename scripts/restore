@@ -31,16 +31,18 @@ server=$(ynh_app_setting_get $app server)
 ssh_user=$(ynh_app_setting_get $app ssh_user)
 
 #=================================================
-# CONFIGURE BACKPORTS
-#=================================================
-# We need borg 1.1+ available only in backports
-ynh_install_backports
-
-#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_install_app_dependencies $pkg_dependencies
-ynh_package_install -t stretch-backports borgbackup
+
+if [ ! -d /opt/borg-env ]; then
+    virtualenv --python=python3 /opt/borg-env
+    /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup
+    echo "#!/bin/bash
+/opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
+    chmod u+x /usr/local/bin/borg
+fi
+
 
 #=================================================
 # ACTIVATE BACKUP METHODS
