@@ -39,3 +39,16 @@ if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
     systemctl enable $app.timer
     systemctl start $app.timer
 fi
+
+# Replace backports with pip
+if is_stretch; then
+    ynh_remove_backports
+else
+    if [ ! -d /opt/borg-env ]; then
+        virtualenv --python=python3 /opt/borg-env
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup
+        echo "#!/bin/bash
+/opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
+    	chmod u+x /usr/local/bin/borg
+    fi
+fi
