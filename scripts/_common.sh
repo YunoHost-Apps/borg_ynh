@@ -196,7 +196,7 @@ ynh_install_backports () {
 }
 
 ynh_remove_backports () {
-    rm /etc/apt/sources.list.d/$app-stretch-backports.list
+    rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
 }
 
 ynh_debian_release () {
