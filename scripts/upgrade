@@ -43,7 +43,7 @@ fi
 # Replace backports with pip
 if is_stretch; then
     ynh_remove_backports
-else
+
     if [ ! -d /opt/borg-env ]; then
         virtualenv --python=python3 /opt/borg-env
         /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup
