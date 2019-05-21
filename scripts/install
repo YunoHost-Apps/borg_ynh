@@ -33,14 +33,7 @@ ynh_save_args server ssh_user passphrase on_calendar conf data apps
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_install_app_dependencies $pkg_dependencies
-
-if [ ! -d /opt/borg-env ]; then
-    virtualenv --python=python3 /opt/borg-env
-    /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup
-    echo "#!/bin/bash
-/opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
-    chmod u+x /usr/local/bin/borg
-fi
+install_borg_with_pip
 
 #=================================================
 # ACTIVATE BACKUP METHODS
