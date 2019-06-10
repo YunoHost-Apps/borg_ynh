@@ -202,10 +202,6 @@ ynh_check_app_version_changed () {
   echo $return_value
 }
 
-ynh_remove_backports () {
-    rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
-}
-
 ynh_debian_release () {
 	lsb_release --codename --short
 }
