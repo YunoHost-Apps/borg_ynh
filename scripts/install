@@ -84,7 +84,7 @@ Public key: $(cat ${private_key}.pub)
 
 Or if you want to use cli:
 
-yunohost app install https://github.com/YunoHost-Apps/borg_server_ynh -a \"ssh_user=${ssh_user}&public_key=$(cat ${private_key}.pub)\"
+yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a \"ssh_user=${ssh_user}&public_key=$(cat ${private_key}.pub)\"
 
 If you facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/borg_ynh"
 
