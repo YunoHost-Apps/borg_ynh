@@ -42,7 +42,7 @@ fi
 
 # Replace backports with pip
 if is_stretch; then
-    ynh_remove_backports
+    rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
 
     install_borg_with_pip
 fi

@@ -21,11 +21,6 @@ app=$YNH_APP_INSTANCE_NAME
 ynh_remove_app_dependencies
 
 #=================================================
-# REMOVE BACKPORTS IF EXISTS
-#=================================================
-ynh_remove_backports
-
-#=================================================
 # REMOVE FILES
 #=================================================
 systemctl stop $app.timer
