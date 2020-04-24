@@ -8,7 +8,7 @@
 
 [![Install Borg with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=borg)
 
-An experimental borg implementation for yunohost
+A borg implementation for yunohost
 
 ## Usage
 
