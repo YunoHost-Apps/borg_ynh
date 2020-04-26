@@ -51,7 +51,7 @@
                 "ask": {
                     "en": "Give a strong passphrase to encrypt your backups. No blank space",
                     "fr": "Indiquez une phrase de passe forte pour chiffre vos sauvegardes. Sans espaces"
-                }
+                },
                 "help":{
                     "en": "Keep it safe! ...if you want to be able to restore. Do not communicate it to Server B holder or anyone else. ",
                     "fr": "Gardez-la précieusement! ...si vous voulez pouvoir restaurer. Ne donnez pas la clé au possesseur du Serveur B, ni personne."
