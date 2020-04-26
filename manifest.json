@@ -78,8 +78,8 @@
 			{
 				"name": "apps",
 				"ask": {
-					"en": "Which apps to backup (list separated by comma or 'all') ?",
-					"fr": "Quelles applications sauvegarder (liste séparée par virgule ou 'all' ?"
+					"en": "Which apps should Borg backup (list separated by comma or 'all') ?",
+					"fr": "Quelles applications doivent être sauvergées par Borg (liste séparée par virgule ou 'all' ?"
 				},
 				"default": "all"
             },
