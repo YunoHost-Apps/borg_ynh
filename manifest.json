@@ -40,8 +40,8 @@
                     "fr": "Quel utilisateur faut-il utiliser pour se connecter au serveur distant ?"
                 },
                 "help":{
-                    "en": "It is not a user of this Server A. The ssh user will be created by installation of Borg Server App on Server B",
-                    "fr": "Ce n'est pas un utilisateur de ce Serveur A. L'utilisateur ssh sera créé sur le Serveur B lors de l'installation de l'App Borg Server"
+                    "en": "It is not meant to be an existing user on this origin server. Instead, it will be created *on the remote server* during the installation of the Borg Server app.",
+                    "fr": "Cet utilisateur n'est pas censé exister sur ce serveur. Il sera créé *sur le serveur de distant* lors de l'installation de l'app Borg Server sur celui-ci."
                 },
                 "example": "servera"
             },
