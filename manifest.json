@@ -36,8 +36,8 @@
             {
                 "name": "ssh_user",
                 "ask": {
-                    "en": "Give the ssh user to use to connect on Server B",
-                    "fr": "Indiquez l'utilisateur ssh pour se connecter au Serveur B"
+                    "en": "Which SSH username should be used to connect on the remote server?",
+                    "fr": "Quel utilisateur faut-il utiliser pour se connecter au serveur distant ?"
                 },
                 "help":{
                     "en": "It is not a user of this Server A. The ssh user will be created by installation of Borg Server App on Server B",
