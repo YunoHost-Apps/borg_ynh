@@ -24,8 +24,8 @@
             {
                 "name": "server",
                 "ask": {
-                    "en": "Give the domain name of Server B where to upload backups",
-                    "fr": "Indiquez nom de domaine du Serveur B où mettre vos sauvegardes"
+                    "en": "What is the domain name of the remote server when backups will be sent?",
+                    "fr": "Quel est le nom de domaine du serveur distant sur lequel seront envoyés les sauvegardes ?"
                 },
                 "help":{
                     "en": "If the ssh remote server of B does not use a standard port, you could specify it with DOMAIN:PORT",
