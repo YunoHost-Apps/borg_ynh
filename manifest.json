@@ -70,8 +70,8 @@
 				"name": "data",
 				"type": "boolean",
 				"ask": {
-					"en": "Backup emails and user home directory ?",
-					"fr": "Sauvegarder les mails et les répertoires utilisateur ?"
+					"en": "Should Borg backup emails and user home directory ?",
+					"fr": "Est-ce que Borg doit sauvegarder les mails et les répertoires des utilisateurs ?"
 				},
 				"default": true
 			},
