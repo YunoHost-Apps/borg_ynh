@@ -28,8 +28,8 @@
                     "fr": "Quel est le nom de domaine du serveur distant sur lequel seront envoyés les sauvegardes ?"
                 },
                 "help":{
-                    "en": "If the ssh remote server of B does not use a standard port, you could specify it with DOMAIN:PORT",
-                    "fr": "Si le serveur ssh de B n'utilise pas un port standard, vous pouvez le spécifier avec DOMAIN:PORT"
+                    "en": "If this remote server does uses a custom SSH port (different from 22), you can specify it with DOMAIN:PORT",
+                    "fr": "Si le serveur distant utilise un port particulier pour SSH (différent de 22), vous pouvez le spécifier avec DOMAIN:PORT"
                 },
                 "example": "serverb.local:22"
             },
