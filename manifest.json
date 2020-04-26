@@ -49,7 +49,7 @@
                 "name": "passphrase",
                 "type": "password",
                 "ask": {
-                    "en": "Give a strong passphrase to encrypt your backups. No blank space",
+                    "en": "Provide a strong passphrase to encrypt your backups. No blank space",
                     "fr": "Indiquez une phrase de passe forte pour chiffre vos sauvegardes. Sans espaces"
                 },
                 "help":{
