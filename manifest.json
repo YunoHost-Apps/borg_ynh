@@ -86,8 +86,8 @@
             {
                 "name": "on_calendar",
                 "ask": {
-                    "en": "Give the backup frequency (see systemd OnCalendar format)",
-                    "fr": "Indiquez la fréquence de sauvegarde (voir le format OnCalendar de systemd)"
+                    "en": "At which frequency should the backups be performed ? (see systemd OnCalendar format)",
+                    "fr": "À quelle fréquence les sauvegardes doivent-elles être effectuées ? (voir le format OnCalendar de systemd)"
                 },
                 "example": "Daily",
                 "default": "Daily"
