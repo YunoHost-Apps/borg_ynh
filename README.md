@@ -14,7 +14,7 @@ A [Borg](https://borgbackup.readthedocs.io/en/stable/index.html#what-is-borgback
 You want to backup a critical "guest" Server A onto a remote "host" Server B, you need:
 * Domain name of server B: ``host.serverb``
 * Name of the server B SSH user (to be created by ``borgserver``) for connection from Server A: ``borgservera``
-* *Strong passphrase* to encrypt your backups on host Server B. And to *restore your backups*!!
+* **Strong passphrase** to encrypt your backups on host Server B. And to **restore your backups**!!
 * IDs of YunoHost apps you want to backup
 * Regular time schedule for your backups, see below
 * Install Borg Backup App (``borg``) on guest Server A
@@ -98,6 +98,7 @@ If you want to backup your guest server:
 * with different YunoHost apps
 * at different regular time schedule
 * on different host servers
+
 Then you can set up multiple instances of the Borg Apps on same servers.
 For instance:
 * Borg Backup instance ``borg``: backup nextcloud daily on host Server B
