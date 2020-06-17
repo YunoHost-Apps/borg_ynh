@@ -31,12 +31,16 @@ fi
 apps=$(yunohost app setting {{ app }} apps)
 for app in $(ls /etc/yunohost/apps/*/scripts/backup | cut -d / -f 5); do
     backup_app=false
-    for selected_app in $(echo $apps | tr "," " ");do
-        if [[ "$selected_app" == "$app" ]] || [ "$apps" = "all" ]; then
+    if [[ "$apps" = "all" ]]; then
           backup_app=true
-          break
-        fi
-    done
+    else
+        for selected_app in $(echo $apps | tr "," " ");do
+            if [[ "$selected_app" == "$app" ]]; then
+              backup_app=true
+              break
+            fi
+        done
+    fi
     if [ "$backup_app" == "true" ];then
         yunohost backup create $ignore_system -n auto_$app --method {{ app }}_app --apps $app
     fi
