@@ -29,7 +29,7 @@ fi
 
 # Backup all apps independently
 apps=$(yunohost app setting {{ app }} apps)
-for app in $(yunohost app list --installed -b | grep id: | cut -d: -f2); do
+for app in $(ls /etc/yunohost/apps/*/scripts/backup | cut -d / -f 5); do
     backup_app=false
     for selected_app in $(echo $apps | tr "," " ");do
         if [[ "$selected_app" == "$app" ]] || [ "$apps" = "all" ]; then
