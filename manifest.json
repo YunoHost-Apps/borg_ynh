@@ -1,10 +1,10 @@
 {
-    "name": "Borg",
+    "name": "Borg Backup App",
     "id": "borg",
     "packaging_format": 1,
     "description": {
-        "en": "Backup your server with borg.",
-        "fr": "Sauvegarder votre serveur avec borg."
+        "en": "Backup your server on a host server using Borg.",
+        "fr": "Sauvegardez votre serveur sur un serveur distant avec Borg."
     },
     "version": "1.1.10~ynh1",
     "url": "https://borgbackup.readthedocs.io",
@@ -24,37 +24,45 @@
             {
                 "name": "server",
                 "ask": {
-                    "en": "Indicate the server where you want put your backups",
-                    "fr": "Indiquez le serveur où vous voulez faire vos sauvegardes"
+                    "en": "What is the domain name of the host server where backups will be sent?",
+                    "fr": "Quel est le nom de domaine du serveur distant sur lequel seront envoyés les sauvegardes ?"
                 },
                 "help":{
-                    "en": "If the ssh remote server doesn't use a standard port, you could specify it with DOMAIN:PORT",
-                    "fr": "Si le serveur ssh n'utilise pas un port standard, vous pouvez le spécifier avec DOMAIN:PORT"
+                    "en": "If this host server does use a custom SSH port (different from 22), you can specify it with DOMAIN:PORT",
+                    "fr": "Si le serveur distant utilise un port particulier pour SSH (différent de 22), vous pouvez le spécifier avec DOMAIN:PORT"
                 },
-                "example": "example.com:22"
+                "example": "host.serverb:22"
             },
             {
                 "name": "ssh_user",
                 "ask": {
-                    "en": "Indicate the ssh user to use to connect on this server",
-                    "fr": "Indiquez l'utilisateur ssh à utiliser pour se connecter au serveur"
+                    "en": "Which SSH username should be used to connect to the host server?",
+                    "fr": "Quel utilisateur faut-il utiliser pour se connecter au serveur distant ?"
                 },
-                "example": "john"
+                "help":{
+                    "en": "It is not meant to be an existing user on this guest server. Instead, it will be created *on the host server* during the installation of the Borg Server App.",
+                    "fr": "Cet utilisateur n'est pas censé exister sur ce serveur. Il sera créé *sur le serveur distant* lors de l'installation de l'App Borg Server sur celui-ci."
+                },
+                "example": "borgservera"
             },
             {
                 "name": "passphrase",
                 "type": "password",
                 "ask": {
-                    "en": "Indicate a strong passphrase, that you will keep preciously if you want to be able to use your backups",
-                    "fr": "Indiquez une phrase de passe forte que vous garderez précieusement si vous voulez être en mesure d'utiliser vos sauvegardes"
+                    "en": "Provide a strong passphrase to encrypt your backups. No blank space",
+                    "fr": "Indiquez une phrase de passe forte pour chiffrer vos sauvegardes. Sans espaces"
+                },
+                "help":{
+                    "en": "Keep it safe! ...if you want to be able to restore. Do not communicate it to host Server holder or anyone else. ",
+                    "fr": "Gardez-la précieusement! ...si vous voulez pouvoir restaurer. Ne donnez pas la clé au possesseur du Serveur distant, ni personne."
                 }
             },
 			{
 				"name": "conf",
 				"type": "boolean",
 				"ask": {
-					"en": "Would you like to backup your YunoHost configuration ?",
-					"fr": "Souhaitez-vous effectuer des sauvegardes des configurations du système YunoHost ?"
+					"en": "Should Borg backup your YunoHost configuration ?",
+					"fr": "Borg doit-il sauvegarder la configuration système YunoHost ?"
 				},
 				"default": true
 			},
@@ -62,26 +70,26 @@
 				"name": "data",
 				"type": "boolean",
 				"ask": {
-					"en": "Would you like to backup mails and user home directory ?",
-					"fr": "Souhaitez-vous effectuer des sauvegardes des mails et des répertoire des utilisateurs ?"
+					"en": "Should Borg backup emails and user home directory ?",
+					"fr": "Borg doit-elle sauvegarder les mails et les répertoires des utilisateurs ?"
 				},
 				"default": true
 			},
 			{
 				"name": "apps",
 				"ask": {
-					"en": "Which apps would you backup (list separated by comma or 'all') ?",
-					"fr": "Souhaitez-vous effectuer des sauvegardes de vos applications ?"
+					"en": "Which apps should Borg backup (list separated by comma or 'all') ?",
+					"fr": "Quelles applications doivent être sauvegardées par Borg (liste séparée par virgule ou 'all' ?"
 				},
 				"default": "all"
             },
             {
                 "name": "on_calendar",
                 "ask": {
-                    "en": "Indicate the backup frequency (see systemd OnCalendar format)",
-                    "fr": "Indiquez la fréquence de la sauvegarde (voir le format OnCalendar de systemd)"
+                    "en": "With which regular time schedule should the backups be performed ? (see systemd OnCalendar format)",
+                    "fr": "À quelle fréquence les sauvegardes doivent-elles être effectuées ? (voir le format OnCalendar de systemd)"
                 },
-                "example": "Daily",
+                "example": "Monthly or Weekly or Daily or Hourly or 4:00 or 5,17:00  or Sat --1..7 18:00:00",
                 "default": "Daily"
             }
         ]
