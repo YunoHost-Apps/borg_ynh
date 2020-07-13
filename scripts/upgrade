@@ -15,6 +15,14 @@ source /usr/share/yunohost/helpers
 
 app=$YNH_APP_INSTANCE_NAME
 
+export server=$(ynh_app_setting_get $app server)
+export ssh_user=$(ynh_app_setting_get $app ssh_user)
+export passphrase=$(ynh_app_setting_get $app passphrase)
+export on_calendar=$(ynh_app_setting_get $app on_calendar)
+export conf=$(ynh_app_setting_get $app conf)
+export data=$(ynh_app_setting_get $app data)
+export apps=$(ynh_app_setting_get $app apps)
+
 #=================================================
 # CHECK IF AN UPGRADE IS NEEDED
 #=================================================
