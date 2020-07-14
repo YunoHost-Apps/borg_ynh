@@ -13,7 +13,7 @@ source /usr/share/yunohost/helpers
 # LOAD SETTINGS
 #=================================================
 
-app=$YNH_APP_INSTANCE_NAME
+export app=$YNH_APP_INSTANCE_NAME
 
 export server=$(ynh_app_setting_get $app server)
 export ssh_user=$(ynh_app_setting_get $app ssh_user)
