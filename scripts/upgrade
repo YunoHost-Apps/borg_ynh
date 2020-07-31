@@ -58,9 +58,13 @@ fi
 
 # Replace backports with pip
 if is_buster; then
+    if [ ! -f /opt/borg-env/buster ] ; then
     rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
     ynh_secure_remove /opt/borg-env
     install_borg_with_pip
+    touch /opt/borg-env/buster
+    fi
+    
 fi
 
 #=================================================
