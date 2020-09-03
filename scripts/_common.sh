@@ -120,6 +120,15 @@ ynh_debian_release () {
 	lsb_release --codename --short
 }
 
+is_buster () {
+	if [ "$(ynh_debian_release)" == "buster" ]
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+
 is_stretch () {
 	if [ "$(ynh_debian_release)" == "stretch" ]
 	then
