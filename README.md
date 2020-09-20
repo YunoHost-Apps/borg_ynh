@@ -90,6 +90,11 @@ If you want to be sure to be able to restore your server, you should try to rest
 You should at least:
  * Keep your apps up to date (if apps are too old, they could be difficult to restore on a more recent recent version)
  * Check regularly the presence of info.json and db.sql or dump.sql in your apps archives
+```
+borg list ./::ARCHIVE_NAME | grep info.json
+borg list ./::ARCHIVE_NAME | grep db.sql
+borg list ./::ARCHIVE_NAME | grep dump.sql
+```
  * Be sure to have your passphrase available even if your server is completely broken
  
 ## How to restore a complete system
