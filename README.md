@@ -26,7 +26,7 @@ You should received an email after the first backup succeeded.
 ### Set up Borg Backup App on guest Server A
 Firstly, set up the Borg Backup App (``borg``) on the guest Server A you want to backup:
 ```
-$ yunohost app install borg_ynh
+$ yunohost app install borg
 Indicate the domain name of server B where to upload backups: host.serverb
 Indicate the ssh user to use to connect on this server: servera
 Indicate a strong passphrase, that you will keep preciously if you want to be able to use your backups: N0tAW3akp4ssw0rdYoloMacN!guets
