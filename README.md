@@ -10,7 +10,8 @@
 
 A [Borg](https://borgbackup.readthedocs.io/en/stable/index.html#what-is-borgbackup) implementation to backup a YunoHost server. This is the Borg Backup App to be installed on a server to backup. It works together with a [Borg Server App](https://github.com/YunoHost-Apps/borgserver_ynh) installed on a host server.  
 
-## How backup your server with this app ?
+## How to backup your server with this app ?
+
 You want to backup a critical "guest" Server A onto a remote "host" Server B, you need:
 * Domain name of server B: ``host.serverb``
 * Name of the server B SSH user (to be created by ``borgserver``) for connection from Server A: ``borgservera``
