@@ -19,6 +19,7 @@ ynh_abort_if_errors
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_script_progression --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -28,25 +29,29 @@ ssh_user=$(ynh_app_setting_get $app ssh_user)
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Reinstalling dependencies..."
+
 ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
 
 #=================================================
 # ACTIVATE BACKUP METHODS
 #=================================================
+
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
 
 #=================================================
 # RESTORE FILES
 #=================================================
+
 ynh_restore 
 
 #=================================================
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
 yunohost service add $app
-systemctl enable $app.timer
+systemctl enable $app.timer --quiet
 systemctl start $app.timer
 #yunohost service add $app.timer
 #yunohost service enable $app.timer
@@ -55,5 +60,11 @@ systemctl start $app.timer
 #=================================================
 # RESTORE SYSTEMD
 #=================================================
-systemctl enable $app.service
 
+systemctl enable $app.service --quiet
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Restoration completed for $app" --last

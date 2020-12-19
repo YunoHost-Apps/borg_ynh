@@ -18,6 +18,8 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 # REMOVE DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Removing dependencies..."
+
 ynh_remove_app_dependencies
 
 #=================================================
@@ -29,3 +31,9 @@ ynh_remove_systemd_config
 ynh_secure_remove "/etc/systemd/system/$app.timer"
 ynh_secure_remove "/usr/local/bin/backup-with-$app"
 ynh_secure_remove "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Removal of $app completed" --last

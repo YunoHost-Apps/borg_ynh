@@ -1,12 +1,12 @@
 {
-    "name": "Borg Backup App",
+    "name": "Borg Backup",
     "id": "borg",
     "packaging_format": 1,
     "description": {
         "en": "Backup your server on a host server using Borg.",
         "fr": "Sauvegardez votre serveur sur un serveur distant avec Borg."
     },
-    "version": "1.1.13~ynh2",
+    "version": "1.1.14~ynh1",
     "url": "https://borgbackup.readthedocs.io",
     "license": "BSD-3-Clause",
     "maintainer": {
@@ -15,7 +15,7 @@
         "url": "https://reflexlibre.net"
     },
     "requirements": {
-        "yunohost": ">= 3.5.0"
+        "yunohost": ">= 3.8.1"
     },
     "multi_instance": true,
     "services": [],
@@ -53,7 +53,7 @@
                     "fr": "Indiquez une phrase de passe forte pour chiffrer vos sauvegardes. Sans espaces"
                 },
                 "help":{
-                    "en": "Keep it safe! ...if you want to be able to restore. Do not communicate it to host Server holder or anyone else. ",
+                    "en": "Keep it safe! ...if you want to be able to restore. Do not communicate it to host Server holder or anyone else.",
                     "fr": "Gardez-la précieusement! ...si vous voulez pouvoir restaurer. Ne donnez pas la clé au possesseur du Serveur distant, ni personne."
                 }
             },
@@ -61,7 +61,7 @@
 				"name": "conf",
 				"type": "boolean",
 				"ask": {
-					"en": "Should Borg backup your YunoHost configuration ?",
+					"en": "Should Borg backup your YunoHost configuration?",
 					"fr": "Borg doit-il sauvegarder la configuration système YunoHost ?"
 				},
 				"default": true
@@ -70,7 +70,7 @@
 				"name": "data",
 				"type": "boolean",
 				"ask": {
-					"en": "Should Borg backup emails and user home directory ?",
+					"en": "Should Borg backup emails and user home directory?",
 					"fr": "Borg doit-elle sauvegarder les mails et les répertoires des utilisateurs ?"
 				},
 				"default": true
@@ -78,7 +78,7 @@
 			{
 				"name": "apps",
 				"ask": {
-					"en": "Which apps should Borg backup (list separated by comma or 'all') ?",
+					"en": "Which apps should Borg backup (list separated by comma or 'all')?",
 					"fr": "Quelles applications doivent être sauvegardées par Borg (liste séparée par virgule ou 'all' ?"
 				},
 				"default": "all"
@@ -86,7 +86,7 @@
             {
                 "name": "on_calendar",
                 "ask": {
-                    "en": "With which regular time schedule should the backups be performed ? (see systemd OnCalendar format)",
+                    "en": "With which regular time schedule should the backups be performed? (see systemd OnCalendar format)",
                     "fr": "À quelle fréquence les sauvegardes doivent-elles être effectuées ? (voir le format OnCalendar de systemd)"
                 },
                 "example": "Monthly or Weekly or Daily or Hourly or 4:00 or 5,17:00  or Sat --1..7 18:00:00",
