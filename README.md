@@ -1,6 +1,6 @@
 # Borg Backup for YunoHost
 
-[![Latest Version](https://img.shields.io/badge/version-1.1.14-green.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/releases)
+[![Latest Version](https://img.shields.io/badge/version-1.1.15-green.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/releases)
 [![Status](https://img.shields.io/badge/status-testing-yellow.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/milestones)
 [![Integration level](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg)
 [![GitHub license](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat)](https://raw.githubusercontent.com/YunoHost-Apps/borg_ynh/master/LICENSE)
