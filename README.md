@@ -3,7 +3,7 @@
 [![Latest Version](https://img.shields.io/badge/version-1.1.14-green.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/releases)
 [![Status](https://img.shields.io/badge/status-testing-yellow.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/milestones)
 [![Integration level](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg)
-[![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat)](https://raw.githubusercontent.com/YunoHost-Apps/borg_ynh/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat)](https://raw.githubusercontent.com/YunoHost-Apps/borg_ynh/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/YunoHost-Apps/borg_ynh.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/issues)  
 [![Install Borg with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
