@@ -87,7 +87,7 @@ systemctl start $app.timer
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
 
-yunohost service add $app
+yunohost service add $app --description="Deduplicating backup program"
 
 #=================================================
 # END OF SCRIPT

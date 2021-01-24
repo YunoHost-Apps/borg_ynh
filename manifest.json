@@ -23,6 +23,7 @@
         "install" : [
             {
                 "name": "server",
+                "type": "string",
                 "ask": {
                     "en": "What is the domain name of the host server where backups will be sent?",
                     "fr": "Quel est le nom de domaine du serveur distant sur lequel seront envoyés les sauvegardes ?"
@@ -35,6 +36,7 @@
             },
             {
                 "name": "ssh_user",
+                "type": "string",
                 "ask": {
                     "en": "Which SSH username should be used to connect to the host server?",
                     "fr": "Quel utilisateur faut-il utiliser pour se connecter au serveur distant ?"
@@ -77,6 +79,7 @@
 			},
 			{
 				"name": "apps",
+                "type": "string",
 				"ask": {
 					"en": "Which apps should Borg backup (list separated by comma or 'all')?",
 					"fr": "Quelles applications doivent être sauvegardées par Borg (liste séparée par virgule ou 'all' ?"
@@ -85,6 +88,7 @@
             },
             {
                 "name": "on_calendar",
+                "type": "string",
                 "ask": {
                     "en": "With which regular time schedule should the backups be performed? (see systemd OnCalendar format)",
                     "fr": "À quelle fréquence les sauvegardes doivent-elles être effectuées ? (voir le format OnCalendar de systemd)"

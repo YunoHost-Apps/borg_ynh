@@ -70,7 +70,7 @@ systemctl start $app.timer
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..."
 
-yunohost service add $app
+yunohost service add $app --description="Deduplicating backup program"
 
 #=================================================
 # GENERATE SSH KEY
