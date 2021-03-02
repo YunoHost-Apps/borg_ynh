@@ -43,6 +43,11 @@ ynh_secure_remove "/etc/systemd/system/$app.timer"
 ynh_secure_remove "/usr/local/bin/backup-with-$app"
 ynh_secure_remove "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
+if [ "$(yunohost app list | grep "id: borg" | wc -l)" == "1" ] ; then 
+    ynh_secure_remove "/opt/borg-env"
+    ynh_secure_remove "/usr/local/bin/borg"
+fi
+
 #=================================================
 # END OF SCRIPT
 #=================================================
