@@ -15,7 +15,8 @@ install_borg_with_pip () {
         /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup==1.1.15
         echo "#!/bin/bash
     /opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
-        chmod u+x /usr/local/bin/borg
+        # We need this to be executable by 
+        chmod a+x /usr/local/bin/borg
     fi
 }
 
