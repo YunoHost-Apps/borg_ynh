@@ -39,6 +39,7 @@ ynh_check_app_version_changed
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
@@ -46,13 +47,14 @@ ynh_clean_setup () {
 	# restore it if the upgrade fails
 	ynh_restore_upgradebackup
 }
+
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
 
 if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
     yunohost service remove $app.timer
-    systemctl enable $app.timer
+    systemctl enable $app.timer --quiet
     systemctl start $app.timer
 fi
 
@@ -63,8 +65,7 @@ if is_buster; then
     ynh_secure_remove /opt/borg-env
     install_borg_with_pip
     touch /opt/borg-env/buster
-    fi
-    
+    fi   
 fi
 
 #=================================================
@@ -79,5 +80,17 @@ ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
 ynh_add_systemd_config
 ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
-systemctl enable $app.timer
+systemctl enable $app.timer --quiet
 systemctl start $app.timer
+
+#=================================================
+# ADVERTISE SERVICE IN ADMIN PANEL
+#=================================================
+
+yunohost service add $app --description="Deduplicating backup program"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Upgrade of $app completed" --last

@@ -19,6 +19,7 @@ ynh_abort_if_errors
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
+
 export app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
@@ -27,17 +28,21 @@ ynh_export server ssh_user passphrase on_calendar conf data apps
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
+
 ynh_save_args server ssh_user passphrase on_calendar conf data apps
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Installing dependencies..."
+
 ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
 
 #=================================================
 # ACTIVATE BACKUP METHODS
 #=================================================
+
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
 
@@ -49,19 +54,28 @@ ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 #=================================================
 # CONFIGURE CRON
 #=================================================
+
 ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
 ynh_add_systemd_config
 ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
-systemctl enable $app.timer
+systemctl enable $app.timer --quiet
 systemctl start $app.timer
 #yunohost service add $app.timer
 #yunohost service enable $app.timer
 #yunohost service start $app.timer
 
 #=================================================
+# ADVERTISE SERVICE IN ADMIN PANEL
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..."
+
+yunohost service add $app --description="Deduplicating backup program"
+
+#=================================================
 # GENERATE SSH KEY
 #=================================================
+
 private_key="/root/.ssh/id_${app}_ed25519"
 test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
 
@@ -73,10 +87,10 @@ echo "You should now install the \"Borg Server\" app on $server and fill questio
 User: ${ssh_user}
 Public key: $(cat ${private_key}.pub)"
 
-
 #=================================================
 # SEND A README FOR THE ADMIN
 #=================================================
+
 ynh_print_OFF
 message="You should now install the \"Borg Server\" app on $server and fill questions like this:
 User: ${ssh_user}
@@ -91,3 +105,8 @@ If you facing an issue or want to improve this app, please open a new issue in t
 ynh_send_readme_to_admin "$message" "root"
 ynh_print_ON
 
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Installation of $app completed" --last
