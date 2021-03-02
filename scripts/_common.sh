@@ -12,7 +12,7 @@ pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev pyth
 install_borg_with_pip () {
     if [ ! -d /opt/borg-env ]; then
         virtualenv --python=python3 /opt/borg-env
-        /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup==1.1.15
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup[fuse]==1.1.15
         echo "#!/bin/bash
     /opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
         # We need this to be executable by 
