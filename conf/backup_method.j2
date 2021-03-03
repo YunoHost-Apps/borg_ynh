@@ -47,7 +47,9 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     borg create $repo::${name}_${current_date} ./ 2>&1 >/dev/null | log_with_timestamp
     popd
 
-    borg prune $repo -P ${name} --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    # About thi _20 it's a crazy fix to avoid pruning wordpress__2 
+    # if you prune wordpress
+    borg prune $repo -P ${name}_20 --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
 }
 
 do_mount() {
