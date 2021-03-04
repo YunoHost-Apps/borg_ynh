@@ -23,9 +23,6 @@ ynh_script_progression --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-server=$(ynh_app_setting_get $app server)
-ssh_user=$(ynh_app_setting_get $app ssh_user)
-
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================

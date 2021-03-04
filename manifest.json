@@ -22,30 +22,16 @@
     "arguments": {
         "install" : [
             {
-                "name": "server",
+                "name": "repository",
                 "type": "string",
                 "ask": {
-                    "en": "What is the domain name of the host server where backups will be sent?",
-                    "fr": "Quel est le nom de domaine du serveur distant sur lequel seront envoyés les sauvegardes ?"
+                    "en": "In which borg repository location do you want to backup your files ?",
+                    "fr": "Dans quel repo borg souhaitez-vous sauvegarder vos fichiers ?"
                 },
                 "help":{
-                    "en": "If this host server does use a custom SSH port (different from 22), you can specify it with DOMAIN:PORT",
-                    "fr": "Si le serveur distant utilise un port particulier pour SSH (différent de 22), vous pouvez le spécifier avec DOMAIN:PORT"
+                    "en": "You can specify a local by giving direct path or a remote repo in this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . For remote user, it is not meant to be an existing user on the guest server. Instead, it will be created *on the host server* during the installation of the Borg Server App."
                 },
-                "example": "host.serverb:22"
-            },
-            {
-                "name": "ssh_user",
-                "type": "string",
-                "ask": {
-                    "en": "Which SSH username should be used to connect to the host server?",
-                    "fr": "Quel utilisateur faut-il utiliser pour se connecter au serveur distant ?"
-                },
-                "help":{
-                    "en": "It is not meant to be an existing user on this guest server. Instead, it will be created *on the host server* during the installation of the Borg Server App.",
-                    "fr": "Cet utilisateur n'est pas censé exister sur ce serveur. Il sera créé *sur le serveur distant* lors de l'installation de l'App Borg Server sur celui-ci."
-                },
-                "example": "borgservera"
+                "example": "ssh://john@serverb.tld:22/~/backup"
             },
             {
                 "name": "passphrase",

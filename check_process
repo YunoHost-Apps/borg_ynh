@@ -1,7 +1,6 @@
 ;; Test complet
 	; Manifest
-		server="domain.tld:22"
-	    ssh_user="sam"
+		server="ssh://sam@domain.tld:22/~/backup"
         passphrase="APassphrase"
         conf=1
         data=1
