@@ -50,15 +50,18 @@ ynh_restore
 yunohost service add $app
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
-#yunohost service add $app.timer
-#yunohost service enable $app.timer
-#yunohost service start $app.timer
 
 #=================================================
 # RESTORE SYSTEMD
 #=================================================
-
 systemctl enable $app.service --quiet
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
+
+yunohost service add $app --description="Deduplicating backup program"
 
 #=================================================
 # END OF SCRIPT

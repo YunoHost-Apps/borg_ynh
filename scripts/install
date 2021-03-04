@@ -44,6 +44,7 @@ ynh_script_progression --message="Installing dependencies..."
 
 ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
+
 #=================================================
 # SPECIFIC SETUP
 #=================================================
@@ -56,11 +57,11 @@ mkdir -p /usr/share/yunohost/backup_method
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
-ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 
-ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
+ynh_add_config --template="backup-with-borg" --destination="/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
 
 if [ ! -z "$server" ]; then
@@ -109,7 +110,7 @@ ynh_add_systemd_config
 #=================================================
 # CONFIGURE SYSTEMD TIMER
 #=================================================
-ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
+ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 

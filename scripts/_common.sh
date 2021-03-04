@@ -51,16 +51,8 @@ ynh_save_args () {
         if [ "$var" == "path_url" ]; then
             setting_var="path"
         fi
-        ynh_app_setting_set $app $setting_var ${!var}
+        ynh_app_setting_set $app $setting_var "${!var}"
     done
-}
-
-
-
-ynh_configure () {
-    ynh_backup_if_checksum_is_different $2
-    ynh_render_template "${PKG_DIR}/conf/$1.j2" "$2"
-    ynh_store_file_checksum $2
 }
 
 

@@ -1,0 +1,8 @@
+[Unit]
+Description=Run backup __APP__ regularly
+
+[Timer]
+OnCalendar=__ON_CALENDAR__
+
+[Install]
+WantedBy=timers.target
