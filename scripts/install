@@ -44,7 +44,8 @@ ynh_script_progression --message="Installing dependencies..."
 
 ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
-
+#=================================================
+# SPECIFIC SETUP
 #=================================================
 # ACTIVATE BACKUP METHODS
 #=================================================
@@ -56,49 +57,34 @@ mkdir -p /usr/share/yunohost/backup_method
 # SETUP THE BACKUP METHOD
 #=================================================
 ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-#=================================================
-# CONFIGURE CRON
-#=================================================
 
 ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
-ynh_add_systemd_config
-ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
-systemctl enable $app.timer --quiet
-systemctl start $app.timer
-#yunohost service add $app.timer
-#yunohost service enable $app.timer
-#yunohost service start $app.timer
 
-#=================================================
-# ADVERTISE SERVICE IN ADMIN PANEL
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..."
+if [ ! -z "$server" ]; then
+    #=================================================
+    # GENERATE SSH KEY
+    #=================================================
 
-yunohost service add $app --description="Deduplicating backup program"
+    private_key="/root/.ssh/id_${app}_ed25519"
+    test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
 
-#=================================================
-# GENERATE SSH KEY
-#=================================================
+    #=================================================
+    # Display key
+    #=================================================
 
-private_key="/root/.ssh/id_${app}_ed25519"
-test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
+    echo "You should now install the \"Borg Server\" app on $server and fill questions like this:
+    User: ${ssh_user}
+    Public key: $(cat ${private_key}.pub)"
 
-#=================================================
-# Display key
-#=================================================
+    #=================================================
+    # SEND A README FOR THE ADMIN
+    #=================================================
 
-echo "You should now install the \"Borg Server\" app on $server and fill questions like this:
-User: ${ssh_user}
-Public key: $(cat ${private_key}.pub)"
-
-#=================================================
-# SEND A README FOR THE ADMIN
-#=================================================
-
-ynh_print_OFF
-message="You should now install the \"Borg Server\" app on $server and fill questions like this:
+    ynh_print_OFF
+    message="You should now install the \"Borg Server\" app on $server and fill questions like this:
 User: ${ssh_user}
 Public key: $(cat ${private_key}.pub)
 
@@ -108,8 +94,32 @@ yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a \"ssh_us
 
 If you facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/borg_ynh"
 
-ynh_send_readme_to_admin "$message" "root"
-ynh_print_ON
+    ynh_send_readme_to_admin "$message" "root"
+    ynh_print_ON
+fi
+
+#=================================================
+# SETUP SYSTEMD
+#=================================================
+ynh_script_progression --message="Configuring a systemd service..." --time --weight=1
+
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+#=================================================
+# CONFIGURE SYSTEMD TIMER
+#=================================================
+ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
+systemctl enable $app.timer --quiet
+systemctl start $app.timer
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
+
+yunohost service add $app --description="Deduplicating backup program"
+
 
 #=================================================
 # END OF SCRIPT

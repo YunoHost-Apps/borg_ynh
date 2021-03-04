@@ -67,36 +67,69 @@ if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
 fi
 
 # Replace backports with pip
+rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
+
+# Reinstall borg if stretch -> buster migration
 if is_buster; then
     if [ ! -f /opt/borg-env/buster ] ; then
-    rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
-    ynh_secure_remove /opt/borg-env
-    install_borg_with_pip
-    touch /opt/borg-env/buster
+        ynh_secure_remove /opt/borg-env
     fi   
 fi
+
+#=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=1
+
+ynh_install_app_dependencies $pkg_dependencies
+
+#=================================================
+# SPECIFIC UPGRADE
+#=================================================
+# Upgrade borgbackup
+#=================================================
+ynh_script_progression --message="Upgrading borgbackup..." --weight=1
+
+install_borg_with_pip
 
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
 ynh_script_progression --message="Setting up backup method..." --weight=1
 ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-#=================================================
-# CONFIGURE CRON
-#=================================================
-ynh_script_progression --message="Configuring systemd timer..." --weight=1
 ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
+
+#=================================================
+# SETUP SYSTEMD
+#=================================================
+ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
+
+# Create a dedicated systemd config
 ynh_add_systemd_config
+
+#=================================================
+# CONFIGURE SYSTEMD TIMER
+#=================================================
 ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 
 #=================================================
-# ADVERTISE SERVICE IN ADMIN PANEL
+# GENERIC FINALIZATION
 #=================================================
-ynh_script_progression --message="Exposing borg service in webadmin..." --weight=1
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+# Set permissions on app files
+chown -R root: $final_path
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 yunohost service add $app --description="Deduplicating backup program"
 

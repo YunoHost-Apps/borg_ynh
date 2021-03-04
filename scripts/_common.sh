@@ -5,19 +5,26 @@
 #=================================================
 # App package root directory should be the parent folder
 PKG_DIR=$(cd ../; pwd)
+BORG_VERSION=1.1.15
 
-pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python3-jinja2 python3-setuptools python-virtualenv virtualenv"
+pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python3-jinja2 python3-setuptools python-virtualenv virtualenv libfuse-dev pkg-config"
 
 # Install borg with pip if borg is not here
 install_borg_with_pip () {
+    if [ -d /opt/borg-env ]; then
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip list | grep "Version: $BORG_VERSION" || ynh_secure_remove /opt/borg-env
+    fi
     if [ ! -d /opt/borg-env ]; then
         python3 -m venv /opt/borg-env
-        /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup[fuse]==1.1.15
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup[fuse]==$BORG_VERSION
         echo "#!/bin/bash
     /opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
-        # We need this to be executable by 
-        chmod a+x /usr/local/bin/borg
+        if is_buster; then
+            touch /opt/borg-env/buster
+        fi
     fi
+    # We need this to be executable by other borg apps
+    chmod a+x /usr/local/bin/borg
 }
 
 #=================================================
