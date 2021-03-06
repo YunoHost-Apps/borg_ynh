@@ -34,6 +34,7 @@ if [[ $repository == *"@"* ]]; then
     if [[ $server == *":"* ]]; then
         server="[$(echo "$server" | cut -d":" -f1)]:$(echo "$server" | cut -d":" -f2)"
     fi
+    ssh_user=$(echo "$repository" | cut -d"@" -f1 | cut -d"/" -f2)
 fi
 ynh_save_args repository server passphrase on_calendar conf data apps
 

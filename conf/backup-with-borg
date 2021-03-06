@@ -1,6 +1,14 @@
 #!/bin/bash
 
+# We don't stop the script on errors cause we want to backup all data we could backuped
+#set -eu
+
 app=$1
+errors=""
+current_date=$(date +"%y%m%d_%H%M")
+log_file="/var/log/$app/$current_date.log"
+err_file="/var/log/$app/$current_date.err"
+mkdir -p "/var/log/$app"
 
 # Adapt this script to different API 2.x vs 3.x
 if yunohost -v | grep "version: 2." > /dev/null; then
@@ -15,18 +23,26 @@ filter_hooks() {
     ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq
 }
 
+fail_if_partially_failed() {
+    grep Skipped|Error
+}
+
 # Backup system part conf
 conf=$(yunohost app setting $app conf)
 if [ $conf -eq 1 ]
 then
-    yunohost backup create $ignore_apps -n auto_conf --method $app_app --system $(filter_hooks conf)
+    if ! yunohost backup create $ignore_apps -n auto_conf --method $app_app --system $(filter_hooks conf) 2> $err_file > $log_file ; then
+        errors="$errors\nconf: Error"
+    fi
 fi
 
 # Backup system data
 data=$(yunohost app setting $app data)
 if [ $data -eq 1 ]
 then
-    yunohost backup create $ignore_apps -n auto_data --method $app_app --system $(filter_hooks data)
+    if ! yunohost backup create $ignore_apps -n auto_data --method $app_app --system $(filter_hooks data) 2> $err_file > $log_file ; then
+        errors="$errors\ndata: Error"
+    fi
 fi
 
 # Backup all apps independently
@@ -44,6 +60,20 @@ for application in $(ls /etc/yunohost/apps/*/scripts/backup | cut -d / -f 5); do
         done
     fi
     if [ "$backup_app" == "true" ];then
-        yunohost backup create $ignore_system -n auto_$application --method $app_app --apps $app
+        if ! yunohost backup create $ignore_system -n auto_$application --method $app_app --apps $app 2> $err_file > $log_file ; then
+            errors="$errors\$application: Error"
+        fi
     fi
 done
+partial_errors="$(cat $log_file | grep -E "Error|Skipped")"
+if [ ! -z "$partial_errors" ]; then
+    errors="$errors\n$partial_errors"
+fi
+
+# Send mail on backup (partially) failed
+domain=$(hostname)
+if [ ! -z "$errors" ]; then
+    cat $errors | mail -s "[borg] Backup failed from $domain onto $repo" root
+else
+    cat $log_file | mail -s "[borg] Backup succeed from $domain onto $repo" root
+fi
