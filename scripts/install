@@ -77,7 +77,7 @@ if [ ! -z "$server" ]; then
     # Display key
     #=================================================
 
-    echo "You should now install the \"Borg Server\" app on $server and fill questions like this:
+    echo "You should now install the \"Borg Server\" app on $server and with the following credentials:
     User: ${ssh_user}
     Public key: $(cat ${private_key}.pub)"
 
@@ -86,7 +86,7 @@ if [ ! -z "$server" ]; then
     #=================================================
 
     ynh_print_OFF
-    message="You should now install the \"Borg Server\" app on $server and fill questions like this:
+    message="You should now install the \"Borg Server\" app on $server and with the following credentials:
 User: ${ssh_user}
 Public key: $(cat ${private_key}.pub)
 

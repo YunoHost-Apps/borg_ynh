@@ -3,20 +3,16 @@
 # We don't stop the script on errors cause we want to backup all data we could backuped
 #set -eu
 
-app=$1
+borg_id=$1
 errors=""
 current_date=$(date +"%y%m%d_%H%M")
-log_file="/var/log/$app/$current_date.log"
-err_file="/var/log/$app/$current_date.err"
-mkdir -p "/var/log/$app"
-
-# Adapt this script to different API 2.x vs 3.x
-if yunohost -v | grep "version: 2." > /dev/null; then
-    ignore_apps="--ignore-apps"
-    ignore_system="--ignore-system"
-else
-    ignore_apps=""
-    ignore_system=""
+log_file="/var/log/${borg_id}/${current_date}.log"
+err_file="/var/log/${borg_id}/${current_date}.err"
+mkdir -p "/var/log/${borg_id}"
+if [[ -z "$borg_id" ]]
+then
+    echo "This script expects a borg app id as first argument" >&2
+    exit 1
 fi
 
 filter_hooks() {
@@ -28,10 +24,10 @@ fail_if_partially_failed() {
 }
 
 # Backup system part conf
-conf=$(yunohost app setting $app conf)
+conf=$(yunohost app setting ${borg_id} conf)
 if [ $conf -eq 1 ]
 then
-    if ! yunohost backup create $ignore_apps -n auto_conf --method $app_app --system $(filter_hooks conf) 2> $err_file > $log_file ; then
+    if ! yunohost backup create -n auto_conf --method ${borg_id}_app --system $(filter_hooks conf) 2> $err_file > $log_file ; then
         errors="$errors\nconf: Error"
     fi
 fi
@@ -40,13 +36,13 @@ fi
 data=$(yunohost app setting $app data)
 if [ $data -eq 1 ]
 then
-    if ! yunohost backup create $ignore_apps -n auto_data --method $app_app --system $(filter_hooks data) 2> $err_file > $log_file ; then
+    if ! yunohost backup create -n auto_data --method ${borg_id}_app --system $(filter_hooks data) 2> $err_file > $log_file ; then
         errors="$errors\ndata: Error"
     fi
 fi
 
 # Backup all apps independently
-apps=$(yunohost app setting $app apps)
+apps=$(yunohost app setting ${borg_id} apps)
 for application in $(ls /etc/yunohost/apps/*/scripts/backup | cut -d / -f 5); do
     backup_app=false
     if [[ "$apps" = "all" ]]; then
@@ -60,7 +56,7 @@ for application in $(ls /etc/yunohost/apps/*/scripts/backup | cut -d / -f 5); do
         done
     fi
     if [ "$backup_app" == "true" ];then
-        if ! yunohost backup create $ignore_system -n auto_$application --method $app_app --apps $app 2> $err_file > $log_file ; then
+        if ! yunohost backup create -n auto_$application --method ${borg_id}_app --apps $application 2> $err_file > $log_file ; then
             errors="$errors\$application: Error"
         fi
     fi

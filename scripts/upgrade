@@ -67,7 +67,7 @@ if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
 fi
 
 # Replace backports with pip
-rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
+[ ! -e " /etc/apt/sources.list.d/$app-stretch-backports.list" ] || rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
 
 # Reinstall borg if stretch -> buster migration
 if is_buster; then

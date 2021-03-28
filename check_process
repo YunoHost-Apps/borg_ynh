@@ -1,6 +1,6 @@
 ;; Test complet
 	; Manifest
-		server="ssh://sam@domain.tld:22/~/backup"
+		repository="ssh://sam@domain.tld:22/~/backup"
         passphrase="APassphrase"
         conf=1
         data=1
