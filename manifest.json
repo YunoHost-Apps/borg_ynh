@@ -29,7 +29,7 @@
                     "fr": "Dans quel repo borg souhaitez-vous sauvegarder vos fichiers ?"
                 },
                 "help":{
-                    "en": "Specify a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . \"USER\" is *not* meant to be an existing user on the guest server. Instead, it will be created *on the host server* during the installation of the Borg Server App. It's also possible to use a local repository using a syntax such as /mount/my_external_harddrive/backups"
+                    "en": "Specify a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . 'USER' is *not* meant to be an existing user on the guest server. Instead, it will be created *on the host server* during the installation of the Borg Server App. It's also possible to use a local repository using a syntax such as /mount/my_external_harddrive/backups"
                 },
                 "example": "ssh://john@serverb.tld:22/~/backup"
             },
