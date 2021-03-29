@@ -120,11 +120,6 @@ systemctl start $app.timer
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-# Set permissions on app files
-chown -R root: $final_path
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
