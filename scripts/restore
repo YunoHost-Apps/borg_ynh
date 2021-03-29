@@ -47,7 +47,6 @@ ynh_restore
 #=================================================
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
-yunohost service add $app
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 

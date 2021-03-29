@@ -97,9 +97,10 @@ ynh_script_progression --message="Setting up backup method..." --weight=1
 ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-
 ynh_add_config --template="backup-with-borg" --destination="/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
+
+ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 
 #=================================================
 # SETUP SYSTEMD
