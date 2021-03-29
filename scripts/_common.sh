@@ -5,7 +5,7 @@
 #=================================================
 # App package root directory should be the parent folder
 PKG_DIR=$(cd ../; pwd)
-BORG_VERSION=1.1.15
+BORG_VERSION=1.1.16
 
 pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python3-jinja2 python3-setuptools python-virtualenv virtualenv libfuse-dev pkg-config"
 
@@ -16,12 +16,11 @@ install_borg_with_pip () {
     fi
     if [ ! -d /opt/borg-env ]; then
         python3 -m venv /opt/borg-env
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip install wheel
         /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup[fuse]==$BORG_VERSION
         echo "#!/bin/bash
     /opt/borg-env/bin/python /opt/borg-env/bin/borg \"\$@\"" > /usr/local/bin/borg
-        if is_buster; then
-            touch /opt/borg-env/buster
-        fi
+        touch "/opt/borg-env/$(ynh_get_debian_release)"
     fi
     # We need this to be executable by other borg apps
     chmod a+x /usr/local/bin/borg
@@ -55,7 +54,16 @@ ynh_save_args () {
     done
 }
 
+# Need also the helper https://github.com/YunoHost-Apps/Experimental_helpers/blob/master/ynh_handle_getopts_args/ynh_handle_getopts_args
 
+# Send an email to inform the administrator
+#
+# usage: ynh_send_readme_to_admin app_message [recipients]
+# | arg: -m --app_message= - The message to send to the administrator.
+# | arg: -r, --recipients= - The recipients of this email. Use spaces to separate multiples recipients. - default: root
+#	example: "root admin@domain"
+#	If you give the name of a YunoHost user, ynh_send_readme_to_admin will find its email adress for you
+#	example: "root admin@domain user1 user2"
 
 # Send an email to inform the administrator
 #
@@ -112,37 +120,4 @@ $(yunohost tools diagnosis | grep -B 100 "services:" | sed '/services:/d')"
 
 	# Send the email to the recipients
 	echo "$mail_message" | $mail_bin -a "Content-Type: text/plain; charset=UTF-8" -s "$mail_subject" "$recipients"
-}
-
-
-
-ynh_debian_release () {
-	lsb_release --codename --short
-}
-
-is_buster () {
-	if [ "$(ynh_debian_release)" == "buster" ]
-	then
-		return 0
-	else
-		return 1
-	fi
-}
-
-is_stretch () {
-	if [ "$(ynh_debian_release)" == "stretch" ]
-	then
-		return 0
-	else
-		return 1
-	fi
-}
-
-is_jessie () {
-	if [ "$(ynh_debian_release)" == "jessie" ]
-	then
-		return 0
-	else
-		return 1
-	fi
 }

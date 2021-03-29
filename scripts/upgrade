@@ -69,11 +69,9 @@ fi
 # Replace backports with pip
 [ ! -e " /etc/apt/sources.list.d/$app-stretch-backports.list" ] || rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
 
-# Reinstall borg if stretch -> buster migration
-if is_buster; then
-    if [ ! -f /opt/borg-env/buster ] ; then
-        ynh_secure_remove /opt/borg-env
-    fi   
+# Reinstall borg if debian change of major version
+if [ ! -f "/opt/borg-env/$(ynh_get_debian_release)" ] ; then
+    ynh_secure_remove /opt/borg-env
 fi
 
 #=================================================
