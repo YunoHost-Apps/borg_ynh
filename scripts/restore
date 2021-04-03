@@ -32,6 +32,14 @@ ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --time --weight=1
+
+# Create a system user
+ynh_system_user_create --username=$app
+
+#=================================================
 # ACTIVATE BACKUP METHODS
 #=================================================
 
