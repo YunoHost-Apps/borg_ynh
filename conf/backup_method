@@ -1,13 +1,15 @@
 #!/bin/bash
 
 set -e
+app="${0#"./05-"}"
+app="${app%"_app"}"
 
-BORG_PASSPHRASE='__PASSPHRASE__'
-repo="__REPOSITORY__"   #$4
+BORG_PASSPHRASE="$(yunohost app setting $app passphrase)"
+repo="$(yunohost app setting $app repository)"   #$4
 if ssh-keygen -F "__SERVER__" >/dev/null ; then
-    BORG_RSH="ssh -i /root/.ssh/id___APP___ed25519 -oStrictHostKeyChecking=yes "
+    BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes "
 else
-    BORG_RSH="ssh -i /root/.ssh/id___APP___ed25519 -oStrictHostKeyChecking=no "
+    BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=no "
 fi
 
 do_need_mount() {

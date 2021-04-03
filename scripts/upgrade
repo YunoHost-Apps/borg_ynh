@@ -99,6 +99,7 @@ chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 ynh_add_config --template="backup-with-borg" --destination="/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
+chown $app:$app "/usr/local/bin/backup-with-$app"
 
 ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 
@@ -116,6 +117,11 @@ ynh_add_systemd_config
 ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
+
+mkdir -p /etc/yunohost/hooks.d/backup
+mkdir -p /var/log/${app}
+chown -R $app:$app /var/log/${app}
+chmod u+w /var/log/${app}
 
 #=================================================
 # GENERIC FINALIZATION

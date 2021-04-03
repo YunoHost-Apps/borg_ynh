@@ -37,12 +37,19 @@ install_borg_with_pip
 
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
+mkdir -p /etc/yunohost/hooks.d/backup
+mkdir -p /var/log/${app}
+chown -R $app:$app /var/log/${app}
+chmod u+w /var/log/${app}
 
 #=================================================
 # RESTORE FILES
 #=================================================
 
 ynh_restore 
+chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+chmod u+x "/usr/local/bin/backup-with-$app"
+chown $app:$app "/usr/local/bin/backup-with-$app"
 
 #=================================================
 # ADVERTISE SERVICE IN ADMIN PANEL

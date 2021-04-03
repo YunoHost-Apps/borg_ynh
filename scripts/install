@@ -60,8 +60,12 @@ ynh_system_user_create --username=$app
 # ACTIVATE BACKUP METHODS
 #=================================================
 
+mkdir -p /etc/yunohost/hooks.d/backup
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
+mkdir -p /var/log/${app}
+chown -R $app:$app /var/log/${app}
+chmod u+w /var/log/${app}
 
 #=================================================
 # SETUP THE BACKUP METHOD
@@ -72,6 +76,8 @@ chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 ynh_add_config --template="backup-with-borg" --destination="/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
+chown $app:$app "/usr/local/bin/backup-with-$app"
+
 ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 
 if [ ! -z "$server" ]; then

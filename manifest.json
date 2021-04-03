@@ -6,7 +6,7 @@
         "en": "Backup your server on a host server using Borg.",
         "fr": "Sauvegardez votre serveur sur un serveur distant avec Borg."
     },
-    "version": "1.1.16~ynh1",
+    "version": "1.1.16~ynh16",
     "url": "https://borgbackup.readthedocs.io",
     "license": "BSD-3-Clause",
     "maintainer": {
@@ -67,9 +67,13 @@
 				"name": "apps",
                 "type": "string",
 				"ask": {
-					"en": "Which apps should Borg backup (list separated by comma or 'all')?",
-					"fr": "Quelles applications doivent être sauvegardées par Borg (liste séparée par virgule ou 'all' ?"
+					"en": "Which apps should Borg backup ?",
+					"fr": "Quelles applications doivent être sauvegardées par Borg ?"
 				},
+                "help":{
+                    "en": "App list separated by comma. You can write 'all' to select all apps, even those installed after this borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma.",
+                    "fr": "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les apps, même celles installées après cette application borg. Vous pouvez aussi sélectionner toutes les apps sauf certaines en écrivant 'exclude:' suivi d'une liste d'applications séparées par des virgules."
+                },
 				"default": "all"
             },
             {

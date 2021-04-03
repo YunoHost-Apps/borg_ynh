@@ -1,1 +1,1 @@
-__APP__ ALL=(root) /usr/local/bin/backup-with-__APP__, /usr/local/bin/borg
+__APP__ ALL=(root) NOPASSWD: /usr/local/bin/backup-with-__APP__, /usr/local/bin/borg, /usr/bin/yunohost backup create *, /usr/bin/yunohost app setting *, /bin/ls, /usr/bin/test

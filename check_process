@@ -14,6 +14,7 @@
 		setup_private=0
 		setup_public=0
 		upgrade=1
+        upgrade=1	from_commit=c1524dd8e37cc671c01f5b5363901dd6a01e6fc1
 		backup_restore=1
 		multi_instance=1
 		port_already_use=0

@@ -9,14 +9,14 @@ current_date=$(date +"%y%m%d_%H%M")
 log_file="/var/log/${borg_id}/${current_date}.log"
 err_file="/var/log/${borg_id}/${current_date}.err"
 mkdir -p "/var/log/${borg_id}"
-if [[ -z "$borg_id" ]]
+if [ -z "$borg_id" ]
 then
     echo "This script expects a borg app id as first argument" >&2
     exit 1
 fi
 
 filter_hooks() {
-    ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq
+    sudo ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq 2>> $err_file
 }
 
 fail_if_partially_failed() {
@@ -24,52 +24,58 @@ fail_if_partially_failed() {
 }
 
 # Backup system part conf
-conf=$(yunohost app setting ${borg_id} conf)
-if [ $conf -eq 1 ]
+conf=$(sudo yunohost app setting ${borg_id} conf)
+if [[ "$conf" = "1" ]]
 then
-    if ! yunohost backup create -n auto_conf --method ${borg_id}_app --system $(filter_hooks conf) 2> $err_file > $log_file ; then
-        errors="$errors\nconf: Error"
+    if ! sudo yunohost backup create -n auto_conf --method ${borg_id}_app --system $(filter_hooks conf) 2>> $err_file >> $log_file ; then
+        errors+="\nThe backup miserably failed to backup system configurations."
     fi
 fi
 
 # Backup system data
-data=$(yunohost app setting $app data)
-if [ $data -eq 1 ]
+data=$(sudo yunohost app setting ${borg_id} data)
+if [[ "$data" = "1" ]]
 then
-    if ! yunohost backup create -n auto_data --method ${borg_id}_app --system $(filter_hooks data) 2> $err_file > $log_file ; then
-        errors="$errors\ndata: Error"
+    if ! sudo yunohost backup create -n auto_data --method ${borg_id}_app --system $(filter_hooks data) 2>> $err_file >> $log_file ; then
+        errors+="\nThe backup miserably failed to backup system data."
     fi
 fi
 
 # Backup all apps independently
-apps=$(yunohost app setting ${borg_id} apps)
-for application in $(ls /etc/yunohost/apps/*/scripts/backup | cut -d / -f 5); do
-    backup_app=false
-    if [[ "$apps" = "all" ]]; then
-          backup_app=true
-    else
-        for selected_app in $(echo $apps | tr "," " ");do
-            if [[ "$selected_app" == "$application" ]]; then
-              backup_app=true
-              break
-            fi
-        done
+apps=$(sudo yunohost app setting ${borg_id} apps | tr -d ' ')
+for application in $(sudo ls /etc/yunohost/apps/); do
+    
+    if ( [[ "$apps" =~ ^exclude: ]] && grep -wq "$application" <<< "$apps" ) ||
+       ( [[ "$apps" != "all" ]] && [[ ! "$apps" =~ ^exclude: ]]  && ! grep -wq "$application" <<< "$apps" ); 
+    then
+        continue
     fi
-    if [ "$backup_app" == "true" ];then
-        if ! yunohost backup create -n auto_$application --method ${borg_id}_app --apps $application 2> $err_file > $log_file ; then
-            errors="$errors\$application: Error"
-        fi
+    
+    if sudo test ! -f /etc/yunohost/apps/$application/scripts/backup ; then
+        errors+="\nWarning: The application $application has no backup script. This app won't be backuped."
+        continue
+    fi
+
+    if ! sudo yunohost backup create -n auto_$application --method ${borg_id}_app --apps $application 2>> $err_file >> $log_file ; then
+        errors+="\nThe backup miserably failed to backup $application application."
     fi
 done
+
+#=========================================================
+# SEND MAIL TO NOTIFY SUCCED OR FAILED OPERATIONS
+#=========================================================
+
 partial_errors="$(cat $log_file | grep -E "Error|Skipped")"
 if [ ! -z "$partial_errors" ]; then
-    errors="$errors\n$partial_errors"
+    errors+="\nSome backup partially failed:\n$partial_errors"
 fi
 
 # Send mail on backup (partially) failed
 domain=$(hostname)
 if [ ! -z "$errors" ]; then
-    cat $errors | mail -s "[borg] Backup failed from $domain onto $repo" root
+    cat <(echo -e "$errors\n\n\n") "$log_file" "$err_file" | mail -s "[borg] Backup failed from $domain onto $repo" root
+    exit 1
 else
     cat $log_file | mail -s "[borg] Backup succeed from $domain onto $repo" root
+    exit 0
 fi
