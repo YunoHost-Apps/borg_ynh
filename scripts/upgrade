@@ -15,21 +15,14 @@ source /usr/share/yunohost/helpers
 
 export app=$YNH_APP_INSTANCE_NAME
 
-export server=$(ynh_app_setting_get $app server)
-export ssh_user=$(ynh_app_setting_get $app ssh_user)
-export passphrase=$(ynh_app_setting_get $app passphrase)
-export on_calendar=$(ynh_app_setting_get $app on_calendar)
-export conf=$(ynh_app_setting_get $app conf)
-export data=$(ynh_app_setting_get $app data)
-export apps=$(ynh_app_setting_get $app apps)
-
-export server=$(ynh_app_setting_get $app server)
-export ssh_user=$(ynh_app_setting_get $app ssh_user)
-export passphrase=$(ynh_app_setting_get $app passphrase)
-export on_calendar=$(ynh_app_setting_get $app on_calendar)
-export conf=$(ynh_app_setting_get $app conf)
-export data=$(ynh_app_setting_get $app data)
-export apps=$(ynh_app_setting_get $app apps)
+export repository="$(ynh_app_setting_get $app repository)"
+export server="$(ynh_app_setting_get $app server)"
+export ssh_user="$(ynh_app_setting_get $app ssh_user)"
+export passphrase="$(ynh_app_setting_get $app passphrase)"
+export on_calendar="$(ynh_app_setting_get $app on_calendar)"
+export conf="$(ynh_app_setting_get $app conf)"
+export data="$(ynh_app_setting_get $app data)"
+export apps="$(ynh_app_setting_get $app apps)"
 
 #=================================================
 # CHECK IF AN UPGRADE IS NEEDED
@@ -51,6 +44,21 @@ ynh_clean_setup () {
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
+
+if [ -z "$repository" ]; then
+    repository="ssh://$ssh_user@$server/~/backup"
+    server=$(echo "$repository" | cut -d"@" -f2 | cut -d"/" -f1)
+    if [[ $server == *":"* ]]; then
+        server="[$(echo "$server" | cut -d":" -f1)]:$(echo "$server" | cut -d":" -f2)"
+    fi
+    ynh_app_setting_set $app repository "$repository"
+    ynh_app_setting_set $app server "$server"
+    ynh_app_setting_delete $app ssh_user
+fi
 
 if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
     yunohost service remove $app.timer
@@ -59,33 +67,79 @@ if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
 fi
 
 # Replace backports with pip
-if is_buster; then
-    if [ ! -f /opt/borg-env/buster ] ; then
-    rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
+[ ! -e " /etc/apt/sources.list.d/$app-stretch-backports.list" ] || rm -f /etc/apt/sources.list.d/$app-stretch-backports.list
+
+# Reinstall borg if debian change of major version
+if [ ! -f "/opt/borg-env/$(ynh_get_debian_release)" ] ; then
     ynh_secure_remove /opt/borg-env
-    install_borg_with_pip
-    touch /opt/borg-env/buster
-    fi   
 fi
+
+#=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=1
+
+ynh_install_app_dependencies $pkg_dependencies
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+ynh_system_user_create --username=$app
+
+
+#=================================================
+# SPECIFIC UPGRADE
+#=================================================
+# Upgrade borgbackup
+#=================================================
+ynh_script_progression --message="Upgrading borgbackup..." --weight=1
+
+install_borg_with_pip
 
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
-ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_script_progression --message="Setting up backup method..." --weight=1
+ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+
+ynh_add_config --template="backup-with-borg" --destination="/usr/local/bin/backup-with-$app"
+chmod u+x "/usr/local/bin/backup-with-$app"
+chown $app:$app "/usr/local/bin/backup-with-$app"
+
+ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 
 #=================================================
-# CONFIGURE CRON
+# SETUP SYSTEMD
 #=================================================
-ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
-chmod u+x "/usr/local/bin/backup-with-$app"
+ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
+
+# Create a dedicated systemd config
 ynh_add_systemd_config
-ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
+
+#=================================================
+# CONFIGURE SYSTEMD TIMER
+#=================================================
+ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 
+mkdir -p /etc/yunohost/hooks.d/backup
+mkdir -p /var/log/${app}
+chown -R $app:$app /var/log/${app}
+chmod u+w /var/log/${app}
+
 #=================================================
-# ADVERTISE SERVICE IN ADMIN PANEL
+# GENERIC FINALIZATION
 #=================================================
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 yunohost service add $app --description="Deduplicating backup program"
 

@@ -28,6 +28,7 @@ app=$YNH_APP_INSTANCE_NAME
 ynh_print_info --message="Declaring files to be backed up..."
 
 ynh_backup "/usr/local/bin/backup-with-$app"
+ynh_backup "/etc/sudoers.d/$app"
 ynh_backup "/etc/systemd/system/$app.service"
 ynh_backup "/etc/systemd/system/$app.timer"
 ynh_backup "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
