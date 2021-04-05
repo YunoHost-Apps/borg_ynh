@@ -19,41 +19,66 @@ ynh_abort_if_errors
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_script_progression --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
-
-server=$(ynh_app_setting_get $app server)
-ssh_user=$(ynh_app_setting_get $app ssh_user)
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Reinstalling dependencies..."
+
 ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+ynh_system_user_create --username=$app
+
+#=================================================
 # ACTIVATE BACKUP METHODS
 #=================================================
+
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
+mkdir -p /etc/yunohost/hooks.d/backup
+mkdir -p /var/log/${app}
+chown -R $app:$app /var/log/${app}
+chmod u+w /var/log/${app}
 
 #=================================================
 # RESTORE FILES
 #=================================================
+
 ynh_restore 
+chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+chmod u+x "/usr/local/bin/backup-with-$app"
+chown $app:$app "/usr/local/bin/backup-with-$app"
 
 #=================================================
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
-yunohost service add $app
-systemctl enable $app.timer
+systemctl enable $app.timer --quiet
 systemctl start $app.timer
-#yunohost service add $app.timer
-#yunohost service enable $app.timer
-#yunohost service start $app.timer
 
 #=================================================
 # RESTORE SYSTEMD
 #=================================================
-systemctl enable $app.service
+systemctl enable $app.service --quiet
 
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
+
+yunohost service add $app --description="Deduplicating backup program"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Restoration completed for $app" --last

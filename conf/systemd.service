@@ -4,9 +4,9 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/backup-with-__APP__
-User=root
-Group=root
+ExecStart=/usr/bin/sudo /usr/local/bin/backup-with-__APP__ __APP__
+User=__APP__
+Group=__APP__
 
-[Install]
-WantedBy=multi-user.target
+#[Install]
+#WantedBy=multi-user.target

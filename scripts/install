@@ -19,66 +19,89 @@ ynh_abort_if_errors
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
+
 export app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
-ynh_export server ssh_user passphrase on_calendar conf data apps
+ynh_export repository passphrase on_calendar conf data apps
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-ynh_save_args server ssh_user passphrase on_calendar conf data apps
+server=""
+if [[ $repository == *"@"* ]]; then
+    server=$(echo "$repository" | cut -d"@" -f2 | cut -d"/" -f1)
+    if [[ $server == *":"* ]]; then
+        server="[$(echo "$server" | cut -d":" -f1)]:$(echo "$server" | cut -d":" -f2)"
+    fi
+    ssh_user=$(echo "$repository" | cut -d"@" -f1 | cut -d"/" -f2)
+fi
+ynh_save_args repository server passphrase on_calendar conf data apps
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Installing dependencies..."
+
 ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+ynh_system_user_create --username=$app
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
 # ACTIVATE BACKUP METHODS
 #=================================================
+
+mkdir -p /etc/yunohost/hooks.d/backup
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
+mkdir -p /var/log/${app}
+chown -R $app:$app /var/log/${app}
+chmod u+w /var/log/${app}
 
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
-ynh_configure backup_method "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-#=================================================
-# CONFIGURE CRON
-#=================================================
-ynh_configure backup-with-borg "/usr/local/bin/backup-with-$app"
+
+ynh_add_config --template="backup-with-borg" --destination="/usr/local/bin/backup-with-$app"
 chmod u+x "/usr/local/bin/backup-with-$app"
-ynh_add_systemd_config
-ynh_configure systemd.timer "/etc/systemd/system/$app.timer"
-systemctl enable $app.timer
-systemctl start $app.timer
-#yunohost service add $app.timer
-#yunohost service enable $app.timer
-#yunohost service start $app.timer
+chown $app:$app "/usr/local/bin/backup-with-$app"
 
-#=================================================
-# GENERATE SSH KEY
-#=================================================
-private_key="/root/.ssh/id_${app}_ed25519"
-test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
+ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 
-#=================================================
-# Display key
-#=================================================
+if [ ! -z "$server" ]; then
+    #=================================================
+    # GENERATE SSH KEY
+    #=================================================
 
-echo "You should now install the \"Borg Server\" app on $server and fill questions like this:
-User: ${ssh_user}
-Public key: $(cat ${private_key}.pub)"
+    private_key="/root/.ssh/id_${app}_ed25519"
+    test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
 
+    #=================================================
+    # Display key
+    #=================================================
 
-#=================================================
-# SEND A README FOR THE ADMIN
-#=================================================
-ynh_print_OFF
-message="You should now install the \"Borg Server\" app on $server and fill questions like this:
+    echo "You should now install the \"Borg Server\" app on $server and with the following credentials:
+    User: ${ssh_user}
+    Public key: $(cat ${private_key}.pub)"
+
+    #=================================================
+    # SEND A README FOR THE ADMIN
+    #=================================================
+
+    ynh_print_OFF
+    message="You should now install the \"Borg Server\" app on $server and with the following credentials:
 User: ${ssh_user}
 Public key: $(cat ${private_key}.pub)
 
@@ -88,6 +111,35 @@ yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a \"ssh_us
 
 If you facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/borg_ynh"
 
-ynh_send_readme_to_admin "$message" "root"
-ynh_print_ON
+    ynh_send_readme_to_admin "$message"
+    ynh_print_ON
+fi
 
+#=================================================
+# SETUP SYSTEMD
+#=================================================
+ynh_script_progression --message="Configuring a systemd service..." --weight=1
+
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+#=================================================
+# CONFIGURE SYSTEMD TIMER
+#=================================================
+ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+systemctl enable $app.timer --quiet
+systemctl start $app.timer
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
+
+yunohost service add $app --description="Deduplicating backup program"
+
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Installation of $app completed" --last
