@@ -72,10 +72,11 @@ fi
 
 # Send mail on backup (partially) failed
 domain=$(hostname)
+repository="$(sudo yunohost app setting ${borg_id} repository)"
 if [ ! -z "$errors" ]; then
     cat <(echo -e "$errors\n\n\n") "$log_file" "$err_file" | mail -s "[borg] Backup failed from $domain onto $repo" root
     exit 1
 else
-    cat $log_file | mail -s "[borg] Backup succeed from $domain onto $repo" root
+    cat $log_file | mail -s "[borg] Backup succeed from $domain onto $repository" root
     exit 0
 fi
