@@ -1,13 +1,10 @@
 # Borg Backup for YunoHost
-
-[![Latest Version](https://img.shields.io/badge/version-1.1.15-green.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/releases)
-[![Status](https://img.shields.io/badge/status-testing-yellow.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/milestones)
-[![Integration level](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg)
-[![GitHub license](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat)](https://raw.githubusercontent.com/YunoHost-Apps/borg_ynh/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/YunoHost-Apps/borg_ynh.svg?style=flat)](https://github.com/YunoHost-Apps/borg_ynh/issues)  
+[![Integration level](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg) ![](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)  
 [![Install Borg with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
 A [Borg](https://borgbackup.readthedocs.io/en/stable/index.html#what-is-borgbackup) implementation to backup a YunoHost server. This is the Borg Backup App to be installed on a server to backup. It works together with a [Borg Server App](https://github.com/YunoHost-Apps/borgserver_ynh) installed on a host server.  
+
+## :warning: NB. : This doc is partially obsolete and should be reworked! :warning:
 
 ## How to backup your server with this app?
 
