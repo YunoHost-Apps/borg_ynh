@@ -142,7 +142,7 @@ chmod u+w /var/log/${app}
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 # Inactive services are ignored cause it's a timer
-yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show borg.service  -p ActiveState --value | grep -v failed"
+yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"
 
 
 #=================================================
