@@ -75,7 +75,9 @@ systemctl enable $app.service --quiet
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
-yunohost service add $app --description="Deduplicating backup program"
+# Inactive services are ignored cause it's a timer
+yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show borg.service  -p ActiveState --value | grep -v failed"
+
 
 #=================================================
 # END OF SCRIPT
