@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 app="${0#"./05-"}"
 app="${app%"_app"}"
 
