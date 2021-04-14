@@ -30,7 +30,7 @@ do_backup() {
     repo="$3"
     size="$4"
     description="$5"
-    current_date=$(date +"%d_%m_%y_%H:%M")
+    current_date=$(date +"%Y-%m-%d_%H:%M")
     pushd "$work_dir"
     set +e
     if borg init -e repokey "$repo" ; then
@@ -46,12 +46,18 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     fi
     set -e
 
-    borg create "$repo::${name}_${current_date}" ./ 2>&1 >/dev/null | log_with_timestamp
+    borg create "$repo::_${name}-${current_date}" ./ 2>&1 >/dev/null | log_with_timestamp
     popd
 
     # About thi _20 it's a crazy fix to avoid pruning wordpress__2 
     # if you prune wordpress
-    borg prune "$repo" -P ${name}_20 --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    borg prune "$repo" -P "_${name}-" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    
+    # Prune legacy archive name without error on wordpress/wordpress__2
+    borg prune "$repo" -P "${name}_" --keep-within 2m --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    
+    # We prune potential manual backup older than 1 year
+    borg prune "$repo" --keep-within 1y 2>&1 >/dev/null | log_with_timestamp
 }
 
 do_mount() {
