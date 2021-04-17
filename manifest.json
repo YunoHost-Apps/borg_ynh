@@ -6,7 +6,7 @@
         "en": "Backup your server on a host server using Borg.",
         "fr": "Sauvegardez votre serveur sur un serveur distant avec Borg."
     },
-    "version": "1.1.16~ynh17",
+    "version": "1.1.16~ynh19",
     "url": "https://borgbackup.readthedocs.io",
     "license": "BSD-3-Clause",
     "maintainer": {
@@ -15,7 +15,7 @@
         "url": "https://reflexlibre.net"
     },
     "requirements": {
-        "yunohost": ">= 3.8.1"
+        "yunohost": ">= 4.1.0"
     },
     "multi_instance": true,
     "services": [],
@@ -29,7 +29,7 @@
                     "fr": "Dans quel repo borg souhaitez-vous sauvegarder vos fichiers ?"
                 },
                 "help":{
-                    "en": "Specify a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . 'USER' is *not* meant to be an existing user on the guest server. Instead, it will be created *on the host server* during the installation of the Borg Server App. It's also possible to use a local repository using a syntax such as /mount/my_external_harddrive/backups"
+                    "en": "Specify a local repository like /mount/my_external_harddrive/backups or a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
                 },
                 "example": "ssh://john@serverb.tld:22/~/backup"
             },

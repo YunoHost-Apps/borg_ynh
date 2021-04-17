@@ -222,3 +222,6 @@ Then you can set up multiple instances of the Borg Apps on same servers.
 For instance:
 * Borg Backup instance ``borg``: backup nextcloud daily on host Server B
 * Borg Backup instance ``borg__2``: backup all other YunoHost apps weekly on host Server C
+
+### Settings location
+Settings of apps are in /etc/yunohost/apps/*/settings.yml, so are the settings for borg_ynh as well. Be careful though to not savagely manually edit them if you don't know what you're doing.
