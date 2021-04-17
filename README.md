@@ -224,4 +224,4 @@ For instance:
 * Borg Backup instance ``borg__2``: backup all other YunoHost apps weekly on host Server C
 
 ### Settings location
-Settings of apps are in /etc/yunohost/apps/*/settings.yml, so are the settings for borg_ynh as well. 
+Settings of apps are in /etc/yunohost/apps/*/settings.yml, so are the settings for borg_ynh as well. Be careful though to not savagely manually edit them if you don't know what you're doing.
