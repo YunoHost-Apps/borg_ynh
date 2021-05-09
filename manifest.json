@@ -85,6 +85,15 @@
                 },
                 "example": "Monthly or Weekly or Daily or Hourly or 4:00 or 5,17:00  or Sat --1..7 18:00:00",
                 "default": "Daily"
+            },
+            {
+                "name": "mailalert",
+                "type": "string",
+                "ask": {
+                    "en": "Do you want admin to receive mail notifications on backups ?",
+                    "fr": "Souhaitez-vous recevoir des notifications par mail à chaque sauvegarde ?"
+                },
+                "choices": ["always", "errors_only", "never"]
             }
         ]
     }
