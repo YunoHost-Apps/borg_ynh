@@ -24,6 +24,10 @@ export conf="$(ynh_app_setting_get $app conf)"
 export data="$(ynh_app_setting_get $app data)"
 export apps="$(ynh_app_setting_get $app apps)"
 export mailalert="$(ynh_app_setting_get $app mailalert)"
+if [[ $mailalert != "always" && $mailalert != "errors_only" && $mailalert != "never" ]]; then
+	ynh_app_setting_set --app=$app --key="mailalert" --value="errors_only"
+	export mailalert="errors_only"
+fi
 
 #=================================================
 # CHECK IF AN UPGRADE IS NEEDED
