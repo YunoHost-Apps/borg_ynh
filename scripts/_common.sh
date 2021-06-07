@@ -7,7 +7,7 @@
 PKG_DIR=$(cd ../; pwd)
 BORG_VERSION=1.1.16
 
-pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python3-jinja2 python3-setuptools python3-venv python-virtualenv virtualenv libfuse-dev pkg-config"
+pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev python3-jinja2 python3-setuptools python3-venv virtualenv libfuse-dev pkg-config"
 
 # Install borg with pip if borg is not here
 install_borg_with_pip () {
