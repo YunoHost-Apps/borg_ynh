@@ -23,6 +23,11 @@ export on_calendar="$(ynh_app_setting_get $app on_calendar)"
 export conf="$(ynh_app_setting_get $app conf)"
 export data="$(ynh_app_setting_get $app data)"
 export apps="$(ynh_app_setting_get $app apps)"
+export mailalert="$(ynh_app_setting_get $app mailalert)"
+if [[ $mailalert != "always" && $mailalert != "errors_only" && $mailalert != "never" ]]; then
+	ynh_app_setting_set --app=$app --key="mailalert" --value="errors_only"
+	export mailalert="errors_only"
+fi
 
 #=================================================
 # CHECK IF AN UPGRADE IS NEEDED
@@ -119,6 +124,7 @@ ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
+systemctl disable $app.service --quiet
 
 #=================================================
 # CONFIGURE SYSTEMD TIMER
