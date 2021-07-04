@@ -23,7 +23,7 @@ ynh_abort_if_errors
 export app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
-ynh_export repository passphrase on_calendar conf data apps
+ynh_export repository passphrase on_calendar conf data apps mailalert
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
@@ -36,7 +36,7 @@ if [[ $repository == *"@"* ]]; then
     fi
     ssh_user=$(echo "$repository" | cut -d"@" -f1 | cut -d"/" -f2)
 fi
-ynh_save_args repository server passphrase on_calendar conf data apps
+ynh_save_args repository server passphrase on_calendar conf data apps mailalert
 
 #=================================================
 # INSTALL DEPENDENCIES
