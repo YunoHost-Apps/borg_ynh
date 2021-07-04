@@ -124,6 +124,7 @@ ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
+systemctl disable $app.service --quiet
 
 #=================================================
 # CONFIGURE SYSTEMD TIMER
