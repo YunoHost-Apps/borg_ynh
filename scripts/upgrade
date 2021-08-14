@@ -124,6 +124,7 @@ ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
+# Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
 #=================================================
