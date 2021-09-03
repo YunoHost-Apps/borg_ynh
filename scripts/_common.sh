@@ -16,6 +16,8 @@ install_borg_with_pip () {
     fi
     if [ ! -d /opt/borg-env ]; then
         python3 -m venv /opt/borg-env
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip install pip -U
+	/opt/borg-env/bin/python /opt/borg-env/bin/pip install setuptools -U
         /opt/borg-env/bin/python /opt/borg-env/bin/pip install wheel
         ynh_print_info --message="Installing/compiling borg, this may take some time..."
         /opt/borg-env/bin/python /opt/borg-env/bin/pip install borgbackup[fuse]==$BORG_VERSION
