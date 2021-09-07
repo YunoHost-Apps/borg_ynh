@@ -25,6 +25,7 @@ do_backup() {
     
     export BORG_PASSPHRASE
     export BORG_RSH
+    export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
     work_dir="$1"
     name="$2"
     repo="$3"
