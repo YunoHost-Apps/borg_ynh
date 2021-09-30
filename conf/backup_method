@@ -18,7 +18,7 @@ do_need_mount() {
 
 LOGFILE=/var/log/backup_borg.err
 log_with_timestamp() {
-  sed -e "s/^/[$(date +"%Y-%m-%d_%H:%M:%S")] /" >> $LOGFILE
+  sed -e "s/^/[$(date +"%Y-%m-%d_%H:%M:%S")] /" | tee -a $LOGFILE
 }
 
 do_backup() {
