@@ -7,32 +7,30 @@ services = []
     name = ""
     visible = "false"
 
-        [main.settings.repository]
-        type = "string"
-        
-        [main.settings.ssh_public_key]
-        type = "text"
-        visible = "false"
-        bind = "/root/.ssh/id___APP___ed25519.pub"
-
         [main.settings.state]
         type = "string"
-        visible = "false"
 
         [main.settings.last_run]
         type = "string"
-        visible = "false"
 
     [main.general]
         [main.general.info]
         ask = """\
-        Repository : `{repository}`\
-        SSH public key : `{ssh_public_key}`\
         Backup state : {state}
         Last run: {last_run}
         """
         type = "alert"
         style = "info"
+
+        [main.settings.repository]
+        ask.en = "Repository"
+        type = "string"
+        help = "Specify a local repository like /mount/my_external_harddrive/backups or a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
+        
+        [main.settings.ssh_public_key]
+        ask.en = "Public key: {ssh_public_key}"
+        type = "display_text"
+        bind = "/root/.ssh/id___APP___ed25519.pub"
 
         [main.general.on_calendar]
         ask.en = "Frequency"
