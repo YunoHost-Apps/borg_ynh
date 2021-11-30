@@ -1,0 +1,46 @@
+#!/bin/bash
+
+source /usr/share/yunohost/helpers
+
+ynh_abort_if_errors
+
+#=================================================
+# SPECIFIC GETTERS FOR TOML SHORT KEY
+#=================================================
+
+get__info() {
+    if [ "$state" == "failed" ]; then
+        cat << EOF
+style: "danger"
+EOF
+    elif [ "$state" == "successful" ]; then
+        cat << EOF
+style: "success"
+EOF
+    else
+        cat << EOF
+style: "info"
+EOF
+    fi
+}
+
+get__last_backups() {
+    cat << EOF
+value: 
+    $(borg list --short --last 50 $repository)
+EOF
+}
+
+#=================================================
+# SPECIFIC VALIDATORS FOR TOML SHORT KEYS
+#=================================================
+validate__on_calendar() {
+
+    (! systemd-analyze calendar $on_calendar > /dev/null) &&
+        echo 'Please follow systemd OnCalendar format: https://man.archlinux.org/man/systemd.time.7#CALENDAR_EVENTS'
+}
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+ynh_app_config_run $1

@@ -21,7 +21,6 @@ ynh_abort_if_errors
 #=================================================
 
 export app=$YNH_APP_INSTANCE_NAME
-
 # Retrieve arguments
 ynh_export repository passphrase on_calendar conf data apps mailalert
 
@@ -36,7 +35,9 @@ if [[ $repository == *"@"* ]]; then
     fi
     ssh_user=$(echo "$repository" | cut -d"@" -f1 | cut -d"/" -f2)
 fi
-ynh_save_args repository server passphrase on_calendar conf data apps mailalert
+state="repository uncreated"
+last_run="-"
+ynh_save_args repository server passphrase on_calendar conf data apps mailalert state last_run
 
 #=================================================
 # INSTALL DEPENDENCIES

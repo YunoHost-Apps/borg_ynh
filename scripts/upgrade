@@ -28,6 +28,8 @@ if [[ $mailalert != "always" && $mailalert != "errors_only" && $mailalert != "ne
 	ynh_app_setting_set --app=$app --key="mailalert" --value="errors_only"
 	export mailalert="errors_only"
 fi
+ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
+ynh_app_setting_set --app=$app --key="last_run" --value="-"
 
 #=================================================
 # CHECK IF AN UPGRADE IS NEEDED
