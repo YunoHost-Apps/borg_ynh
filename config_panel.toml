@@ -16,20 +16,20 @@ services = []
     [main.general]
         [main.general.info]
         ask = """\
-        Backup state : {state}
-        Last run: {last_run}
+        Backup state : {{state}}
+        Last run: {{last_run}}
         """
         type = "alert"
         style = "info"
 
-        [main.settings.repository]
+        [main.general.repository]
         ask.en = "Repository"
         type = "string"
         help = "Specify a local repository like /mount/my_external_harddrive/backups or a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
         
-        [main.settings.ssh_public_key]
+        [main.general.ssh_public_key]
         ask.en = "Public key: {ssh_public_key}"
-        type = "display_text"
+        type = "markdown"
         bind = "/root/.ssh/id___APP___ed25519.pub"
 
         [main.general.on_calendar]
@@ -58,6 +58,10 @@ services = []
         ask.en = "Data"
         type = "boolean"
 
+        [main.content.data_multimedia]
+        ask.en = "Data multimedia"
+        type = "boolean"
+
         [main.content.apps]
         ask.en = "Apps"
         type = "tags"
@@ -69,8 +73,5 @@ services = []
     [advanced.list]
     name = "Last backups list"
         [advanced.list.last_backups]
-        ask.en = """\
-        {last_backups}\
-        """
+        ask.en = ""
         type = "markdown"
-

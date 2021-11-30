@@ -9,11 +9,16 @@ ynh_abort_if_errors
 #=================================================
 
 get__info() {
-    if [ "$state" == "failed" ]; then
         cat << EOF
+ask:
+  en: "**Backup state**: ${old[state]}
+
+    **Last run**: ${old[last_run]}"
+EOF
+    if [ "${old[state]}" == "failed" ]; then
 style: "danger"
 EOF
-    elif [ "$state" == "successful" ]; then
+    elif [ "${old[state]}" == "successful" ]; then
         cat << EOF
 style: "success"
 EOF
@@ -24,10 +29,24 @@ EOF
     fi
 }
 
+get__ssh_public_key() {
+    cat << EOF
+ask:
+  en: "**Public key**: \`$(cat /root/.ssh/id_${app}_ed25519.pub || echo '')\`"
+EOF
+}
+
+get__data_multimedia() {
+    if [ -e /home/yunohost.multimedia/.nobackup ]; then
+        echo "value: false"
+    else
+        echo "value: true"
+    fi
+}
 get__last_backups() {
     cat << EOF
-value: 
-    $(borg list --short --last 50 $repository)
+ask: |- 
+$(BORG_PASSPHRASE="$(yunohost app setting $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " borg list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
 EOF
 }
 
@@ -36,11 +55,24 @@ EOF
 #=================================================
 validate__on_calendar() {
 
-    (! systemd-analyze calendar $on_calendar > /dev/null) &&
+    (systemd-analyze calendar $on_calendar > /dev/null) ||
         echo 'Please follow systemd OnCalendar format: https://man.archlinux.org/man/systemd.time.7#CALENDAR_EVENTS'
 }
 
 #=================================================
+# SPECIFIC SETTERS FOR TOML SHORT KEYS
+#=================================================
+
+set__data_multimedia() {
+    if [ "$data_multimedia" == "false" ]; then
+        mkdir -p /home/yunohost.multimedia/
+        touch /home/yunohost.multimedia/.nobackup
+    else
+        ynh_secure_remove /home/yunohost.multimedia/.nobackup
+    fi
+}
+#=================================================
 # GENERIC FINALIZATION
 #=================================================
 ynh_app_config_run $1
+
