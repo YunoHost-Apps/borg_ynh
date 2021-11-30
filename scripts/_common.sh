@@ -12,7 +12,7 @@ pkg_dependencies="python3-pip python3-dev libacl1-dev libssl-dev liblz4-dev pyth
 # Install borg with pip if borg is not here
 install_borg_with_pip () {
     if [ -d /opt/borg-env ]; then
-        /opt/borg-env/bin/python /opt/borg-env/bin/pip list | grep "Version: $BORG_VERSION" || ynh_secure_remove /opt/borg-env
+        /opt/borg-env/bin/python /opt/borg-env/bin/pip list | grep "borgbackup *$BORG_VERSION" || ynh_secure_remove /opt/borg-env
     fi
     if [ ! -d /opt/borg-env ]; then
         python3 -m venv /opt/borg-env
