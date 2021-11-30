@@ -64,7 +64,7 @@ validate__on_calendar() {
 #=================================================
 
 set__data_multimedia() {
-    if [ "$data_multimedia" == "false" ]; then
+    if [ "$data_multimedia" == "0" ]; then
         mkdir -p /home/yunohost.multimedia/
         touch /home/yunohost.multimedia/.nobackup
     else
