@@ -1,0 +1,77 @@
+version = "1.0"
+
+[main]
+services = []
+
+    [main.settings]
+    name = ""
+    visible = "false"
+
+        [main.settings.state]
+        type = "string"
+
+        [main.settings.last_run]
+        type = "string"
+
+    [main.general]
+        [main.general.info]
+        ask = """\
+        Backup state : {{state}}
+        Last run: {{last_run}}
+        """
+        type = "alert"
+        style = "info"
+
+        [main.general.repository]
+        ask.en = "Repository"
+        type = "string"
+        help = "Specify a local repository like /mount/my_external_harddrive/backups or a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
+        
+        [main.general.ssh_public_key]
+        ask.en = "Public key: {ssh_public_key}"
+        type = "markdown"
+        bind = "/root/.ssh/id___APP___ed25519.pub"
+
+        [main.general.on_calendar]
+        ask.en = "Frequency"
+        type = "string"
+        help = "With which regular time schedule should the backups be performed? (see systemd OnCalendar format)"
+        bind = "OnCalendar:/etc/systemd/system/__APP__.timer"
+        
+        [main.general.mailalert]
+        ask.en = "Mail alert"
+        type = "select"
+        choices.always = "Always"
+        choices.errors_only = "Only if an error occured"
+        choices.never = "Never alert me"
+        help = "Alerts are sent to the first user of this server"
+        
+    [main.content]
+    name = "What should be backuped ?"
+    optional = false
+
+        [main.content.conf]
+        ask.en = "Configuration"
+        type = "boolean"
+
+        [main.content.data]
+        ask.en = "Data"
+        type = "boolean"
+
+        [main.content.data_multimedia]
+        ask.en = "Data multimedia"
+        type = "boolean"
+
+        [main.content.apps]
+        ask.en = "Apps"
+        type = "tags"
+        help = "App list separated by comma. You can write 'all' to select all apps, even those installed after this borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
+
+[advanced]
+name = "Advanced"
+services = []
+    [advanced.list]
+    name = "Last backups list"
+        [advanced.list.last_backups]
+        ask.en = ""
+        type = "markdown"

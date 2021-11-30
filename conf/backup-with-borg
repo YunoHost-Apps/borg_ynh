@@ -22,6 +22,8 @@ filter_hooks() {
 fail_if_partially_failed() {
     grep Skipped|Error
 }
+sudo yunohost app setting ${borg_id} last_run -v "${current_date}"
+sudo yunohost app setting ${borg_id} state -v "ongoing"
 
 # Backup system part conf
 conf=$(sudo yunohost app setting ${borg_id} conf)
@@ -74,6 +76,12 @@ fi
 domain=$(hostname)
 repository="$(sudo yunohost app setting ${borg_id} repository)"
 mailalert="$(sudo yunohost app setting ${borg_id} mailalert)"
+if [[ ! -z "$errors" ]]; then
+    sudo yunohost app setting ${borg_id} state -v "failed"
+else
+    sudo yunohost app setting ${borg_id} state -v "successful"
+fi
+
 if [[ ! -z "$errors" && $mailalert != "never" ]]; then
     cat <(echo -e "$errors\n\n\n") "$log_file" "$err_file" | mail -s "[borg] Backup failed from $domain onto $repository" root
     exit 1

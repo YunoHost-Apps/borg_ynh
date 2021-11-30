@@ -6,7 +6,7 @@
         "en": "Backup your server on a host server using Borg.",
         "fr": "Sauvegardez votre serveur sur un serveur distant avec Borg."
     },
-    "version": "1.1.16~ynh24",
+    "version": "1.1.16~ynh26",
     "url": "https://borgbackup.readthedocs.io",
     "license": "BSD-3-Clause",
     "maintainer": {
@@ -15,7 +15,7 @@
         "url": "https://reflexlibre.net"
     },
     "requirements": {
-        "yunohost": ">= 4.1.0"
+        "yunohost": ">= 4.3.0"
     },
     "multi_instance": true,
     "services": [],
