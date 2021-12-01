@@ -16,6 +16,7 @@ ask:
     **Last run**: ${old[last_run]}"
 EOF
     if [ "${old[state]}" == "failed" ]; then
+        cat << EOF
 style: "danger"
 EOF
     elif [ "${old[state]}" == "successful" ]; then
