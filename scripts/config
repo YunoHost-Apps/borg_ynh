@@ -47,7 +47,7 @@ get__data_multimedia() {
 get__last_backups() {
     cat << EOF
 ask: |- 
-$(BORG_PASSPHRASE="$(yunohost app setting $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " borg list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
+$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " borg list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
 EOF
 }
 
