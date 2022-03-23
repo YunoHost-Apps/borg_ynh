@@ -80,7 +80,7 @@ chmod u+x "/usr/local/bin/backup-with-$app"
 chown $app:$app "/usr/local/bin/backup-with-$app"
 
 ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
-chown root.root "/etc/sudoers.d/$app"
+chown root:root "/etc/sudoers.d/$app"
 
 if [ ! -z "$server" ]; then
     #=================================================
