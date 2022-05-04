@@ -59,7 +59,7 @@
 				"type": "boolean",
 				"ask": {
 					"en": "Should Borg backup emails and user home directory?",
-					"fr": "Borg doit-elle sauvegarder les mails et les répertoires des utilisateurs ?"
+					"fr": "Borg doit-il sauvegarder les mails et les répertoires des utilisateurs ?"
 				},
 				"default": true
 			},
