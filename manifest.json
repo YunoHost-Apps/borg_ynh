@@ -3,8 +3,8 @@
     "id": "borg",
     "packaging_format": 1,
     "description": {
-        "en": "Backup your server on a host server using Borg.",
-        "fr": "Sauvegardez votre serveur sur un serveur distant avec Borg."
+        "en": "Backup your server on a host server using Borg",
+        "fr": "Sauvegardez votre serveur sur un serveur distant avec Borg"
     },
     "version": "1.1.16~ynh29",
     "url": "https://borgbackup.readthedocs.io",
