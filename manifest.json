@@ -10,7 +10,7 @@
     "url": "https://borgbackup.readthedocs.io",
     "upstream": {
         "license": "BSD-3-Clause",
-        "website": "https://borgbackup.readthedocs.io",
+        "website": "https://borgbackup.readthedocs.io"
     },
     "license": "BSD-3-Clause",
     "maintainer": {
