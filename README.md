@@ -94,7 +94,7 @@ If your backup server is full, the app will fail and will **not** add new backup
 If you want to be sure that you can restore your server, you should try to restore archives regularly. But this process takes a long time
 
 You should at least:
- * Keep your apps up to date (if apps are too old, they could be difficult to restore on a more recent version on yunohost)
+ * Keep your apps up to date (if the apps are too old, they might be difficult to restore to a newer version on YunoHost)
  * Regularly check the presence of `info.json` and `db.sql` or `dump.sql` in the archives of your applications
 ```
 borg list ./::ARCHIVE_NAME | grep info.json
