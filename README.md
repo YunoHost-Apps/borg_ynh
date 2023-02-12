@@ -75,6 +75,11 @@ $ cat /root/.ssh/id_borg_ed25519.pub
 ssh-ed25519 AAAA[...] root@guest.servera
 ```
 
+Then, you must register Server B to known hosts:
+```
+ssh-keyscan host.serverb > ~/.ssh/known_hosts
+```
+
 ### Set up Borg Server App on host Server B
 Secondly, set up the Borg Server App (``borgserver``) on the host Server B that will store your backups:
 ```
