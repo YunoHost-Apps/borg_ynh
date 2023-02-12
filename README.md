@@ -91,7 +91,7 @@ You may change this behaviour only via the CLI, by modifiyng the file in`/etc/yu
 If your backup server is full, the app will fail and will **not** add new backup while deleting the old ones.
 
 ## Check regularly your backup
-If you want to be sure that you can restore your server, you should try to restore archives regularly. But this process takes a long time
+If you want to be sure that you can restore your server, you should try to restore archives regularly. But this process takes a long time.
 
 You should at least:
  * Keep your apps up to date (if the apps are too old, they might be difficult to restore to a newer version on YunoHost)
