@@ -98,12 +98,20 @@ $ BORG_RSH="ssh -i /root/.ssh/id_borg_ed25519 -oStrictHostKeyChecking=yes " borg
 ```
 You will need the passphrase to run ``borg`` commands on the backup repository created on the host Server B.
 
+### History Depth and Pruning
+The default setup of this app is to have a **one-year history**, with decreasing frequency of backups kept (for each app and each setup's part): 2 in the last hours, 7 in the last days, 8 in the last weeks and 12 in the last months (so 12 in total). All backup older than 1 year are deleted.
+
+It relies on the [pruning behaviour of borg](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) : `--keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12` implemented [here](https://github.com/YunoHost-Apps/borg_ynh/blob/testing/conf/backup_method#L55).
+You may change this behaviour only via the CLI, by modifiyng the file in`/etc/yunohost/apps/borg(__x)/conf/backup_method`, although it will not persist between upgrades.
+
+If your backup server is full, the app will fail and will **not** add new backup while deleting the old ones.
+
 ## Check regularly your backup
-If you want to be sure to be able to restore your server, you should try to restore regularly the archives. But this process is quite time consumming.
+If you want to be sure that you can restore your server, you should try to restore archives regularly. But this process takes a long time.
 
 You should at least:
- * Keep your apps up to date (if apps are too old, they could be difficult to restore on a more recent recent version)
- * Check regularly the presence of `info.json` and `db.sql` or `dump.sql` in your apps archives
+ * Keep your apps up to date (if the apps are too old, they might be difficult to restore to a newer version on YunoHost)
+ * Regularly check the presence of `info.json` and `db.sql` or `dump.sql` in the archives of your applications
 ```
 borg list ./::ARCHIVE_NAME | grep info.json
 borg list ./::ARCHIVE_NAME | grep db.sql

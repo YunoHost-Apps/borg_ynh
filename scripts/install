@@ -102,7 +102,6 @@ if [ ! -z "$server" ]; then
     # SEND A README FOR THE ADMIN
     #=================================================
 
-    ynh_print_OFF
     message="You should now install the \"Borg Server\" app on $server and with the following credentials:
 User: ${ssh_user}
 Public key: $(cat ${private_key}.pub)
@@ -114,7 +113,6 @@ yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a \"ssh_us
 If you facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/borg_ynh"
 
     ynh_send_readme_to_admin "$message"
-    ynh_print_ON
 fi
 
 #=================================================
