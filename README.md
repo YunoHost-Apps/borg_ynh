@@ -83,7 +83,7 @@ $ BORG_RSH="ssh -i /root/.ssh/id_borg_ed25519 -oStrictHostKeyChecking=yes " borg
 You will need the passphrase to run ``borg`` commands on the backup repository created on the host Server B.
 
 ### History Depth and Pruning
-The default setup of this app is to have a **one-year history**, with decreasing frequency of backups kept (for each app and each setup's part) : 2 in the last hours, 7 in the last days, 8 in the last weeks and 12 in the last months (so 12 in total). All backup older than 1 year are deleted.
+The default setup of this app is to have a **one-year history**, with decreasing frequency of backups kept (for each app and each setup's part): 2 in the last hours, 7 in the last days, 8 in the last weeks and 12 in the last months (so 12 in total). All backup older than 1 year are deleted.
 
 It relies on the [pruning behaviour of borg](https://borgbackup.readthedocs.io/en/stable/usage/prune.html) : `--keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12` implemented [here](https://github.com/YunoHost-Apps/borg_ynh/blob/testing/conf/backup_method#L55).
 You may change this behaviour only via the CLI, by modifiyng the file in`/etc/yunohost/apps/borg(__x)/conf/backup_method`, although it will not persist between upgrades.
