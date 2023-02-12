@@ -95,7 +95,7 @@ If you want to be sure to be able to restore your server, you should try to rest
 
 You should at least:
  * Keep your apps up to date (if apps are too old, they could be difficult to restore on a more recent version on yunohost)
- * Check regularly the presence of `info.json` and `db.sql` or `dump.sql` in your apps' archives
+ * Regularly check the presence of `info.json` and `db.sql` or `dump.sql` in the archives of your applications
 ```
 borg list ./::ARCHIVE_NAME | grep info.json
 borg list ./::ARCHIVE_NAME | grep db.sql
