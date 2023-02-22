@@ -6,6 +6,7 @@ It shall NOT be edited by hand.
 # Borg Backup pour YunoHost
 
 [![Niveau d’intégration](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+
 [![Installer Borg Backup avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
 *[Read this readme in english.](./README.md)*
