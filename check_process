@@ -41,7 +41,6 @@
 		multi_instance=1
 		port_already_use=0
 		change_url=0
-;;; Upgrade options
-	; commit=d1cd666ee27f5cfb8e40c6f44a09370381b41b35
-		name=Older ynh 11 version 
-		manifest_arg=server=domain.tld:22&ssh_user=package_checker&passphrase=APassphrase&conf=1&data=1&apps=all&on_calendar=Daily&mailalert=never
+;;; Options
+Email=
+Notification=none
