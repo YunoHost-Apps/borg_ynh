@@ -18,7 +18,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 
 Sauvegardez votre serveur sur un serveur distant avec Borg
 
-**Version incluse :** 1.1.16~ynh29
+**Version incluse :** 1.1.16~ynh30
 ## Avertissements / informations importantes
 
 ## :warning: NB. : This doc is partially obsolete and should be reworked! :warning:

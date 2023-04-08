@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Backup your server on a host server using Borg
 
-**Shipped version:** 1.1.16~ynh29
+**Shipped version:** 1.1.16~ynh30
 ## Disclaimers / important information
 
 ## :warning: NB. : This doc is partially obsolete and should be reworked! :warning:
