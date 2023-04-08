@@ -25,7 +25,7 @@ services = []
         [main.general.repository]
         ask.en = "Repository"
         type = "string"
-        help = "Specify a local repository like /mount/my_external_harddrive/backups or a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
+        help = "Specify a local repository like /mount/my_external_harddrive/backups or a remote (eg ssh) repository using this format: USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
         
         [main.general.ssh_public_key]
         ask.en = "Public key: {ssh_public_key}"
