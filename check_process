@@ -15,7 +15,7 @@
 		setup_private=0
 		setup_public=0
 		upgrade=1
-        	upgrade=1	from_commit=c1524dd8e37cc671c01f5b5363901dd6a01e6fc1
+        	upgrade=1	from_commit=d1cd666ee27f5cfb8e40c6f44a09370381b41b35
 		backup_restore=1
 		multi_instance=1
 		port_already_use=0
@@ -45,6 +45,6 @@
 Email=
 Notification=none
 ;;; Upgrade options
-	; commit=c1524dd8e37cc671c01f5b5363901dd6a01e6fc1
-		name=Merge pull request #63 from YunoHost-Apps/testing 
-		manifest_arg=server=domain.tld:22&ssh_user=package_checker&passphrase=APassphrase&conf=1&data=1&apps=all&on_calendar=Daily
+	; commit=d1cd666ee27f5cfb8e40c6f44a09370381b41b35
+		name=Older ynh 11 version 
+		manifest_arg=server=domain.tld:22&ssh_user=package_checker&passphrase=APassphrase&conf=1&data=1&apps=all&on_calendar=Daily&mailalert=never
