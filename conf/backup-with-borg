@@ -25,6 +25,11 @@ fail_if_partially_failed() {
 sudo yunohost app setting ${borg_id} last_run -v "${current_date}"
 sudo yunohost app setting ${borg_id} state -v "ongoing"
 
+# Start healthcheck if configured
+if [[ ! -z "$healthcheck_url" ]]; then
+    curl -s -m 10 -o /dev/null "$healthcheck_url/start"
+fi
+
 # Backup system part conf
 conf=$(sudo yunohost app setting ${borg_id} conf)
 if [[ "$conf" = "1" ]]
@@ -76,10 +81,17 @@ fi
 domain=$(hostname)
 repository="$(sudo yunohost app setting ${borg_id} repository)"
 mailalert="$(sudo yunohost app setting ${borg_id} mailalert)"
+healthcheck_url="$(sudo yunohost app setting ${borg_id} healthcheck_url)"
 if [[ ! -z "$errors" ]]; then
     sudo yunohost app setting ${borg_id} state -v "failed"
+    if [[ ! -z "$healthcheck_url" ]]; then
+        curl -s -m 10 -o /dev/null --data-raw "$(tail --bytes=10000 $errors)" "$healthcheck_url/fail"
+    fi
 else
     sudo yunohost app setting ${borg_id} state -v "successful"
+    if [[ ! -z "$healthcheck_url" ]]; then
+        curl -s -m 10 -o /dev/null "$healthcheck_url"
+    fi
 fi
 
 if [[ ! -z "$errors" && $mailalert != "never" ]]; then

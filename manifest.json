@@ -94,7 +94,15 @@
                     "fr": "Souhaitez-vous recevoir des notifications par mail à chaque sauvegarde ?"
                 },
                 "choices": ["always", "errors_only", "never"]
-            }
+            },
+            {
+                "name": "healthcheck_url",
+                "type": "string",
+                "ask": {
+                  "en": "Specify a healthchecks.io URL to ping on successful backup (leave blank to skip):",
+                  "fr": "Indiquez une URL healthchecks.io à pinger en cas de sauvegarde réussie (laissez vide pour ignorer):"
+                }
+             }
         ]
     }
 }

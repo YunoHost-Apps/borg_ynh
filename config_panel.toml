@@ -45,7 +45,12 @@ services = []
         choices.errors_only = "Only if an error occured"
         choices.never = "Never alert me"
         help = "Alerts are sent to the first user of this server"
-        
+
+        [main.general.healthcheck_url]
+        ask.en = "Healthcheck URL"
+        type = "string"
+        help = "Using a healthcheck will allow you to detect silent failures. If you don't know what it is, just leave it blank or look it up: https://healthchecks.io"
+
     [main.content]
     name = "What should be backuped ?"
     optional = false
