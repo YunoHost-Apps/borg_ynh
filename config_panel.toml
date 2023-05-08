@@ -50,6 +50,7 @@ services = []
         ask.en = "Healthcheck URL"
         type = "string"
         help = "Using a healthcheck will allow you to detect silent failures. If you don't know what it is, just leave it blank or look it up: https://healthchecks.io"
+        optional = "true"
 
     [main.content]
     name = "What should be backuped ?"
