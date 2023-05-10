@@ -19,16 +19,20 @@ filter_hooks() {
     sudo ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq 2>> $err_file
 }
 
+healthcheck_url="$(sudo yunohost app setting ${borg_id} healthcheck_url)"
+healthcheck() {
+    if [[ ! -z "$healthcheck_url" ]]; then
+        curl -s -m 10 -o /dev/null --data-raw "$(echo tail --bytes=10000 $2)" "$healthcheck_url/$1"
+    fi
+}
+
 fail_if_partially_failed() {
     grep Skipped|Error
 }
 sudo yunohost app setting ${borg_id} last_run -v "${current_date}"
 sudo yunohost app setting ${borg_id} state -v "ongoing"
 
-# Start healthcheck if configured
-if [[ ! -z "$healthcheck_url" ]]; then
-    curl -s -m 10 -o /dev/null "$healthcheck_url/start"
-fi
+healthcheck_url "start"
 
 # Backup system part conf
 conf=$(sudo yunohost app setting ${borg_id} conf)
@@ -81,17 +85,12 @@ fi
 domain=$(hostname)
 repository="$(sudo yunohost app setting ${borg_id} repository)"
 mailalert="$(sudo yunohost app setting ${borg_id} mailalert)"
-healthcheck_url="$(sudo yunohost app setting ${borg_id} healthcheck_url)"
 if [[ ! -z "$errors" ]]; then
     sudo yunohost app setting ${borg_id} state -v "failed"
-    if [[ ! -z "$healthcheck_url" ]]; then
-        curl -s -m 10 -o /dev/null --data-raw "$(tail --bytes=10000 $errors)" "$healthcheck_url/fail"
-    fi
+    healthcheck_url "fail" $errors
 else
     sudo yunohost app setting ${borg_id} state -v "successful"
-    if [[ ! -z "$healthcheck_url" ]]; then
-        curl -s -m 10 -o /dev/null "$healthcheck_url"
-    fi
+    healthcheck_url
 fi
 
 if [[ ! -z "$errors" && $mailalert != "never" ]]; then
