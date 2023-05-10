@@ -22,7 +22,7 @@ ynh_abort_if_errors
 
 export app=$YNH_APP_INSTANCE_NAME
 # Retrieve arguments
-ynh_export repository passphrase on_calendar conf data apps mailalert
+ynh_export repository passphrase on_calendar conf data apps mailalert healthcheck_url
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
@@ -37,7 +37,7 @@ if [[ $repository == *"@"* ]]; then
 fi
 state="repository uncreated"
 last_run="-"
-ynh_save_args repository server passphrase on_calendar conf data apps mailalert state last_run
+ynh_save_args repository server passphrase on_calendar conf data apps mailalert healthcheck_url state last_run
 
 #=================================================
 # INSTALL DEPENDENCIES

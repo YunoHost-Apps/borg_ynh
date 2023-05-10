@@ -23,6 +23,7 @@ export on_calendar="$(ynh_app_setting_get $app on_calendar)"
 export conf="$(ynh_app_setting_get $app conf)"
 export data="$(ynh_app_setting_get $app data)"
 export apps="$(ynh_app_setting_get $app apps)"
+export healthcheck_url="$(ynh_app_setting_get $app healthcheck_url)"
 export mailalert="$(ynh_app_setting_get $app mailalert)"
 if [[ $mailalert != "always" && $mailalert != "errors_only" && $mailalert != "never" ]]; then
 	ynh_app_setting_set --app=$app --key="mailalert" --value="errors_only"
