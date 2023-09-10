@@ -92,7 +92,7 @@
             },
             {
                 "name": "mailalert",
-                "type": "string",
+                "type": "select",
                 "ask": {
                     "en": "Do you want admin to receive mail notifications on backups ?",
                     "fr": "Souhaitez-vous recevoir des notifications par mail à chaque sauvegarde ?"
