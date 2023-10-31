@@ -247,7 +247,7 @@ Settings of apps are in /etc/yunohost/apps/*/settings.yml, so are the settings f
 ## Documentation and resources
 
 * Official app website: <https://borgbackup.readthedocs.io>
-* YunoHost documentation for this app: <https://yunohost.org/app_borg>
+* YunoHost Store: <https://apps.yunohost.org/app/borg>
 * Report a bug: <https://github.com/YunoHost-Apps/borg_ynh/issues>
 
 ## Developer info
