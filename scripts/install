@@ -23,6 +23,7 @@ if [[ "$repository" =~ $ssh_regex ]]; then
     fi
 fi
 
+ynh_app_setting_set --app=$app --key=ssh_user --value="$ssh_user"
 ynh_app_setting_set --app=$app --key=server --value="$server"
 
 state="repository uncreated"
