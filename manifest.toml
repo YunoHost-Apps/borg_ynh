@@ -1,0 +1,96 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "borg"
+name = "Borg Backup"
+description.en = "Backup your server on a host server using Borg"
+description.fr = "Sauvegardez votre serveur sur un serveur distant avec Borg"
+
+version = "1.1.16~ynh30"
+
+maintainers = ["ljf"]
+
+[upstream]
+license = "BSD-3-Clause"
+website = "https://borgbackup.readthedocs.io"
+cpe = "cpe:2.3:a:borg_project:borg"
+fund = "https://www.borgbackup.org/support/fund.html"
+
+[integration]
+yunohost = ">= 11.0.9"
+architectures = "all" # FIXME: can be replaced by a list of supported archs using the dpkg --print-architecture nomenclature (amd64/i386/armhf/arm64), for example: ["amd64", "i386"]
+multi_instance = true
+ldap = "not_relevant"
+sso = "not_relevant"
+disk = "50M" # FIXME: replace with an **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
+ram.build = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+
+[install]
+    [install.repository]
+    ask.en = "In which borg repository location do you want to backup your files ?"
+    ask.fr = "Dans quel repo borg souhaitez-vous sauvegarder vos fichiers ?"
+    help.en = "Specify a local repository like /mount/my_external_harddrive/backups or a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
+    type = "string"
+    example = "ssh://john@serverb.tld:22/~/backup"
+
+    [install.passphrase]
+    ask.en = "Provide a strong passphrase to encrypt your backups. No blank space"
+    ask.fr = "Indiquez une phrase de passe forte pour chiffrer vos sauvegardes. Sans espaces"
+    help.en = "Keep it safe! ...if you want to be able to restore. Do not communicate it to host Server holder or anyone else."
+    help.fr = "Gardez-la précieusement! ...si vous voulez pouvoir restaurer. Ne donnez pas la clé au possesseur du Serveur distant, ni personne."
+    type = "password"
+
+    [install.conf]
+    ask.en = "Should Borg backup your YunoHost configuration?"
+    ask.fr = "Borg doit-il sauvegarder la configuration système YunoHost ?"
+    type = "boolean"
+    default = true
+
+    [install.data]
+    ask.en = "Should Borg backup emails and user home directory?"
+    ask.fr = "Borg doit-il sauvegarder les mails et les répertoires des utilisateurs ?"
+    type = "boolean"
+    default = true
+
+    [install.apps]
+    ask.en = "Which apps should Borg backup ?"
+    ask.fr = "Quelles applications doivent être sauvegardées par Borg ?"
+    help.en = "App list separated by comma. You can write 'all' to select all apps, even those installed after this borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
+    help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les apps, même celles installées après cette application borg. Vous pouvez aussi sélectionner toutes les apps sauf certaines en écrivant 'exclude:' suivi d'une liste d'applications séparées par des virgules."
+    type = "string"
+    default = "all"
+
+    [install.on_calendar]
+    ask.en = "With which regular time schedule should the backups be performed? (see systemd OnCalendar format)"
+    ask.fr = "À quelle fréquence les sauvegardes doivent-elles être effectuées ? (voir le format OnCalendar de systemd)"
+    type = "string"
+    example = "Monthly or Weekly or Daily or Hourly or 4:00 or 5,17:00  or Sat --1..7 18:00:00"
+    default = "Daily"
+
+    [install.mailalert]
+    ask.en = "Do you want admin to receive mail notifications on backups ?"
+    ask.fr = "Souhaitez-vous recevoir des notifications par mail à chaque sauvegarde ?"
+    type = "select"
+    choices = ["always", "errors_only", "never"]
+
+[resources]
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.apt]
+    packages = [
+        "python3-pip",
+        "python3-dev",
+        "libacl1-dev",
+        "libssl-dev",
+        "liblz4-dev",
+        "python3-jinja2",
+        "python3-setuptools",
+        "python3-venv",
+        "virtualenv",
+        "libfuse-dev",
+        "pkg-config",
+    ]
