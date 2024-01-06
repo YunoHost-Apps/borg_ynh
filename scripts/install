@@ -21,6 +21,9 @@ if [[ "$repository" =~ $ssh_regex ]]; then
     if [[ -n "$port" ]]; then
         server="[$server]$port"
     fi
+else
+    ssh_user=""
+    server=""
 fi
 
 ynh_app_setting_set --app=$app --key=ssh_user --value="$ssh_user"
