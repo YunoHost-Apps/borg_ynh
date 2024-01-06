@@ -9,29 +9,17 @@
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE SCRIPT FAILURE
-#=================================================
-
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_print_info --message="Loading installation settings..."
-
-app=$YNH_APP_INSTANCE_NAME
-
-#=================================================
 # DECLARE DATA AND CONF FILES TO BACKUP
 #=================================================
 ynh_print_info --message="Declaring files to be backed up..."
 
-ynh_backup --src_path="/usr/local/bin/backup-with-$app"
-ynh_backup --src_path="/etc/sudoers.d/$app"
 ynh_backup --src_path="/etc/systemd/system/$app.service"
 ynh_backup --src_path="/etc/systemd/system/$app.timer"
+
 ynh_backup --src_path="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_backup --src_path="/usr/local/bin/backup-with-$app"
+ynh_backup --src_path="/etc/sudoers.d/$app"
+
 ynh_backup --src_path="/root/.ssh/id_${app}_ed25519" --not_mandatory
 ynh_backup --src_path="/root/.ssh/id_${app}_ed25519.pub" --not_mandatory
 

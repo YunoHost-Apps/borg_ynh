@@ -1,0 +1,38 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/tests.v1.schema.json
+
+test_format = 1.0
+
+[default]
+
+    args.repository = "ssh://sam@domain.tld:22/~/backup"
+    args.passphrase = "A_Passphrase"
+    args.conf = 1
+    args.data = 1
+    args.apps = "all"
+    args.on_calendar = "Daily"
+    args.mailalert = "errors_only"
+
+    # -------------------------------
+    # Commits to test upgrade from
+    # -------------------------------
+
+    [default.test_upgrade_from.d1cd666ee27f5cfb8e40c6f44a09370381b41b35]
+    name = "Older ynh 11 version"
+    args.server = "domain.tld:22"
+    args.ssh_user = "package_checker"
+    args.passphrase = "A_Passphrase"
+    args.conf = 1
+    args.data = 1
+    args.apps = "all"
+    args.on_calendar = "Daily"
+    args.mailalert = "never"
+
+
+[local_directory]
+    args.repository = "/mnt/backup"
+    args.passphrase = "A_Passphrase"
+    args.conf = 1
+    args.data = 1
+    args.apps = "all"
+    args.on_calendar = "Daily"
+    args.mailalert = "errors_only"
