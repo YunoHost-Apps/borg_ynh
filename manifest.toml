@@ -74,6 +74,7 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     ask.fr = "Souhaitez-vous recevoir des notifications par mail à chaque sauvegarde ?"
     type = "select"
     choices = ["always", "errors_only", "never"]
+    default = "errors_only"
 
 [resources]
     [resources.system_user]
