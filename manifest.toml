@@ -7,7 +7,7 @@ name = "Borg Backup"
 description.en = "Backup your server on a host server using Borg"
 description.fr = "Sauvegardez votre serveur sur un serveur distant avec Borg"
 
-version = "1.1.16~ynh30"
+version = "1.2.8~ynh1"
 
 maintainers = ["ljf"]
 
@@ -92,6 +92,6 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
         "python3-setuptools",
         "python3-venv",
         "virtualenv",
-        "libfuse-dev",
+        "libfuse3-dev",
         "pkg-config",
     ]
