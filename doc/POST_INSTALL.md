@@ -5,7 +5,7 @@ If you selected a remote borg server as backup target, you should now install th
 User: __SSH_USER__
 Public key: __PUBLIC_KEY__
 
-Or if you want to use cli:
+Or if you want to use command-line:
 
 `yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a "ssh_user=__SSH_USER__&public_key=__PUBLIC_KEY__"`
 
