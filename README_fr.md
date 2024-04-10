@@ -21,7 +21,7 @@ A [Borg](https://borgbackup.readthedocs.io/en/stable/index.html#what-is-borgback
 This is the Borg Backup App to be installed on a server to backup. It works together with a [Borg Server App](https://github.com/YunoHost-Apps/borgserver_ynh) installed on a host server.
 
 
-**Version incluse :** 1.1.16~ynh30
+**Version incluse :** 1.2.8~ynh1
 ## Documentations et ressources
 
 - Site officiel de l’app : <https://borgbackup.readthedocs.io>
