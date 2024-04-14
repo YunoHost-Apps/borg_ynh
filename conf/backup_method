@@ -5,12 +5,17 @@ app="${0#"./05-"}"
 app="${app%"_app"}"
 
 BORG_PASSPHRASE="$(yunohost app setting $app passphrase)"
-repo="$(yunohost app setting $app repository)"   #$4
+repos="$(yunohost app setting $app repository)"   #$4
 if ssh-keygen -F "__SERVER__" >/dev/null ; then
     BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes "
 else
     BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=no "
 fi
+
+sanitize_repo() {
+  repo="$1"
+  echo "$repo" | sed "s/(^\s*|\s*$)//g" # Trim the spaces
+}
 
 do_need_mount() {
     true
@@ -78,15 +83,21 @@ name="$3"
 size="$5"
 description="$6"
 
+saveIFS="$IFS"
+IFS=$';' array_repos=($repos)
+IFS="$saveIFS"
+
 case "$1" in
   need_mount)
-    do_need_mount "$work_dir" "$name" "$repo" "$size" "$description"
+    do_need_mount "$work_dir" "$name" "$(sanitize_repo "$array_repos[0]")" "$size" "$description"
     ;;
   backup)
-    do_backup "$work_dir" "$name" "$repo" "$size" "$description"
+    for repo in "${array_repos[@]}"; do
+      do_backup "$work_dir" "$name" "$(sanitize_repo "$repo")" "$size" "$description"
+    done
     ;;
   mount)
-    do_mount
+    do_mount "$work_dir" "$name" "$(sanitize_repo "$array_repos[0]")" "$size" "$description"
     ;;
   *)
     echo "hook called with unknown argument \`$1'" >&2
