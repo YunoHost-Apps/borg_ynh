@@ -4,7 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-BORG_VERSION=1.2.8
+BORG_VERSION=$(ynh_app_upstream_version)
 
 #=================================================
 # PERSONAL HELPERS
