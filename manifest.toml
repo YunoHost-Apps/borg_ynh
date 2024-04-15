@@ -19,13 +19,13 @@ fund = "https://www.borgbackup.org/support/fund.html"
 
 [integration]
 yunohost = ">= 11.0.9"
-architectures = "all" # FIXME: can be replaced by a list of supported archs using the dpkg --print-architecture nomenclature (amd64/i386/armhf/arm64), for example: ["amd64", "i386"]
+architectures = "all"
 multi_instance = true
 ldap = "not_relevant"
 sso = "not_relevant"
-disk = "50M" # FIXME: replace with an **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
-ram.build = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
-ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+disk = "50M"
+ram.build = "50M"
+ram.runtime = "50M"
 
 [install]
     [install.repository]
