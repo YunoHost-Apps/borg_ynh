@@ -4,7 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-BORG_VERSION=$(ynh_app_upstream_version)
+BORG_VERSION=$(cat $YNH_APP_BASEDIR/manifest.toml | grep "^version" | grep -oE "[0-9.]{2,}")
 
 #=================================================
 # PERSONAL HELPERS
