@@ -58,7 +58,7 @@ fi
 if [ -d /opt/borg-env ]; then
     ynh_secure_remove --file="/opt/borg-env"
     ynh_secure_remove --file="/usr/local/bin/borg"
-    ynh_secure_remove --file="/usr/local/bin/backup-with-$app"
+    ynh_secure_remove --file="/usr/local/bin/backup-with-borg"
 fi
 
 #=================================================
@@ -86,9 +86,9 @@ mkdir -p /usr/share/yunohost/backup_method
 ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-ynh_add_config --template="backup-with-borg" --destination="$install_dir/backup-with-$app"
-chmod u+x "$install_dir/backup-with-$app"
-chown "$app:$app" "$install_dir/backup-with-$app"
+ynh_add_config --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
+chmod u+x "$install_dir/backup-with-borg"
+chown "$app:$app" "$install_dir/backup-with-borg"
 
 ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 chown root:root "/etc/sudoers.d/$app"
