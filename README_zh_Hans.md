@@ -18,7 +18,7 @@
 
 A [Borg](https://borgbackup.readthedocs.io/en/stable/index.html#what-is-borgbackup) integration to backup your YunoHost server to another remote server (e.g. one of your friends).
 
-It works This is the Borg Backup App to be installed on a server to backup. It works in combination with the [Borg Server App](https://apps.yunohost.org/app/borgserver) installed on a host server.
+This app is the "client" part, meant to be installed on the server to be backed up. It works in combination with the [borg server app](https://apps.yunohost.org/app/borgserver) installed on a diffent machine.
 
 ### Features
 
@@ -31,7 +31,7 @@ It works This is the Borg Backup App to be installed on a server to backup. It w
 
 ### Install procedure
 
-Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, after the install of `borg_ynh`, a message should be displayed with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
+Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, at the end of the install of `borg_ynh`, you will be provided with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
 
 
 **分发版本：** 1.2.8~ynh1
