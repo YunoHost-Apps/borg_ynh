@@ -4,14 +4,14 @@
 # COMMON VARIABLES
 #=================================================
 
-BORG_VERSION=$(cat $YNH_APP_BASEDIR/manifest.toml | grep "^version" | grep -oE "[0-9.]{2,}")
-
 #=================================================
 # PERSONAL HELPERS
 #=================================================
 
 # Install borg with pip if borg is not here
 install_borg_with_pip () {
+    BORG_VERSION=$(ynh_app_upstream_version)
+
     if [ -d /opt/borg-env ]; then
         /opt/borg-env/bin/python /opt/borg-env/bin/pip list | grep "borgbackup *$BORG_VERSION" || ynh_secure_remove /opt/borg-env
     fi
