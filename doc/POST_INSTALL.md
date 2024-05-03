@@ -9,4 +9,4 @@ Or if you want to use command-line:
 
 `yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a "ssh_user=__SSH_USER__&public_key=__PUBLIC_KEY__"`
 
-If you facing an issue or want to improve this app, please open a new issue in this project: <https://github.com/YunoHost-Apps/borg_ynh>
+NB: the SSH user is not meant to pre-exist on the server on which borgserver is installed!
