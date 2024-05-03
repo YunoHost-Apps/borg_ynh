@@ -29,15 +29,7 @@ systemctl disable $app.timer --quiet
 ynh_remove_systemd_config
 
 ynh_secure_remove "/etc/systemd/system/$app.timer"
-ynh_secure_remove "/usr/local/bin/backup-with-$app"
 ynh_secure_remove "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
-
-# Remove borg if we are removing the last borg app on the system
-if [ "$(yunohost app list | grep "id: borg" | wc -l)" == "1" ] ; then
-    ynh_script_progression --message="Removing borg..." --weight=1
-    ynh_secure_remove "/opt/borg-env"
-    ynh_secure_remove "/usr/local/bin/borg"
-fi
 
 #=================================================
 # END OF SCRIPT

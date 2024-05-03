@@ -17,7 +17,6 @@ ynh_backup --src_path="/etc/systemd/system/$app.service"
 ynh_backup --src_path="/etc/systemd/system/$app.timer"
 
 ynh_backup --src_path="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
-ynh_backup --src_path="/usr/local/bin/backup-with-$app"
 ynh_backup --src_path="/etc/sudoers.d/$app"
 
 ynh_backup --src_path="/root/.ssh/id_${app}_ed25519" --not_mandatory

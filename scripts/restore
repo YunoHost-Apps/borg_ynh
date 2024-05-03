@@ -34,10 +34,6 @@ mkdir -p /usr/share/yunohost/backup_method
 ynh_restore_file --origin_path="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-ynh_restore_file --origin_path="/usr/local/bin/backup-with-$app"
-chmod u+x "/usr/local/bin/backup-with-$app"
-chown $app:$app "/usr/local/bin/backup-with-$app"
-
 ynh_restore_file --origin_path="/etc/sudoers.d/$app"
 chown root:root "/etc/sudoers.d/$app"
 
