@@ -4,4 +4,4 @@
 sudo env BORG_RSH="ssh -i /root/.ssh/id___APP___ed25519 -oStrictHostKeyChecking=yes " BORG_PASSPHRASE="`yunohost app setting __APP__ passphrase`" BORG_RELOCATED_REPO_ACCESS_IS_OK=yes BORG_REPO="$(yunohost app setting __APP__ repository)" __INSTALL_DIR__/venv/bin/borg upgrade --show-rc --check-tam $BORG_REPOSITORY
 ```
 
-Consult the linked documentation on how to interpert the result.
+Consult the linked documentation on how to interpret the result.
