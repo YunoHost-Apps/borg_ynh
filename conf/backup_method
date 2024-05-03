@@ -21,6 +21,8 @@ log_with_timestamp() {
   sed -e "s/^/[$(date +"%Y-%m-%d_%H:%M:%S")] /" | tee -a $LOGFILE
 }
 
+PATH=__INSTALL_DIR__/venv/bin:$PATH
+
 do_backup() {
     
     export BORG_PASSPHRASE
