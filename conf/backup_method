@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -eo pipefail
+source __INSTALL_DIR__/venv/bin/activate
+
 app="${0#"./05-"}"
 app="${app%"_app"}"
 
@@ -22,7 +24,7 @@ log_with_timestamp() {
 }
 
 do_backup() {
-    
+
     export BORG_PASSPHRASE
     export BORG_RSH
     export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
@@ -50,13 +52,13 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     borg create "$repo::_${name}-${current_date}" ./ 2>&1 >/dev/null | log_with_timestamp
     popd
 
-    # About thi _20 it's a crazy fix to avoid pruning wordpress__2 
+    # About thi _20 it's a crazy fix to avoid pruning wordpress__2
     # if you prune wordpress
     borg prune "$repo" -P "_${name}-" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
-    
+
     # Prune legacy archive name without error on wordpress/wordpress__2
     borg prune "$repo" -P "${name}_" --keep-within 2m --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
-    
+
     # We prune potential manual backup older than 1 year
     borg prune "$repo" --keep-within 1y 2>&1 >/dev/null | log_with_timestamp
 }
