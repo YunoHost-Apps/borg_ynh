@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-source "__INSTALL_DIR__/venv/bin/activate"
+borg="__INSTALL_DIR__/venv/bin/borg"
 app="__APP__"
 
 BORG_PASSPHRASE="$(yunohost app setting "$app" passphrase)"
@@ -34,7 +34,7 @@ do_backup() {
     current_date=$(date +"%Y-%m-%d_%H:%M")
     pushd "$work_dir"
     set +e
-    if borg init -e repokey "$repo" ; then
+    if "$borg" init -e repokey "$repo" ; then
         # human_size=`echo $size | awk '{ suffix=" KMGT"; for(i=1; $1>1024 && i < length(suffix); i++) $1/=1024; print int($1) substr(suffix, i, 1), $3; }'`
         # Speed in Kbps
         # speed=1000
@@ -47,18 +47,18 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     fi
     set -e
 
-    borg create "$repo::_${name}-${current_date}" ./ 2>&1 >/dev/null | log_with_timestamp
+    "$borg" create "$repo::_${name}-${current_date}" ./ 2>&1 >/dev/null | log_with_timestamp
     popd
 
     # About thi _20 it's a crazy fix to avoid pruning wordpress__2
     # if you prune wordpress
-    borg prune "$repo" -P "_${name}-" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    "$borg" prune "$repo" -P "_${name}-" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
 
     # Prune legacy archive name without error on wordpress/wordpress__2
-    borg prune "$repo" -P "${name}_" --keep-within 2m --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    "$borg" prune "$repo" -P "${name}_" --keep-within 2m --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
 
     # We prune potential manual backup older than 1 year
-    borg prune "$repo" --keep-within 1y 2>&1 >/dev/null | log_with_timestamp
+    "$borg" prune "$repo" --keep-within 1y 2>&1 >/dev/null | log_with_timestamp
 }
 
 do_mount() {
@@ -69,7 +69,7 @@ do_mount() {
     repo="$3"
     size="$4"
     description="$5"
-    borg mount "$repo::$name" "$work_dir" 2>&1 >/dev/null | log_with_timestamp
+    "$borg" mount "$repo::$name" "$work_dir" 2>&1 >/dev/null | log_with_timestamp
 }
 
 work_dir="$2"
