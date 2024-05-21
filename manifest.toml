@@ -1,0 +1,96 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "borg"
+name = "Borg Backup"
+description.en = "Regularly create deduplicated, encrypted backups sent to another server using Borg"
+description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiffées envoyées sur un autre serveur à l'aide de Borg"
+
+version = "1.2.8~ynh1"
+
+maintainers = ["ljf"]
+
+[upstream]
+license = "BSD-3-Clause"
+website = "https://borgbackup.readthedocs.io"
+cpe = "cpe:2.3:a:borg_project:borg"
+fund = "https://www.borgbackup.org/support/fund.html"
+
+[integration]
+yunohost = ">= 11.0.9"
+architectures = "all"
+multi_instance = true
+ldap = "not_relevant"
+sso = "not_relevant"
+disk = "50M"
+ram.build = "50M"
+ram.runtime = "50M"
+
+[install]
+    [install.repository]
+    ask.en = "In which borg repository location do you want to backup your files ?"
+    ask.fr = "Dans quel repo borg souhaitez-vous sauvegarder vos fichiers ?"
+    help.en = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app : `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than `~/backup`."
+    type = "string"
+    example = "ssh://john@serverb.tld:22/~/backup"
+
+    [install.passphrase]
+    ask.en = "Provide a strong passphrase to encrypt your backups. No blank space"
+    ask.fr = "Indiquez une phrase de passe forte pour chiffrer vos sauvegardes. Sans espaces"
+    help.en = "Keep it safe! There will be **no way** to restore your backup if you lose it. Do not communicate it to the remote host server holder, or anyone else."
+    help.fr = "Gardez-la précieusement ! Il sera impossible de restaurer vos sauvegardes sans celle-ci. Ne donnez pas cette clé à la personne qui gère le serveur distant - où à n'importe qui d'ailleurs."
+    type = "password"
+
+    [install.conf]
+    ask.en = "Should Borg backup your YunoHost configuration?"
+    ask.fr = "Borg doit-il sauvegarder la configuration système YunoHost ?"
+    type = "boolean"
+    default = true
+
+    [install.data]
+    ask.en = "Should Borg backup emails and user home directories?"
+    ask.fr = "Borg doit-il sauvegarder les mails et les répertoires (home) des utilisateurs ?"
+    type = "boolean"
+    default = true
+
+    [install.apps]
+    ask.en = "Which apps should Borg backup ?"
+    ask.fr = "Quelles applications doivent être sauvegardées par Borg ?"
+    help.en = "App list separated by comma. You can write 'all' to select all apps, even those installed after this borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
+    help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les apps, même celles installées après cette application borg. Vous pouvez aussi sélectionner toutes les apps sauf certaines en écrivant 'exclude:' suivi d'une liste d'applications séparées par des virgules."
+    type = "string"
+    default = "all"
+
+    [install.on_calendar]
+    ask.en = "When at at which frequency should the backups be performed?"
+    ask.fr = "Quand et à quelle fréquence les sauvegardes doivent-elles être effectuées ?"
+    type = "string"
+    help = "For example: `Monthly`, `Weekly`, `Daily` (=every day at midnight), `Hourly`, `Sat *-*-1..7 18:00:00` (=the first saturday of every month at 18:00), `4:00` (=every day at 4 AM), `5,17:00` (=every day at 5 AM and 5 PM). See the [systemd OnCalendar format for full syntax doc](https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer)"
+    default = "Daily"
+
+    [install.mailalert]
+    ask.en = "Do you want admin to receive mail notifications on backups ?"
+    ask.fr = "Souhaitez-vous recevoir des notifications par mail à chaque sauvegarde ?"
+    type = "select"
+    choices = ["always", "errors_only", "never"]
+    default = "errors_only"
+
+[resources]
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.apt]
+    packages = [
+        "python3-pip",
+        "python3-dev",
+        "python3-jinja2",
+        "python3-setuptools",
+        "python3-venv",
+        "libacl1-dev",
+        "libssl-dev",
+        "liblz4-dev",
+        "libfuse3-dev",
+        "pkg-config",
+    ]

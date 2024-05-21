@@ -10,136 +10,82 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE SCRIPT FAILURE
-#=================================================
-
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-export app=$YNH_APP_INSTANCE_NAME
-# Retrieve arguments
-ynh_export repository passphrase on_calendar conf data apps mailalert
-
-#=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-server=""
-if [[ $repository == *"@"* ]]; then
-    server=$(echo "$repository" | cut -d"@" -f2 | cut -d"/" -f1)
-    if [[ $server == *":"* ]]; then
-        server="[$(echo "$server" | cut -d":" -f1)]:$(echo "$server" | cut -d":" -f2)"
+
+ssh_regex='^ssh://([^@]*)@([^:/]*)(:[0-9]+)?/(.*)$'
+if [[ "$repository" =~ $ssh_regex ]]; then
+    ssh_user="${BASH_REMATCH[1]}"
+    server="${BASH_REMATCH[2]}"
+    port="${BASH_REMATCH[3]}"
+    if [[ -n "$port" ]]; then
+        server="[$server]$port"
     fi
-    ssh_user=$(echo "$repository" | cut -d"@" -f1 | cut -d"/" -f2)
+else
+    ssh_user=""
+    server=""
 fi
+
+ynh_app_setting_set --app=$app --key=ssh_user --value="$ssh_user"
+ynh_app_setting_set --app=$app --key=server --value="$server"
+
 state="repository uncreated"
+ynh_app_setting_set --app=$app --key=state --value="$state"
 last_run="-"
-ynh_save_args repository server passphrase on_calendar conf data apps mailalert state last_run
+ynh_app_setting_set --app=$app --key=last_run --value="$last_run"
+
+# passwords aren't saved by default
+ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"
 
 #=================================================
-# INSTALL DEPENDENCIES
+# INSTALL BORG
 #=================================================
-ynh_script_progression --message="Installing dependencies..."
+ynh_script_progression --message="Installing Borg..."
 
-ynh_install_app_dependencies $pkg_dependencies
 install_borg_with_pip
 
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..." --weight=1
+_gen_and_save_public_key
 
-# Create a system user
-ynh_system_user_create --username=$app
+mkdir -p "/var/log/$app"
+chown -R $app:$app "/var/log/$app"
+chmod u+w "/var/log/$app"
 
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# ACTIVATE BACKUP METHODS
+# SETUP THE BACKUP METHOD
 #=================================================
+ynh_script_progression --message="Setting up backup method..." --weight=1
 
 mkdir -p /etc/yunohost/hooks.d/backup
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
-mkdir -p /var/log/${app}
-chown -R $app:$app /var/log/${app}
-chmod u+w /var/log/${app}
 
-#=================================================
-# SETUP THE BACKUP METHOD
-#=================================================
 ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-
-ynh_add_config --template="backup-with-borg" --destination="/usr/local/bin/backup-with-$app"
-chmod u+x "/usr/local/bin/backup-with-$app"
-chown $app:$app "/usr/local/bin/backup-with-$app"
+ynh_add_config --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
+chmod u+x "$install_dir/backup-with-borg"
+chown "$app:$app" "$install_dir/backup-with-borg"
 
 ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 chown root:root "/etc/sudoers.d/$app"
 
-if [ ! -z "$server" ]; then
-    #=================================================
-    # GENERATE SSH KEY
-    #=================================================
-
-    private_key="/root/.ssh/id_${app}_ed25519"
-    test -f $private_key || ssh-keygen -q -t ed25519 -N "" -f $private_key
-
-    #=================================================
-    # Display key
-    #=================================================
-
-    echo "You should now install the \"Borg Server\" app on $server and with the following credentials:
-    User: ${ssh_user}
-    Public key: $(cat ${private_key}.pub)"
-
-    #=================================================
-    # SEND A README FOR THE ADMIN
-    #=================================================
-
-    message="You should now install the \"Borg Server\" app on $server and with the following credentials:
-User: ${ssh_user}
-Public key: $(cat ${private_key}.pub)
-
-Or if you want to use cli:
-
-yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a \"ssh_user=${ssh_user}&public_key=$(cat ${private_key}.pub)\"
-
-If you facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/borg_ynh"
-
-    ynh_send_readme_to_admin "$message"
-fi
-
 #=================================================
-# SETUP SYSTEMD
+# SYSTEM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring a systemd service..." --weight=1
+ynh_script_progression --message="Adding system configurations related to $app..." --weight=1
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
+yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"
 # Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
-#=================================================
-# CONFIGURE SYSTEMD TIMER
-#=================================================
+# Configure the systemd timer
 ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
-
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
-
-# Inactive services are ignored cause it's a timer
-yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"
-
 
 #=================================================
 # END OF SCRIPT
