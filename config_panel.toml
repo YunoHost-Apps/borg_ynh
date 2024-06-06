@@ -3,14 +3,14 @@ version = "1.0"
 [main]
 services = []
 
-    [main.settings]
+    [main.state]
     name = ""
     visible = "false"
 
-        [main.settings.state]
+        [main.state.state]
         type = "string"
 
-        [main.settings.last_run]
+        [main.state.last_run]
         type = "string"
 
     [main.general]
@@ -25,7 +25,7 @@ services = []
         [main.general.repository]
         ask.en = "Repository"
         type = "string"
-        help = "Specify a local repository like /mount/my_external_harddrive/backups or a remote repository using this format: ssh://USER@DOMAIN.TLD:PORT/~/backup . If you plan to use borgserver_ynh app : 'USER' is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than ~/backup."
+        help = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app : `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than `~/backup`."
         
         [main.general.ssh_public_key]
         ask.en = "Public key: {ssh_public_key}"
@@ -33,9 +33,10 @@ services = []
         bind = "/root/.ssh/id___APP___ed25519.pub"
 
         [main.general.on_calendar]
-        ask.en = "Frequency"
+        ask.en = "When at at which frequency should the backups be performed?"
+        ask.fr = "Quand et à quelle fréquence les sauvegardes doivent-elles être effectuées ?"
         type = "string"
-        help = "With which regular time schedule should the backups be performed? (see systemd OnCalendar format)"
+        help = "For example: `Monthly`, `Weekly`, `Daily` (=every day at midnight), `Hourly`, `Sat *-*-1..7 18:00:00` (=the first saturday of every month at 18:00), `4:00` (=every day at 4 AM), `5,17:00` (=every day at 5 AM and 5 PM). See the [systemd OnCalendar format for full syntax doc](https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer)"
         bind = "OnCalendar:/etc/systemd/system/__APP__.timer"
         
         [main.general.mailalert]
@@ -53,7 +54,7 @@ services = []
         optional = "true"
 
     [main.content]
-    name = "What should be backuped ?"
+    name = "What should be backuped?"
     optional = false
 
         [main.content.conf]
@@ -73,11 +74,11 @@ services = []
         type = "tags"
         help = "App list separated by comma. You can write 'all' to select all apps, even those installed after this borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
 
-[advanced]
-name = "Advanced"
+[list]
+name = "Last backups list"
 services = []
-    [advanced.list]
-    name = "Last backups list"
-        [advanced.list.last_backups]
+    [list.list]
+    name = ""
+        [list.list.last_backups]
         ask.en = ""
         type = "markdown"

@@ -4,6 +4,8 @@ source /usr/share/yunohost/helpers
 
 ynh_abort_if_errors
 
+borg="$install_dir/venv/bin/borg"
+
 #=================================================
 # SPECIFIC GETTERS FOR TOML SHORT KEY
 #=================================================
@@ -46,8 +48,8 @@ get__data_multimedia() {
 }
 get__last_backups() {
     cat << EOF
-ask: |- 
-$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " borg list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
+ask: |-
+$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
 EOF
 }
 
@@ -81,4 +83,3 @@ set__data_multimedia() {
 # GENERIC FINALIZATION
 #=================================================
 ynh_app_config_run $1
-
