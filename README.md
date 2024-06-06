@@ -4,6 +4,7 @@ It shall NOT be edited by hand.
 -->
 
 # Borg Backup for YunoHost
+ynh_save_args repository server passphrase on_calendar conf data apps mailalert healthcheck_url state last_run
 
 [![Integration level](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg) ![Working status](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
 

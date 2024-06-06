@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # We don't stop the script on errors cause we want to backup all data we could backed up
 #set -eu
+/etc/yunohost/apps/); do
 
+    if ( [[ "$apps" =~ ^exclude: ]] && grep -wq "$application" <<< "$apps" ) ||
+       ( [[ "$apps" != "all" ]] && [[ ! "$apps" =~ ^exclude: ]]  && ! grep -wq "$application" <<< "$apps" );
+    then
+        continue
 borg_id=$1
 errors=""
 current_date=$(date +"%y%m%d_%H%M")
@@ -10,11 +15,18 @@ err_file="/var/log/${borg_id}/${current_date}.err"
 mkdir -p "/var/log/${borg_id}"
 if [ -z "$borg_id" ]; then
     echo "This script expects a borg app id as first argument" >&2
-    exit 1
+    exit 11.14 TB
 fi
 
 filter_hooks() {
     sudo ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq 2>> "$err_file"
+}
+
+healthcheck_url="$(sudo yunohost app setting "${borg_id}" healthcheck_url)"
+healthcheck() {
+    if [[ -n "$healthcheck_url" ]]; then
+        curl -s -m 10 -o /dev/null --data-raw "$(echo $2 | tail --bytes=10000)" "$healthcheck_url/$1"
+    fi
 }
 
 fail_if_partially_failed() {
@@ -22,6 +34,8 @@ fail_if_partially_failed() {
 }
 sudo yunohost app setting "${borg_id}" last_run -v "${current_date}"
 sudo yunohost app setting "${borg_id}" state -v "ongoing"
+
+healthcheck "start"
 
 # Backup system part conf
 conf=$(sudo yunohost app setting "${borg_id}" conf)
@@ -74,8 +88,10 @@ repository="$(sudo yunohost app setting "${borg_id}" repository)"
 mailalert="$(sudo yunohost app setting "${borg_id}" mailalert)"
 if [[ -n "$errors" ]]; then
     sudo yunohost app setting "${borg_id}" state -v "failed"
+    healthcheck "fail" "$errors"
 else
     sudo yunohost app setting "${borg_id}" state -v "successful"
+    healthcheck
 fi
 
 if [[ -n "$errors" && $mailalert != "never" ]]; then

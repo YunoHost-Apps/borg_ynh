@@ -62,6 +62,11 @@ validate__on_calendar() {
         echo 'Please follow systemd OnCalendar format: https://man.archlinux.org/man/systemd.time.7#CALENDAR_EVENTS'
 }
 
+validate__healthcheck_url() {
+    [[ $healthcheck_url =~ ^https?://[^/]+(/.*)?$ ]] ||
+        echo 'Please enter a valid URL'
+}
+
 #=================================================
 # SPECIFIC SETTERS FOR TOML SHORT KEYS
 #=================================================
