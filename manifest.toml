@@ -78,6 +78,13 @@ ram.runtime = "50M"
     choices = ["always", "errors_only", "never"]
     default = "errors_only"
 
+    [install.healthcheck_url]
+    ask.en = "Do you want to enable the healthcheck URL to check against silent failures ?"
+    ask.fr = "Souhaitez-vous activer l'URL de vérification de l'état pour vérifier les pannes silenci
+    type = "string"
+    default = ""
+    optional = true
+
 [resources]
     [resources.sources.main]
     url = "https://github.com/borgbackup/borg/archive/refs/tags/1.4.0.tar.gz"
@@ -96,6 +103,7 @@ ram.runtime = "50M"
 
     [resources.apt]
     packages = [
+        "curl",
         "python3-pip",
         "python3-dev",
         "python3-jinja2",
