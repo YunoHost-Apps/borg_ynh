@@ -79,8 +79,8 @@ ram.runtime = "50M"
     default = "errors_only"
 
     [install.healthcheck_url]
-    ask.en = "Do you want to enable the healthcheck URL to check against silent failures ?"
-    ask.fr = "Souhaitez-vous activer l'URL de vérification de l'état pour vérifier les pannes silencieuses ?"
+    ask.en = "Optional - you may specify a healthcheck URL to check against silent failures."
+    ask.fr = "Optionnel - vous pouvez spécifier une URL de vérification de l'état pour vérifier les pannes silencieuses."
     type = "string"
     default = ""
     optional = true
