@@ -81,6 +81,8 @@ ram.runtime = "50M"
 
     [resources.install_dir]
 
+    [resources.permissions]
+
     [resources.apt]
     packages = [
         "python3-pip",
