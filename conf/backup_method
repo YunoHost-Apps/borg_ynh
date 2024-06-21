@@ -5,7 +5,8 @@ borg="__INSTALL_DIR__/venv/bin/borg"
 app="__APP__"
 
 BORG_PASSPHRASE="$(yunohost app setting "$app" passphrase)"
-repo="$(yunohost app setting "$app" repository)"   #$4
+BORG_REPO="$(yunohost app setting "$app" repository)"
+BORG_LOGGING_CONF="__INSTALL_DIR__/logging.conf"
 
 if ssh-keygen -F "__SERVER__" >/dev/null ; then
     BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes "
@@ -17,22 +18,16 @@ do_need_mount() {
     true
 }
 
-LOGFILE=/var/log/backup_borg.err
-log_with_timestamp() {
-    sed -e "s/^/[$(date +"%Y-%m-%d_%H:%M:%S")] /" | tee -a $LOGFILE
-}
-
 do_backup() {
     export BORG_PASSPHRASE
+    export BORG_REPO
     export BORG_RSH
+    export BORG_LOGGING_CONF
     export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
     work_dir="$1"
     name="$2"
-    repo="$3"
-    size="$4"
-    description="$5"
-    current_date=$(date +"%Y-%m-%d_%H:%M")
-    pushd "$work_dir"
+    size="$3"
+    description="$4"
     set +e
     if "$borg" init -e repokey "$repo" ; then
         # human_size=`echo $size | awk '{ suffix=" KMGT"; for(i=1; $1>1024 && i < length(suffix); i++) $1/=1024; print int($1) substr(suffix, i, 1), $3; }'`
@@ -41,35 +36,38 @@ do_backup() {
         # evaluated_time=$(($size / ($speed * 1000 / 8) / 3600))
         echo "Hello,
 
-Your first backup on $repo is starting.
+Your first backup on $BORG_REPO is starting.
 
 This is an automated message from your beloved YunoHost server." | /usr/bin/mail.mailutils -a "Content-Type: text/plain; charset=UTF-8" -s "[YNH] First backup is starting" "root"
     fi
     set -e
 
-    "$borg" create "$repo::_${name}-${current_date}" ./ 2>&1 >/dev/null | log_with_timestamp
-    popd
+    # About the {now} placeholder:
+    # https://borgbackup.readthedocs.io/en/stable/usage/create.html#description
+    # In the archive name, you may use the following placeholders: {now}, {utcnow}, {fqdn}, {hostname}, {user} and some others.
+    "$borg" create "::_${name}-{now}" "$work_dir"
 
     # About thi _20 it's a crazy fix to avoid pruning wordpress__2
     # if you prune wordpress
-    "$borg" prune "$repo" -P "_${name}-" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    "$borg" prune -P "_${name}-" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
 
     # Prune legacy archive name without error on wordpress/wordpress__2
-    "$borg" prune "$repo" -P "${name}_" --keep-within 2m --keep-monthly=12 2>&1 >/dev/null | log_with_timestamp
+    "$borg" prune -P "${name}_" --keep-within 2m --keep-monthly=12
 
     # We prune potential manual backup older than 1 year
-    "$borg" prune "$repo" --keep-within 1y 2>&1 >/dev/null | log_with_timestamp
+    "$borg" prune --keep-within 1y
 }
 
 do_mount() {
     export BORG_PASSPHRASE
+    export BORG_REPO
     export BORG_RSH
+    export BORG_LOGGING_CONF
     work_dir="$1"
     name="$2"
-    repo="$3"
-    size="$4"
-    description="$5"
-    "$borg" mount "$repo::$name" "$work_dir" 2>&1 >/dev/null | log_with_timestamp
+    size="$3"
+    description="$4"
+    "$borg" mount "::$name" "$work_dir"
 }
 
 work_dir="$2"
@@ -80,13 +78,13 @@ description="$6"
 
 case "$1" in
   need_mount)
-    do_need_mount "$work_dir" "$name" "$repo" "$size" "$description"
+    do_need_mount "$work_dir" "$name" "$size" "$description"
     ;;
   backup)
-    do_backup "$work_dir" "$name" "$repo" "$size" "$description"
+    do_backup "$work_dir" "$name" "$size" "$description"
     ;;
   mount)
-    do_mount "$work_dir" "$name" "$repo" "$size" "$description"
+    do_mount "$work_dir" "$name" "$size" "$description"
     ;;
   *)
     echo "hook called with unknown argument \`$1'" >&2
