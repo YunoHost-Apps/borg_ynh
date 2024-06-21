@@ -46,14 +46,9 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     # About the {now} placeholder:
     # https://borgbackup.readthedocs.io/en/stable/usage/create.html#description
     # In the archive name, you may use the following placeholders: {now}, {utcnow}, {fqdn}, {hostname}, {user} and some others.
-    "$borg" create --stats "::_${name}-{now}" "$work_dir"
+    "$borg" create --stats "::${name}-{now}" "$work_dir"
 
-    # About thi _20 it's a crazy fix to avoid pruning wordpress__2
-    # if you prune wordpress
-    "$borg" prune -P "_${name}-" --list --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
-
-    # Prune legacy archive name without error on wordpress/wordpress__2
-    "$borg" prune -P "${name}_" --list --keep-within 2m --keep-monthly=12
+    "$borg" prune --glob-archives "${name}-*" --list --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
 
     # We prune potential manual backup older than 1 year
     "$borg" prune --list --keep-within 1y
