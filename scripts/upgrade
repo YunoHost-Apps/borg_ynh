@@ -93,6 +93,9 @@ chown "$app:$app" "$install_dir/backup-with-borg"
 ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
 chown root:root "/etc/sudoers.d/$app"
 
+ynh_add_config --template="logging.conf" --destination="$install_dir/logging.conf"
+chown "$app:$app" "$install_dir/logging.conf"
+
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
@@ -100,7 +103,7 @@ ynh_script_progression --message="Upgrading system configurations related to $ap
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
-yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"
+yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"  --log "/var/log/$app/borg.log"
 # Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
