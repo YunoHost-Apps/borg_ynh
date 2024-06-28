@@ -5,7 +5,7 @@ EZ editatu eskuz.
 
 # Borg Backup YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+[![Integrazio maila](https://dash.yunohost.org/integration/borg.svg)](https://ci-apps.yunohost.org/ci/apps/borg/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
 
 [![Instalatu Borg Backup YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 

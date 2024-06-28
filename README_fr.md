@@ -5,7 +5,7 @@ Il NE doit PAS être modifié à la main.
 
 # Borg Backup pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+[![Niveau d’intégration](https://dash.yunohost.org/integration/borg.svg)](https://ci-apps.yunohost.org/ci/apps/borg/) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
 
 [![Installer Borg Backup avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
