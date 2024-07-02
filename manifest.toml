@@ -7,7 +7,7 @@ name = "Borg Backup"
 description.en = "Regularly create deduplicated, encrypted backups sent to another server using Borg"
 description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiffées envoyées sur un autre serveur à l'aide de Borg"
 
-version = "1.2.8~ynh1"
+version = "1.2.8~ynh2"
 
 maintainers = ["ljf"]
 
@@ -24,7 +24,7 @@ multi_instance = true
 ldap = "not_relevant"
 sso = "not_relevant"
 disk = "50M"
-ram.build = "50M"
+ram.build = "500M"
 ram.runtime = "50M"
 
 [install]
@@ -80,6 +80,8 @@ ram.runtime = "50M"
     [resources.system_user]
 
     [resources.install_dir]
+
+    [resources.permissions]
 
     [resources.apt]
     packages = [

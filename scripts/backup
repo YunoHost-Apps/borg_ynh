@@ -22,6 +22,9 @@ ynh_backup --src_path="/etc/sudoers.d/$app"
 ynh_backup --src_path="/root/.ssh/id_${app}_ed25519" --not_mandatory
 ynh_backup --src_path="/root/.ssh/id_${app}_ed25519.pub" --not_mandatory
 
+ynh_backup --src_path="$install_dir/backup-with-borg"
+ynh_backup --src_path="$install_dir/logging.conf"
+
 #=================================================
 # END OF SCRIPT
 #=================================================
