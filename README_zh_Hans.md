@@ -5,7 +5,7 @@
 
 # YunoHost 上的 Borg Backup
 
-[![集成程度](https://dash.yunohost.org/integration/borg.svg)](https://dash.yunohost.org/appci/app/borg) ![工作状态](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/borg.svg)](https://ci-apps.yunohost.org/ci/apps/borg/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
 
 [![使用 YunoHost 安装 Borg Backup](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
@@ -22,7 +22,7 @@ This app is the "client" part, meant to be installed on the server to be backed 
 
 ### Features
 
-- Backup on a remote machine, in comination with the [borg server app](https://apps.yunohost.org/app/borgserver)
+- Backup on a remote machine, in combination with the [borg server app](https://apps.yunohost.org/app/borgserver)
 - ... or on a [commercial borg service](https://www.borgbackup.org/support/commercial.html)
 - Backups are encrypted (the remote server can't read the content) and deduplicated (optimize space)
 - Backups are ran automatically, you can choose when and at which frequency
@@ -34,7 +34,7 @@ This app is the "client" part, meant to be installed on the server to be backed 
 Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, at the end of the install of `borg_ynh`, you will be provided with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
 
 
-**分发版本：** 1.2.8~ynh1
+**分发版本：** 1.2.8~ynh2
 ## 文档与资源
 
 - 官方应用网站： <https://borgbackup.readthedocs.io>

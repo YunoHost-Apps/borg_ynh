@@ -60,7 +60,7 @@ for application in $(sudo ls /etc/yunohost/apps/); do
 done
 
 #=========================================================
-# SEND MAIL TO NOTIFY SUCCED OR FAILED OPERATIONS
+# SEND MAIL TO NOTIFY ABOUT SUCCEEDED OR FAILED OPERATIONS
 #=========================================================
 
 partial_errors="$(cat "$log_file" | grep -E "Error|Skipped")"
@@ -79,9 +79,9 @@ else
 fi
 
 if [[ -n "$errors" && $mailalert != "never" ]]; then
-    cat <(echo -e "$errors\n\n\n") "$log_file" "$err_file" | mail -s "[borg] Backup failed from $domain onto $repository" root
+    cat <(echo -e "$errors\n\n\n") "$log_file" "$err_file" | mail -a "Content-Type: text/plain; charset=UTF-8" -s "[borg] Backup failed from $domain onto $repository" root
     exit 1
 elif [ "$mailalert" == "always" ]; then
-    cat "$log_file" | mail -s "[borg] Backup succeed from $domain onto $repository" root
+    cat "$log_file" | mail -a "Content-Type: text/plain; charset=UTF-8" -s "[borg] Backup succeeded from $domain onto $repository" root
     exit 0
 fi

@@ -4,7 +4,7 @@ This app is the "client" part, meant to be installed on the server to be backed 
 
 ### Features
 
-- Backup on a remote machine, in comination with the [borg server app](https://apps.yunohost.org/app/borgserver)
+- Backup on a remote machine, in combination with the [borg server app](https://apps.yunohost.org/app/borgserver)
 - ... or on a [commercial borg service](https://www.borgbackup.org/support/commercial.html)
 - Backups are encrypted (the remote server can't read the content) and deduplicated (optimize space)
 - Backups are ran automatically, you can choose when and at which frequency

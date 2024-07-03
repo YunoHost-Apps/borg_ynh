@@ -53,6 +53,10 @@ $(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /roo
 EOF
 }
 
+get__conf() {
+    ynh_app_setting_get --app=$app --key=conf
+}
+
 #=================================================
 # SPECIFIC VALIDATORS FOR TOML SHORT KEYS
 #=================================================
@@ -74,6 +78,15 @@ set__data_multimedia() {
         ynh_secure_remove /home/yunohost.multimedia/.nobackup
     fi
 }
+
+set__conf() {
+    if [ -n "${conf}" ]
+    then
+        # Update the config of the app
+        ynh_app_setting_set --app=$app --key=conf --value=$conf
+    fi
+}
+
 #=================================================
 # GENERIC FINALIZATION
 #=================================================

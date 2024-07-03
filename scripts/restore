@@ -37,13 +37,20 @@ chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 ynh_restore_file --origin_path="/etc/sudoers.d/$app"
 chown root:root "/etc/sudoers.d/$app"
 
+ynh_restore_file --origin_path="$install_dir/backup-with-borg"
+chmod u+x "$install_dir/backup-with-borg"
+chown "$app:$app" "$install_dir/backup-with-borg"
+
+ynh_restore_file --origin_path="$install_dir/logging.conf"
+chown "$app:$app" "$install_dir/logging.conf"
+
 #=================================================
 # RESTORE SYSTEM CONFIGURATIONS
 #=================================================
 ynh_script_progression --message="Restoring system configurations related to $app..." --weight=1
 
 ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
-yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"
+yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed" --log "/var/log/$app/borg.log"
 # Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
