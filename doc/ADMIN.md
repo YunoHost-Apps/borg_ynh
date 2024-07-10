@@ -33,8 +33,7 @@ repository="$(sudo yunohost app setting $app repository)"
 Then run for example:
 
 - List archives: `borg list "$repository" | less`
-- List database exports: `borg list "$repository" | grep "(db|dump)\.sql"`
-- List files from the archive: `borg list "$repository::ARCHIVE_NAME" | less`
+- List files from a specific archive: `borg list "$repository::ARCHIVE_NAME" | less`
 - View archive info: `borg info "$repository::ARCHIVE_NAME"`
 - Verify data integrity: `borg info "$repository::ARCHIVE_NAME" --verify-data`
 
