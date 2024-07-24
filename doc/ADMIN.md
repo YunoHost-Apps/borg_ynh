@@ -24,7 +24,7 @@ First, prepare the environment with the appropriate borg variables, etc:
 
 ```bash
 app=borg
-source /var/www/$app/venv/bin/activate
+PATH="/var/www/$app/venv/bin/:$PATH"
 export BORG_PASSPHRASE="$(sudo yunohost app setting $app passphrase)" 
 export BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes"
 repository="$(sudo yunohost app setting $app repository)"
