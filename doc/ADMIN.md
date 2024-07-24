@@ -20,9 +20,10 @@ You should at least:
 - Check regularly the presence of `info.json` and `db.sql` or `dump.sql` in your apps archives
 
 ```bash
-borg list ./::ARCHIVE_NAME | grep info.json
-borg list ./::ARCHIVE_NAME | grep db.sql
-borg list ./::ARCHIVE_NAME | grep dump.sql
+borg="/var/www/borg/venv/bin/borg"
+$borg list ./::ARCHIVE_NAME | grep info.json
+$borg list ./::ARCHIVE_NAME | grep db.sql
+$borg list ./::ARCHIVE_NAME | grep dump.sql
 ```
 
 - Be sure to have your passphrase available even if your server is completely broken
