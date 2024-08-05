@@ -7,13 +7,15 @@ name = "Borg Backup"
 description.en = "Regularly create deduplicated, encrypted backups sent to another server using Borg"
 description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiffées envoyées sur un autre serveur à l'aide de Borg"
 
-version = "1.2.8~ynh2"
+version = "1.4.0~ynh1"
 
 maintainers = ["ljf"]
 
 [upstream]
 license = "BSD-3-Clause"
-website = "https://borgbackup.readthedocs.io"
+website = "https://www.borgbackup.org"
+admindoc = "https://borgbackup.readthedocs.io"
+code = "https://github.com/borgbackup/borg"
 cpe = "cpe:2.3:a:borg_project:borg"
 fund = "https://www.borgbackup.org/support/fund.html"
 
@@ -77,6 +79,15 @@ ram.runtime = "50M"
     default = "errors_only"
 
 [resources]
+    [resources.sources]
+
+        [resources.sources.main]
+        url = "https://github.com/borgbackup/borg/releases/download/1.4.0/borgbackup-1.4.0.tar.gz"
+        sha256 = "c54c45155643fa66fed7f9ff2d134ea0a58d0ac197c18781ddc2fb236bf6ed29"
+        autoupdate.strategy = "latest_github_release"
+        autoupdate.asset = "^borgbackup-.*.tar.gz)$"
+        prefetch = false
+
     [resources.system_user]
 
     [resources.install_dir]
