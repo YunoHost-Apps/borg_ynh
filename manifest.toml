@@ -105,5 +105,7 @@ ram.runtime = "50M"
         "libssl-dev",
         "liblz4-dev",
         "libfuse3-dev",
+        "libxxhash-dev",
+        "libzstd-dev",
         "pkg-config",
     ]
