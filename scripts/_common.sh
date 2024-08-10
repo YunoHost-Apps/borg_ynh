@@ -13,7 +13,8 @@ install_borg_with_pip () {
     venvpy="$install_dir/venv/bin/python3"
 
     ynh_exec_as "$app" "$venvpy" -m pip install --upgrade setuptools wheel
-
+    ynh_exec_as "$app" "$venvpy" -m pip install pkgconfig
+    
     BORG_VERSION=$(ynh_app_upstream_version)
     ynh_exec_as "$app" "$venvpy" -m pip install borgbackup[pyfuse3]=="$BORG_VERSION"
 }
