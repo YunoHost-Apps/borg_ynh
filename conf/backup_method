@@ -46,7 +46,7 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     # About the {now} placeholder:
     # https://borgbackup.readthedocs.io/en/stable/usage/create.html#description
     # In the archive name, you may use the following placeholders: {now}, {utcnow}, {fqdn}, {hostname}, {user} and some others.
-    "$borg" create --stats "::${name}-{now}" "$work_dir"
+    "$borg" create --stats "${BORG_REPO}::${name}-{now}" "$work_dir"
 
     "$borg" prune --glob-archives "${name}-*" --list --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
 
