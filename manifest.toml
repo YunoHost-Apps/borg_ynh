@@ -77,6 +77,15 @@ ram.runtime = "50M"
     default = "errors_only"
 
 [resources]
+    [resources.sources.main]
+    url = "https://github.com/borgbackup/borg/archive/refs/tags/1.2.8.tar.gz"
+    sha256 = "0b7d124191372dda45274fbf9e393b066992fcfef05fea63714f7c5c1843fc7c"
+    # Only here to bump the package version
+    prefetch = false
+
+    autoupdate.strategy = "latest_github_release"
+    autoupdate.upstream = "https://github.com/borgbackup/borg"
+
     [resources.system_user]
 
     [resources.install_dir]
