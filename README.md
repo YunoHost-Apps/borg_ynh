@@ -34,10 +34,12 @@ This app is the "client" part, meant to be installed on the server to be backed 
 Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, at the end of the install of `borg_ynh`, you will be provided with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
 
 
-**Shipped version:** 1.2.8~ynh2
+**Shipped version:** 1.4.0~ynh1
 ## Documentation and resources
 
-- Official app website: <https://borgbackup.readthedocs.io>
+- Official app website: <https://www.borgbackup.org>
+- Official admin documentation: <https://borgbackup.readthedocs.io>
+- Upstream app code repository: <https://github.com/borgbackup/borg>
 - YunoHost Store: <https://apps.yunohost.org/app/borg>
 - Report a bug: <https://github.com/YunoHost-Apps/borg_ynh/issues>
 
