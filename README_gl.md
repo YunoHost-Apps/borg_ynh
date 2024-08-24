@@ -26,7 +26,7 @@ This app is the "client" part, meant to be installed on the server to be backed 
 - ... or on a [commercial borg service](https://www.borgbackup.org/support/commercial.html)
 - Backups are encrypted (the remote server can't read the content) and deduplicated (optimize space)
 - Backups are ran automatically, you can choose when and at which frequency
-- You can choose what apps are backuped
+- You can choose what apps are backed up
 - Receive email alerts if the backup fails (the [borg server app](https://apps.yunohost.org/app/borgserver) also checks that new content arrives and send an email to your friend otherwise)
 
 ### Install procedure
