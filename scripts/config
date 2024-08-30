@@ -2,7 +2,7 @@
 
 source /usr/share/yunohost/helpers
 
-ynh_abort_if_errors
+#REMOVEME? ynh_abort_if_errors
 
 borg="$install_dir/venv/bin/borg"
 
@@ -49,12 +49,12 @@ get__data_multimedia() {
 get__last_backups() {
     cat << EOF
 ask: |-
-$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
+$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short  50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
 EOF
 }
 
 get__conf() {
-    ynh_app_setting_get --app=$app --key=conf
+    ynh_app_setting_get --key=conf
 }
 
 #=================================================
@@ -75,7 +75,7 @@ set__data_multimedia() {
         mkdir -p /home/yunohost.multimedia/
         touch /home/yunohost.multimedia/.nobackup
     else
-        ynh_secure_remove /home/yunohost.multimedia/.nobackup
+        ynh_safe_rm /home/yunohost.multimedia/.nobackup
     fi
 }
 
@@ -83,11 +83,9 @@ set__conf() {
     if [ -n "${conf}" ]
     then
         # Update the config of the app
-        ynh_app_setting_set --app=$app --key=conf --value=$conf
+        ynh_app_setting_set --key=conf --value=$conf
     fi
 }
 
-#=================================================
-# GENERIC FINALIZATION
 #=================================================
 ynh_app_config_run $1

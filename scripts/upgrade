@@ -1,38 +1,28 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
-upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
-# STANDARD UPGRADE STEPS
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..."  --weight=1
+ynh_script_progression "Stopping $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
-ynh_systemd_action --service_name=$app.timer --action="stop"
+ynh_systemctl --service=$app --action="stop"
+
+ynh_systemctl --service=$app.timer --action="stop"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_script_progression --message="Ensuring downward compatibility..."  --weight=1
+ynh_script_progression "Ensuring downward compatibility..."
 
 if [[ "${mailalert:-}" != "always" && "${mailalert:-}" != "errors_only" && "${mailalert:-}" != "never" ]]; then
-    ynh_app_setting_set --app=$app --key="mailalert" --value="errors_only"
+    ynh_app_setting_set --key="mailalert" --value="errors_only"
     export mailalert="errors_only"
 fi
-ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
-ynh_app_setting_set --app=$app --key="last_run" --value="-"
-
+ynh_app_setting_set --key="state" --value="not run since last update"
+ynh_app_setting_set --key="last_run" --value="-"
 
 if [ -z "$repository" ]; then
     repository="ssh://$ssh_user@$server/~/backup"
@@ -56,58 +46,58 @@ fi
 
 # Clear legacy stuff
 if [ -d /opt/borg-env ]; then
-    ynh_secure_remove --file="/opt/borg-env"
-    ynh_secure_remove --file="/usr/local/bin/borg"
-    ynh_secure_remove --file="/usr/local/bin/backup-with-borg"
+    ynh_safe_rm "/opt/borg-env"
+    ynh_safe_rm "/usr/local/bin/borg"
+    ynh_safe_rm "/usr/local/bin/backup-with-borg"
 fi
 
 #=================================================
 # UPGRADE BORG
 #=================================================
-ynh_script_progression --message="Upgrading Borg..." --weight=1
+ynh_script_progression "Upgrading Borg..."
 
 install_borg_with_pip
 
 _gen_and_save_public_key
 
 mkdir -p "/var/log/$app"
-chown -R $app:$app "/var/log/$app"
-chmod u+w "/var/log/$app"
+#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "/var/log/$app"
+#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod u+w "/var/log/$app"
 
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
-ynh_script_progression --message="Setting up backup method..." --weight=1
+ynh_script_progression "Setting up backup method..."
 
 mkdir -p /etc/yunohost/hooks.d/backup
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
 
-ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_config_add --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-ynh_add_config --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
+ynh_config_add --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
 chmod u+x "$install_dir/backup-with-borg"
 chown "$app:$app" "$install_dir/backup-with-borg"
 
-ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
-chown root:root "/etc/sudoers.d/$app"
+ynh_config_add --template="sudoer" --destination="/etc/sudoers.d/$app"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown root:root "/etc/sudoers.d/$app"
 
-ynh_add_config --template="logging.conf" --destination="$install_dir/logging.conf"
+ynh_config_add --template="logging.conf" --destination="$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
+ynh_script_progression "Upgrading system configurations related to $app..."
 
 # Create a dedicated systemd config
-ynh_add_systemd_config
+ynh_config_add_systemd
 yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"  --log "/var/log/$app/borg.log"
 # Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
-ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+ynh_config_add --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 
@@ -115,4 +105,4 @@ systemctl start $app.timer
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --last
+ynh_script_progression "Upgrade of $app completed"

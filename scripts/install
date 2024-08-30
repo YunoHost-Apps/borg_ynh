@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
@@ -26,67 +20,67 @@ else
     server=""
 fi
 
-ynh_app_setting_set --app=$app --key=ssh_user --value="$ssh_user"
-ynh_app_setting_set --app=$app --key=server --value="$server"
+ynh_app_setting_set --key=ssh_user --value="$ssh_user"
+ynh_app_setting_set --key=server --value="$server"
 
 state="repository uncreated"
-ynh_app_setting_set --app=$app --key=state --value="$state"
+ynh_app_setting_set --key=state --value="$state"
 last_run="-"
-ynh_app_setting_set --app=$app --key=last_run --value="$last_run"
+ynh_app_setting_set --key=last_run --value="$last_run"
 
 # passwords aren't saved by default
-ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"
+ynh_app_setting_set --key=passphrase --value="$passphrase"
 
 #=================================================
 # INSTALL BORG
 #=================================================
-ynh_script_progression --message="Installing Borg..."
+ynh_script_progression "Installing Borg..."
 
 install_borg_with_pip
 
 _gen_and_save_public_key
 
 mkdir -p "/var/log/$app"
-chown -R $app:$app "/var/log/$app"
-chmod u+w "/var/log/$app"
+#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "/var/log/$app"
+#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod u+w "/var/log/$app"
 
 #=================================================
 # SPECIFIC SETUP
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
-ynh_script_progression --message="Setting up backup method..." --weight=1
+ynh_script_progression "Setting up backup method..."
 
 mkdir -p /etc/yunohost/hooks.d/backup
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
 
-ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_config_add --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-ynh_add_config --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
+ynh_config_add --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
 chmod u+x "$install_dir/backup-with-borg"
 chown "$app:$app" "$install_dir/backup-with-borg"
 
-ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
-chown root:root "/etc/sudoers.d/$app"
+ynh_config_add --template="sudoer" --destination="/etc/sudoers.d/$app"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown root:root "/etc/sudoers.d/$app"
 
-ynh_add_config --template="logging.conf" --destination="$install_dir/logging.conf"
+ynh_config_add --template="logging.conf" --destination="$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
 #=================================================
 # SYSTEM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding system configurations related to $app..." --weight=1
+ynh_script_progression "Adding system configurations related to $app..."
 
 # Create a dedicated systemd config
-ynh_add_systemd_config
+ynh_config_add_systemd
 yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed" --log "/var/log/$app/borg.log"
 # Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
 # Configure the systemd timer
-ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+ynh_config_add --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 
@@ -94,4 +88,4 @@ systemctl start $app.timer
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --last
+ynh_script_progression "Installation of $app completed"
