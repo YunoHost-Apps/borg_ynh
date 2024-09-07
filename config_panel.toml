@@ -48,7 +48,7 @@ services = []
         help = "Alerts are sent to the first user of this server"
         
     [main.content]
-    name = "What should be backuped?"
+    name = "What should be backed up?"
     optional = false
 
         [main.content.conf]
