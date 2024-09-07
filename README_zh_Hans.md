@@ -26,7 +26,7 @@ This app is the "client" part, meant to be installed on the server to be backed 
 - ... or on a [commercial borg service](https://www.borgbackup.org/support/commercial.html)
 - Backups are encrypted (the remote server can't read the content) and deduplicated (optimize space)
 - Backups are ran automatically, you can choose when and at which frequency
-- You can choose what apps are backuped
+- You can choose what apps are backed up
 - Receive email alerts if the backup fails (the [borg server app](https://apps.yunohost.org/app/borgserver) also checks that new content arrives and send an email to your friend otherwise)
 
 ### Install procedure
@@ -34,10 +34,12 @@ This app is the "client" part, meant to be installed on the server to be backed 
 Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, at the end of the install of `borg_ynh`, you will be provided with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
 
 
-**分发版本：** 1.2.8~ynh2
+**分发版本：** 1.4.0~ynh1
 ## 文档与资源
 
-- 官方应用网站： <https://borgbackup.readthedocs.io>
+- 官方应用网站： <https://www.borgbackup.org>
+- 官方管理文档： <https://borgbackup.readthedocs.io>
+- 上游应用代码库： <https://github.com/borgbackup/borg>
 - YunoHost 商店： <https://apps.yunohost.org/app/borg>
 - 报告 bug： <https://github.com/YunoHost-Apps/borg_ynh/issues>
 
