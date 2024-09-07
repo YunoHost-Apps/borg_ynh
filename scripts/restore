@@ -13,8 +13,8 @@ install_borg_with_pip
 _gen_and_save_public_key
 
 mkdir -p "/var/log/$app"
-#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "/var/log/$app"
-#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod u+w "/var/log/$app"
+chown -R $app:$app "/var/log/$app"
+chmod u+w "/var/log/$app"
 
 #=================================================
 # ACTIVATE BACKUP METHODS
@@ -29,7 +29,7 @@ ynh_restore "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 ynh_restore "/etc/sudoers.d/$app"
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown root:root "/etc/sudoers.d/$app"
+chown root:root "/etc/sudoers.d/$app"
 
 ynh_restore "$install_dir/backup-with-borg"
 chmod u+x "$install_dir/backup-with-borg"

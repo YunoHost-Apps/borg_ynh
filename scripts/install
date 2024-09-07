@@ -41,8 +41,8 @@ install_borg_with_pip
 _gen_and_save_public_key
 
 mkdir -p "/var/log/$app"
-#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "/var/log/$app"
-#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod u+w "/var/log/$app"
+chown -R $app:$app "/var/log/$app"
+chmod u+w "/var/log/$app"
 
 #=================================================
 # SPECIFIC SETUP
@@ -63,7 +63,7 @@ chmod u+x "$install_dir/backup-with-borg"
 chown "$app:$app" "$install_dir/backup-with-borg"
 
 ynh_config_add --template="sudoer" --destination="/etc/sudoers.d/$app"
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown root:root "/etc/sudoers.d/$app"
+chown root:root "/etc/sudoers.d/$app"
 
 ynh_config_add --template="logging.conf" --destination="$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"

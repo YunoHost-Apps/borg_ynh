@@ -1,8 +1,16 @@
 #!/bin/bash
 
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
 source /usr/share/yunohost/helpers
 
 ynh_print_info "Declaring files to be backed up..."
+
+#=================================================
+# SYSTEM CONFIGURATION
+#=================================================
 
 ynh_backup "/etc/systemd/system/$app.service"
 ynh_backup "/etc/systemd/system/$app.timer"
