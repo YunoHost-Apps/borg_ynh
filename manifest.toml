@@ -65,7 +65,7 @@ ram.runtime = "50M"
     default = "all"
 
     [install.on_calendar]
-    ask.en = "When at at which frequency should the backups be performed?"
+    ask.en = "When and at which frequency should the backups be performed?"
     ask.fr = "Quand et à quelle fréquence les sauvegardes doivent-elles être effectuées ?"
     type = "string"
     help = "For example: `Monthly`, `Weekly`, `Daily` (=every day at midnight), `Hourly`, `Sat *-*-1..7 18:00:00` (=the first saturday of every month at 18:00), `4:00` (=every day at 4 AM), `5,17:00` (=every day at 5 AM and 5 PM). See the [systemd OnCalendar format for full syntax doc](https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer)"
