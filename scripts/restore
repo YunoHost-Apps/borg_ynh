@@ -44,11 +44,17 @@ chown "$app:$app" "$install_dir/logging.conf"
 ynh_script_progression "Restoring system configurations related to $app..."
 
 ynh_restore "/etc/systemd/system/$app.service"
+
 yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed" --log "/var/log/$app/borg.log"
-# Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
 ynh_restore "/etc/systemd/system/$app.timer"
+
+#=================================================
+# RELOAD THE APP SERVICE
+#=================================================
+ynh_script_progression "Reloading $app's service..."
+
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 
