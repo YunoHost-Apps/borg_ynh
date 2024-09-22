@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
@@ -14,25 +8,25 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
-if ynh_exec_warn_less yunohost service status $app >/dev/null; then
-    ynh_script_progression --message="Removing $app service integration..."
+if ynh_hide_warnings yunohost service status $app >/dev/null; then
+    ynh_script_progression "Removing $app service integration..."
     yunohost service remove $app
 fi
 
 #=================================================
 # REMOVE SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
+ynh_script_progression "Removing system configurations related to $app..."
 
 systemctl stop $app.timer
 systemctl disable $app.timer --quiet
-ynh_remove_systemd_config
+ynh_config_remove_systemd
 
-ynh_secure_remove "/etc/systemd/system/$app.timer"
-ynh_secure_remove "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_safe_rm "/etc/systemd/system/$app.timer"
+ynh_safe_rm "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of $app completed" --last
+ynh_script_progression "Removal of $app completed"
