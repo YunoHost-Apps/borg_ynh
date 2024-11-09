@@ -31,10 +31,10 @@ name.fr = "Configuration de Borg"
         help.fr = "Spécifier un dépôt local (`/mount/my_external_harddrive/backups`) ou un dépôt distant (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). Si vous prévoyez d’utiliser une application borgserver_ynh distante : `USER` n'est *pas* censé être un utilisateur existant sur le serveur invité, il sera créé *sur le serveur hôte* lors de l’installation de l'application Borg Server. Avec l'application Borg Server, vous ne pouvez pas spécifier un autre chemin de dépôt que `~/backup`."
   
         [main.general.ssh_public_key]
-        ask.en = "Public key: {ssh_public_key}"
-        ask.fr = "Clé publique : {ssh_public_key}"
-        type = "markdown"
-        bind = "/root/.ssh/id___APP___ed25519.pub"
+        ask.en = "Public key"
+        ask.fr = "Clé publique"
+        type = "string"
+        readonly = true
 
         [main.general.on_calendar]
         ask.en = "When and at which frequency should the backups be performed?"
