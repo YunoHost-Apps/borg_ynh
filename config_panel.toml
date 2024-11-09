@@ -2,7 +2,6 @@ version = "1.0"
 
 [main]
 name = "Borg configuration"
-services = []
 
     [main.state]
     name = ""
@@ -71,7 +70,6 @@ services = []
 
 [list]
 name = "Last backups list"
-services = []
 
     [list.list]
     name = ""
