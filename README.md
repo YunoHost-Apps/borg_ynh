@@ -5,7 +5,9 @@ It shall NOT be edited by hand.
 
 # Borg Backup for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/borg.svg)](https://ci-apps.yunohost.org/ci/apps/borg/) ![Working status](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+[![Integration level](https://apps.yunohost.org/badge/integration/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
+![Working status](https://apps.yunohost.org/badge/state/borg)
+![Maintenance status](https://apps.yunohost.org/badge/maintained/borg)
 
 [![Install Borg Backup with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
@@ -34,7 +36,7 @@ This app is the "client" part, meant to be installed on the server to be backed 
 Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, at the end of the install of `borg_ynh`, you will be provided with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
 
 
-**Shipped version:** 1.4.0~ynh1
+**Shipped version:** 1.4.0~ynh2
 ## Documentation and resources
 
 - Official app website: <https://www.borgbackup.org>
