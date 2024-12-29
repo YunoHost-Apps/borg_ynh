@@ -5,7 +5,9 @@
 
 # YunoHost 上的 Borg Backup
 
-[![集成程度](https://dash.yunohost.org/integration/borg.svg)](https://ci-apps.yunohost.org/ci/apps/borg/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+[![集成程度](https://apps.yunohost.org/badge/integration/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
+![工作状态](https://apps.yunohost.org/badge/state/borg)
+![维护状态](https://apps.yunohost.org/badge/maintained/borg)
 
 [![使用 YunoHost 安装 Borg Backup](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 

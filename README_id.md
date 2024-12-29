@@ -5,7 +5,9 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Borg Backup untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/borg.svg)](https://ci-apps.yunohost.org/ci/apps/borg/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
+![Status kerja](https://apps.yunohost.org/badge/state/borg)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/borg)
 
 [![Pasang Borg Backup dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 

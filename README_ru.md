@@ -5,7 +5,9 @@
 
 # Borg Backup для YunoHost
 
-[![Уровень интеграции](https://dash.yunohost.org/integration/borg.svg)](https://ci-apps.yunohost.org/ci/apps/borg/) ![Состояние работы](https://ci-apps.yunohost.org/ci/badges/borg.status.svg) ![Состояние сопровождения](https://ci-apps.yunohost.org/ci/badges/borg.maintain.svg)
+[![Уровень интеграции](https://apps.yunohost.org/badge/integration/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
+![Состояние работы](https://apps.yunohost.org/badge/state/borg)
+![Состояние сопровождения](https://apps.yunohost.org/badge/maintained/borg)
 
 [![Установите Borg Backup с YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
