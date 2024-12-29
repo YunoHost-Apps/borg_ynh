@@ -53,7 +53,7 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
         # This is a warning, the script may continue, but let's warn the admin.
         # See: https://github.com/borgbackup/borg/issues/6989#issuecomment-1223921392
         echo "Some warning were logged during the backup, you'd probably check whether it was severe or not" >&2
-    # Note that retco
+    # Note that retcode is greater or equal to 2, which means the "borg create" command failed. Exit in such a case.
     elif [[ "${retcode:-}" != 0 ]]
     then
         exit $retcode
