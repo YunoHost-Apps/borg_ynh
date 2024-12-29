@@ -36,7 +36,7 @@ This app is the "client" part, meant to be installed on the server to be backed 
 Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, at the end of the install of `borg_ynh`, you will be provided with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
 
 
-**Geleverde versie:** 1.4.0~ynh1
+**Geleverde versie:** 1.4.0~ynh2
 ## Documentatie en bronnen
 
 - Officiele website van de app: <https://www.borgbackup.org>
