@@ -35,7 +35,7 @@ Then run for example:
 - List archives: `borg list "$repository" | less`
 - List files from a specific archive: `borg list "$repository::ARCHIVE_NAME" | less`
 - View archive info: `borg info "$repository::ARCHIVE_NAME"`
-- Verify data integrity: `borg info "$repository::ARCHIVE_NAME" --verify-data`
+- Verify data integrity: `borg check "$repository::ARCHIVE_NAME" --verify-data`
 
 ## Restoring archives from Borg
 

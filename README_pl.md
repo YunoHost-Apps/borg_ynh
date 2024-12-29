@@ -1,22 +1,22 @@
 <!--
-注意：此 README 由 <https://github.com/YunoHost/apps/tree/master/tools/readme_generator> 自动生成
-请勿手动编辑。
+To README zostało automatycznie wygenerowane przez <https://github.com/YunoHost/apps/tree/master/tools/readme_generator>
+Nie powinno być ono edytowane ręcznie.
 -->
 
-# YunoHost 上的 Borg Backup
+# Borg Backup dla YunoHost
 
-[![集成程度](https://apps.yunohost.org/badge/integration/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
-![工作状态](https://apps.yunohost.org/badge/state/borg)
-![维护状态](https://apps.yunohost.org/badge/maintained/borg)
+[![Poziom integracji](https://apps.yunohost.org/badge/integration/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
+![Status działania](https://apps.yunohost.org/badge/state/borg)
+![Status utrzymania](https://apps.yunohost.org/badge/maintained/borg)
 
-[![使用 YunoHost 安装 Borg Backup](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
+[![Zainstaluj Borg Backup z YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=borg)
 
-*[阅读此 README 的其它语言版本。](./ALL_README.md)*
+*[Przeczytaj plik README w innym języku.](./ALL_README.md)*
 
-> *通过此软件包，您可以在 YunoHost 服务器上快速、简单地安装 Borg Backup。*  
-> *如果您还没有 YunoHost，请参阅[指南](https://yunohost.org/install)了解如何安装它。*
+> *Ta aplikacja pozwala na szybką i prostą instalację Borg Backup na serwerze YunoHost.*  
+> *Jeżeli nie masz YunoHost zapoznaj się z [poradnikiem](https://yunohost.org/install) instalacji.*
 
-## 概况
+## Przegląd
 
 A [Borg](https://borgbackup.readthedocs.io/en/stable/index.html#what-is-borgbackup) integration to backup your YunoHost server to another remote server (e.g. one of your friends).
 
@@ -36,25 +36,25 @@ This app is the "client" part, meant to be installed on the server to be backed 
 Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and *then* (`borgserver_ynh`) on the other machine. In fact, at the end of the install of `borg_ynh`, you will be provided with the info, in particular the SSH public key, to be used to setup `borgserver_ynh` on the other machine.
 
 
-**分发版本：** 1.4.0~ynh2
-## 文档与资源
+**Dostarczona wersja:** 1.4.0~ynh2
+## Dokumentacja i zasoby
 
-- 官方应用网站： <https://www.borgbackup.org>
-- 官方管理文档： <https://borgbackup.readthedocs.io>
-- 上游应用代码库： <https://github.com/borgbackup/borg>
-- YunoHost 商店： <https://apps.yunohost.org/app/borg>
-- 报告 bug： <https://github.com/YunoHost-Apps/borg_ynh/issues>
+- Oficjalna strona aplikacji: <https://www.borgbackup.org>
+- Oficjalna dokumentacja dla administratora: <https://borgbackup.readthedocs.io>
+- Repozytorium z kodem źródłowym: <https://github.com/borgbackup/borg>
+- Sklep YunoHost: <https://apps.yunohost.org/app/borg>
+- Zgłaszanie błędów: <https://github.com/YunoHost-Apps/borg_ynh/issues>
 
-## 开发者信息
+## Informacje od twórców
 
-请向 [`testing` 分支](https://github.com/YunoHost-Apps/borg_ynh/tree/testing) 发送拉取请求。
+Wyślij swój pull request do [gałęzi `testing`](https://github.com/YunoHost-Apps/borg_ynh/tree/testing).
 
-如要尝试 `testing` 分支，请这样操作：
+Aby wypróbować gałąź `testing` postępuj zgodnie z instrukcjami:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/borg_ynh/tree/testing --debug
-或
+lub
 sudo yunohost app upgrade borg -u https://github.com/YunoHost-Apps/borg_ynh/tree/testing --debug
 ```
 
-**有关应用打包的更多信息：** <https://yunohost.org/packaging_apps>
+**Więcej informacji o tworzeniu paczek aplikacji:** <https://yunohost.org/packaging_apps>
