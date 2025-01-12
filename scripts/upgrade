@@ -97,6 +97,14 @@ ynh_add_config --template="logging.conf" --destination="$install_dir/logging.con
 chown "$app:$app" "$install_dir/logging.conf"
 
 #=================================================
+# SETUP LOGROTATE
+#=================================================
+ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
+
+# Use logrotate to manage app-specific logfile(s)
+ynh_use_logrotate --non-append --logfile="/var/log/$app/borg.log"
+
+#=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
 ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
