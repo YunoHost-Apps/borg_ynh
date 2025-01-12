@@ -7,7 +7,7 @@ name = "Borg Backup"
 description.en = "Regularly create deduplicated, encrypted backups sent to another server using Borg"
 description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiffées envoyées sur un autre serveur à l'aide de Borg"
 
-version = "1.4.0~ynh2"
+version = "1.4.0~ynh3"
 
 maintainers = ["ljf"]
 
