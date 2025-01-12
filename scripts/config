@@ -87,6 +87,11 @@ set__conf() {
     fi
 }
 
+set__on_calendar() {
+    ynh_write_var_in_file --file="/etc/systemd/system/$app.timer"  --key=OnCalendar --value="$on_calendar"
+    sudo systemctl daemon-reload
+}
+
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
