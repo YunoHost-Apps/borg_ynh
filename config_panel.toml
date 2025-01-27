@@ -47,12 +47,6 @@ services = []
         choices.never = "Never alert me"
         help = "Alerts are sent to the first user of this server"
 
-        [main.general.healthcheck_url]
-        ask.en = "Healthcheck URL"
-        type = "string"
-        help = "Use a healthcheck to detect silent failures. It's optional, if you don't know what it is, just leave it blank or look it up: https://healthchecks.io"
-        optional = "true"
-        
     [main.content]
     name = "What should be backed up?"
     optional = false
@@ -73,6 +67,16 @@ services = []
         ask.en = "Apps"
         type = "tags"
         help = "App list separated by comma. You can write 'all' to select all apps, even those installed after this borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
+
+    [main.advanced]
+    name = "Advanced settings"
+    optional = true
+
+        [main.advanced.healthcheck_url]
+        ask.en = "Healthcheck URL"
+        type = "string"
+        help = "Use a healthcheck to detect silent failures. It's optional, if you don't know what it is, just leave it blank or look it up: https://healthchecks.io"
+        optional = true
 
 [list]
 name = "Last backups list"
