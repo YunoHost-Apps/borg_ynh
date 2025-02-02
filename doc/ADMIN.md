@@ -30,6 +30,13 @@ export BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes
 repository="$(sudo yunohost app setting $app repository)"
 ```
 
+If additional options are needed, like the *remote path* to the borg executable, set them as well:
+```bash
+if [[ "$(sudo yunohost app setting $app remote-path)" != "" ]]; then
+    export BORG_REMOTE_PATH="$(sudo yunohost app setting $app remote-path)"
+fi
+```
+
 Then run for example:
 
 - List archives: `borg list "$repository" | less`
