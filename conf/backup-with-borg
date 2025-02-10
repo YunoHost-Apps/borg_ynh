@@ -91,7 +91,7 @@ $(cat $err_file)
 
 
 **********************************************
-Additional global ${borg_id} app logs:
+Last logs in global ${borg_id} log file:
 **********************************************
 $(tail -n 50 "/var/log/${borg_id}/borg.log")
 **********************************************
