@@ -47,7 +47,7 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     # https://borgbackup.readthedocs.io/en/stable/usage/create.html#description
     # In the archive name, you may use the following placeholders: {now}, {utcnow}, {fqdn}, {hostname}, {user} and some others.
     pushd "$work_dir"
-       "$borg" create --stats "::${name}-{now}" . && retcode="0" || retcode="$?"
+       "$borg" create --exclude-if-present .nobackup --stats "::${name}-{now}" . && retcode="0" || retcode="$?"
     popd
     # Check whether the above command exit with a return code > 0
     if [[ "${retcode:-}" == 1 ]]
