@@ -49,7 +49,7 @@ Maybe counter-intuitively, you should *first* install this app (`borg_ynh`) and 
 
 Bidali `pull request`a [`testing` abarrera](https://github.com/YunoHost-Apps/borg_ynh/tree/testing).
 
-`testing` abarra probatzeko, ondorengoa egin:
+`testing` abarra probatzeko, honakoa egin:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/borg_ynh/tree/testing --debug
