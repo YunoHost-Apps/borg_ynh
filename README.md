@@ -4,14 +4,14 @@ It shall NOT be edited by hand.
 -->
 
 <h1>
-  <img src="https://raw.githubusercontent.com/YunoHost/apps/master/logos/borg.png" width="32px" alt="Logo of Borg Backup">
+  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/borg.png" width="32px" alt="Logo of Borg Backup">
   Borg Backup, packaged for YunoHost
 </h1>
 
 Regularly create deduplicated, encrypted backups sent to another server using Borg
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://www.borgbackup.org)
-![Version: 1.4.0~ynh3](https://img.shields.io/badge/Version-1.4.0~ynh3-rgba(0,150,0,1)?style=for-the-badge)
+[![Version: 1.4.1~ynh1](https://img.shields.io/badge/Version-1.4.1~ynh1-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/borg/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/borg"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
@@ -19,6 +19,8 @@ Regularly create deduplicated, encrypted backups sent to another server using Bo
 </div>
 
 ## 📦 Developer info
+
+[![Automatic tests level](https://apps.yunohost.org/badge/cilevel/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
 
 🛠️ Upstream Borg Backup repository: <https://github.com/borgbackup/borg>
 
