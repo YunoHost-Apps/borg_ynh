@@ -18,7 +18,7 @@ Once the backup completes, you can check that a backup is listed in the webadmin
 
 The config panel has a "Last backup list" that allow to have quick look at the recently created backup archives.
 
-However, you may want to manually inspect that the backups are indeed made regularly and contain the expected content.
+However, you may want to manually inspect that the backups are indeed made regularly and contain the expected content. Note that the `borg` commandline tool is installed in a custom place, hence the following environment definitions required (for `$PATH`, in particular).
 
 First, prepare the environment with the appropriate borg variables, etc:
 
