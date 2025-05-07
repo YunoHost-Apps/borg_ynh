@@ -37,6 +37,13 @@ ram.runtime = "50M"
     type = "string"
     example = "ssh://john@serverb.tld:22/~/backup"
 
+    [install.remote_path]
+    ask.en = "Remote borg command (remote-path)"
+    help.en = "Optionally, specify a custom remote-path option for borg execution (excerpt from docs: *BORG_REMOTE_PATH: When set, use the given path as borg executable on the remote (defaults to “borg” if unset)*). Leave empty if unsure."
+    type = "string"
+    optional = true
+    example = "borg1234"
+
     [install.passphrase]
     ask.en = "Provide a strong passphrase to encrypt your backups. No blank space"
     ask.fr = "Indiquez une phrase de passe forte pour chiffrer vos sauvegardes. Sans espaces"

@@ -14,8 +14,8 @@ else
     BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=no "
 fi
 
-if [[ "$(yunohost app setting "$app" remote-path)" != "" ]]; then
-    BORG_REMOTE_PATH="$(yunohost app setting "$app" remote-path)"
+if [[ "$(yunohost app setting "$app" remote_path)" != "" ]]; then
+    BORG_REMOTE_PATH="$(yunohost app setting "$app" remote_path)"
 fi
 
 do_need_mount() {

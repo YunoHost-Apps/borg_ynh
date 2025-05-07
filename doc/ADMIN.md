@@ -33,8 +33,8 @@ repository="$(sudo yunohost app setting $app repository)"
 If additional options are needed, like the *remote path* to the borg
 executable (see "Support for remote-path" bellow), set them as well:
 ```bash
-if [[ "$(sudo yunohost app setting $app remote-path)" != "" ]]; then
-    export BORG_REMOTE_PATH="$(sudo yunohost app setting $app remote-path)"
+if [[ "$(sudo yunohost app setting $app remote_path)" != "" ]]; then
+    export BORG_REMOTE_PATH="$(sudo yunohost app setting $app remote_path)"
 fi
 ```
 
@@ -85,8 +85,8 @@ In particular cases, one may need to specify a custom borg executable to be run 
 
 This is supported by the provided backup scripts even though no configurable item is provided in the app's configuration panels.
 
-If you're in such a case, you'd manually define that `remote-path` setting value using the following definition (here set to `borg1234` in this example):
+If you're in such a case, you'd manually define that `remote_path` setting value using the following definition (here set to `borg1234` in this example):
 
 ```bash
-sudo yunohost app setting borg remote-path -v borg1234
+sudo yunohost app setting borg remote_path -v borg1234
 ```

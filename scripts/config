@@ -50,9 +50,9 @@ get__last_backups() {
     cat << EOF
 ask: |-
 EOF
-    if [ "$(ynh_app_setting_get $app remote-path)" != "" ]; then
+    if [ "$(ynh_app_setting_get $app remote_path)" != "" ]; then
         cat << EOF
-$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " BORG_REMOTE_PATH="$(ynh_app_setting_get $app remote-path)" "$borg" list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
+$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " BORG_REMOTE_PATH="$(ynh_app_setting_get $app remote_path)" "$borg" list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
 EOF
     else
         cat << EOF
