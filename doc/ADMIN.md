@@ -33,7 +33,7 @@ repository="$(sudo yunohost app setting $app repository)"
 If additional options are needed, like the *remote path* to the borg
 executable (see *Support for remote-path* bellow), set them as well:
 ```bash
-if [[ "$(sudo yunohost app setting $app remote_path)" != "" ]]; then
+if [[ ! -z "$(sudo yunohost app setting $app remote_path)" ]]; then
     export BORG_REMOTE_PATH="$(sudo yunohost app setting $app remote_path)"
 fi
 ```
