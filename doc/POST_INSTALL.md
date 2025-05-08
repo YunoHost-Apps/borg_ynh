@@ -1,12 +1,5 @@
-You should check out the admin documentation of this app after installation for more info!
+You defined the backup target: `__REPOSITORY__`.
 
-If you selected a remote borg server as backup target, you should now install the "Borg Server" app on `__SERVER__` and with the following credentials (you may need to send this to your friend):
+You should check out the admin documentation of this app at the bottom of the config panel!
 
-- User: `__SSH_USER__`
-- Public key: `__PUBLIC_KEY__`
-
-Or directly using command line:
-
-`yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a "ssh_user=__SSH_USER__&public_key=__PUBLIC_KEY__"`
-
-NB: the SSH user is not meant to pre-exist on the server on which borgserver is installed!
+If you selected a remote borg server as backup target (*starting with `ssh://`*), you'll be interested by some additional suggestions (you should now probably install the "Borg Server" Yunohost app on that remote server, or configure SSH access to the remote account using the SSH public key that was just generated during install).
