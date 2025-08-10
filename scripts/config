@@ -36,7 +36,7 @@ EOF
 }
 
 get__ssh_public_key() {
-    cat "/root/.ssh/id_${app}_ed25519.pub" || echo "N/A"
+    cat "/root/.ssh/id_${app}_ed25519.pub" 2>/dev/null || echo "N/A"
 }
 
 get__data_multimedia() {
