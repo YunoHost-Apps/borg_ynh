@@ -32,6 +32,11 @@ services = []
         type = "markdown"
         bind = "/root/.ssh/id___APP___ed25519.pub"
 
+        [main.general.remote_path]
+        ask.en = "Remote borg command (remote-path)"
+        type = "string"
+        help = "Optionally, specify a custom remote-path option for borg execution (excerpt from docs: *BORG_REMOTE_PATH: When set, use the given path as borg executable on the remote (defaults to “borg” if unset)*). Leave empty if unsure."
+
         [main.general.on_calendar]
         ask.en = "When and at which frequency should the backups be performed?"
         ask.fr = "Quand et à quelle fréquence les sauvegardes doivent-elles être effectuées ?"
