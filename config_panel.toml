@@ -27,7 +27,7 @@ name.fr = "Configuration de Borg"
         ask.en = "Repository"
         ask.fr = "Dépôt"
         type = "string"
-        help.en = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app : `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With the Borg Server App, you can't specify another repo path than `~/backup`."
+        help.en = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app: `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With the Borg Server App, you can't specify another repo path than `~/backup`."
         help.fr = "Spécifier un dépôt local (`/mount/my_external_harddrive/backups`) ou un dépôt distant (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). Si vous prévoyez d’utiliser une application borgserver_ynh distante : `USER` n'est *pas* censé être un utilisateur existant sur le serveur invité, il sera créé *sur le serveur hôte* lors de l’installation de l'application Borg Server. Avec l'application Borg Server, vous ne pouvez pas spécifier un autre chemin de dépôt que `~/backup`."
   
         [main.general.ssh_public_key]
