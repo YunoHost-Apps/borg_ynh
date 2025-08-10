@@ -23,6 +23,9 @@ do_backup() {
     name="$2"
     size="$3"
     description="$4"
+    if [[ "${name}" == "auto_"* ]]; then
+        export BORG_FILES_CACHE_SUFFIX="${name}"
+    fi
     set +e
     if ! "$borg" list > /dev/null 2>&1; then
         "$borg" init -e repokey
@@ -72,6 +75,7 @@ do_mount() {
     name="$2"
     size="$3"
     description="$4"
+
     "$borg" mount "::$name" "$work_dir"
 }
 
