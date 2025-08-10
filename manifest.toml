@@ -86,7 +86,6 @@ ram.runtime = "50M"
     prefetch = false
 
     autoupdate.strategy = "latest_github_release"
-    autoupdate.upstream = "https://github.com/borgbackup/borg"
 
     [resources.system_user]
 
