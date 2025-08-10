@@ -50,8 +50,8 @@ name.fr = "Configuration de Borg"
         choices.always = "Always"
         choices.errors_only = "Only if an error occured"
         choices.never = "Never alert me"
-        help.en = "Alerts are sent to the first user of this server"
-        help.fr = "Les alertes sont envoyées au premier utilisateur de ce serveur"
+        help.en = "Alerts are sent to members of the admins group"
+        help.fr = "Les alertes sont envoyées aux membres du groupe admins"
         
     [main.content]
     name.en = "What should be backed up?"
