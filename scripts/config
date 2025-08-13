@@ -88,8 +88,12 @@ set__conf() {
 }
 
 set__on_calendar() {
-    ynh_write_var_in_file --file="/etc/systemd/system/$app.timer"  --key=OnCalendar --value="$on_calendar"
+    local timer_file="/etc/systemd/system/$app.timer"
+    ynh_app_setting_set --app=$app --key="on_calendar" --value=$on_calendar
+    ynh_write_var_in_file --file="$timer_file"  --key=OnCalendar --value="$on_calendar"
+    ynh_store_file_checksum "$timer_file"
     systemctl daemon-reload
+    ynh_app_setting_set --app=$app --key="on_calendar" --value=$on_calendar
 }
 
 #=================================================
