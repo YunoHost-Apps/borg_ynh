@@ -41,7 +41,7 @@ name.fr = "Configuration de Borg"
         ask.fr = "Quand et à quelle fréquence les sauvegardes doivent-elles être effectuées ?"
         type = "string"
         help.en = "For example: `Monthly`, `Weekly`, `Daily` (=every day at midnight), `Hourly`, `Sat *-*-1..7 18:00:00` (=the first saturday of every month at 18:00), `4:00` (=every day at 4 AM), `5,17:00` (=every day at 5 AM and 5 PM). See the [systemd OnCalendar format for full syntax doc](https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer)"
-        bind = "OnCalendar:/etc/systemd/system/__APP__.timer"
+        bind = "null"
         
         [main.general.mailalert]
         ask.en = "Mail alert"
