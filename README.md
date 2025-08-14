@@ -18,6 +18,10 @@ Regularly create deduplicated, encrypted backups sent to another server using Bo
 <a href="https://github.com/YunoHost-Apps/borg_ynh/issues"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_report_an_issue.svg"/></a>
 </div>
 
+
+## Screenshots
+![Screenshot of Borg Backup](./doc/screenshots/setup_borg_and_borgserver.png)
+
 ## 📦 Developer info
 
 [![Automatic tests level](https://apps.yunohost.org/badge/cilevel/borg)](https://ci-apps.yunohost.org/ci/apps/borg/)
