@@ -55,7 +55,7 @@ name.fr = "Configuration de Borg"
         
     [main.content]
     name.en = "What should be backed up?"
-    name.fr = "Que devrait-on sauvegarder ?"
+    name.fr = "Que faut-il sauvegarder ?"
     optional = false
 
         [main.content.conf]
@@ -78,7 +78,7 @@ name.fr = "Configuration de Borg"
         ask.fr = "Apps"
         type = "tags"
         help.en = "App list separated by comma. You can write 'all' to select all apps, even those installed after this Borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
-        help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les applications, même celles installées après cette application Borg. Vous pouvez également sélectionner toutes les applications, mais certaines applications en écrivant 'exclure:' après une liste d’applications séparées par des virgules."
+        help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les applications, même celles installées après cette application Borg. Vous pouvez également sélectionner toutes les applications, mais certaines applications en précédant par 'exclude:' une liste d’applications séparées par des virgules."
 
 [list]
 name.en = "Last backups list"
