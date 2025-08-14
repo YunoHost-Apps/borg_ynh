@@ -13,9 +13,12 @@ borg="$install_dir/venv/bin/borg"
 get__info() {
         cat << EOF
 ask:
-  en: "**Backup state**: ${old[state]}
+  en: "**Backup state:** ${old[state]}
 
     **Last run**: ${old[last_run]}"
+  fr: "**État de la sauvegarde :** ${old[state]}
+
+    **Dernière exécution :** ${old[last_run]}"
 EOF
     if [ "${old[state]}" == "failed" ]; then
         cat << EOF
@@ -33,10 +36,7 @@ EOF
 }
 
 get__ssh_public_key() {
-    cat << EOF
-ask:
-  en: "**Public key**: \`$(cat /root/.ssh/id_${app}_ed25519.pub || echo '')\`"
-EOF
+    cat "/root/.ssh/id_${app}_ed25519.pub" 2>/dev/null || echo "N/A"
 }
 
 get__data_multimedia() {
@@ -85,6 +85,12 @@ set__conf() {
         # Update the config of the app
         ynh_app_setting_set --app=$app --key=conf --value=$conf
     fi
+}
+
+set__on_calendar() {
+    ynh_app_setting_set --app=$app --key="on_calendar" --value=$on_calendar
+    ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+    systemctl daemon-reload
 }
 
 #=================================================

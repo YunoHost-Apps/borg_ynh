@@ -1,7 +1,8 @@
 version = "1.0"
 
 [main]
-services = []
+name.en = "Borg configuration"
+name.fr = "Configuration de Borg"
 
     [main.state]
     name = ""
@@ -16,7 +17,7 @@ services = []
     [main.general]
         [main.general.info]
         ask = """\
-        Backup state : {{state}}
+        Backup state: {{state}}
         Last run: {{last_run}}
         """
         type = "alert"
@@ -24,55 +25,68 @@ services = []
 
         [main.general.repository]
         ask.en = "Repository"
+        ask.fr = "Dépôt"
         type = "string"
-        help = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app : `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than `~/backup`."
-        
+        help.en = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app: `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With the Borg Server App, you can't specify another repo path than `~/backup`."
+        help.fr = "Spécifier un dépôt local (`/mount/my_external_harddrive/backups`) ou un dépôt distant (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). Si vous prévoyez d’utiliser une application borgserver_ynh distante : `USER` n'est *pas* censé être un utilisateur existant sur le serveur invité, il sera créé *sur le serveur hôte* lors de l’installation de l'application Borg Server. Avec l'application Borg Server, vous ne pouvez pas spécifier un autre chemin de dépôt que `~/backup`."
+  
         [main.general.ssh_public_key]
-        ask.en = "Public key: {ssh_public_key}"
-        type = "markdown"
-        bind = "/root/.ssh/id___APP___ed25519.pub"
+        ask.en = "Public key"
+        ask.fr = "Clé publique"
+        type = "string"
+        readonly = true
 
         [main.general.on_calendar]
         ask.en = "When and at which frequency should the backups be performed?"
         ask.fr = "Quand et à quelle fréquence les sauvegardes doivent-elles être effectuées ?"
         type = "string"
-        help = "For example: `Monthly`, `Weekly`, `Daily` (=every day at midnight), `Hourly`, `Sat *-*-1..7 18:00:00` (=the first saturday of every month at 18:00), `4:00` (=every day at 4 AM), `5,17:00` (=every day at 5 AM and 5 PM). See the [systemd OnCalendar format for full syntax doc](https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer)"
-        bind = "OnCalendar:/etc/systemd/system/__APP__.timer"
+        help.en = "For example: `Monthly`, `Weekly`, `Daily` (=every day at midnight), `Hourly`, `Sat *-*-1..7 18:00:00` (=the first saturday of every month at 18:00), `4:00` (=every day at 4 AM), `5,17:00` (=every day at 5 AM and 5 PM). See the [systemd OnCalendar format for full syntax doc](https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer)"
+        bind = "null"
         
         [main.general.mailalert]
         ask.en = "Mail alert"
+        ask.fr = "Alerte mail"
         type = "select"
         choices.always = "Always"
         choices.errors_only = "Only if an error occured"
         choices.never = "Never alert me"
-        help = "Alerts are sent to the first user of this server"
+        help.en = "Alerts are sent to members of the admins group"
+        help.fr = "Les alertes sont envoyées aux membres du groupe admins"
         
     [main.content]
-    name = "What should be backed up?"
+    name.en = "What should be backed up?"
+    name.fr = "Que faut-il sauvegarder ?"
     optional = false
 
         [main.content.conf]
         ask.en = "Configuration"
+        ask.fr = "Configuration"
         type = "boolean"
 
         [main.content.data]
         ask.en = "Data"
+        ask.fr = "Données"
         type = "boolean"
 
         [main.content.data_multimedia]
         ask.en = "Data multimedia"
+        ask.fr = "Données multimedia"
         type = "boolean"
 
         [main.content.apps]
         ask.en = "Apps"
+        ask.fr = "Apps"
         type = "tags"
-        help = "App list separated by comma. You can write 'all' to select all apps, even those installed after this borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
+        help.en = "App list separated by comma. You can write 'all' to select all apps, even those installed after this Borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
+        help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les applications, même celles installées après cette application Borg. Vous pouvez également sélectionner toutes les applications, mais certaines applications en précédant par 'exclude:' une liste d’applications séparées par des virgules."
 
 [list]
-name = "Last backups list"
-services = []
+name.en = "Last backups list"
+name.fr = "Liste des dernières sauvegardes"
+
     [list.list]
     name = ""
+    
         [list.list.last_backups]
-        ask.en = ""
+        ask = ""
         type = "markdown"
