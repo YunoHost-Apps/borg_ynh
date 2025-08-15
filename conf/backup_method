@@ -46,12 +46,30 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     # About the {now} placeholder:
     # https://borgbackup.readthedocs.io/en/stable/usage/create.html#description
     # In the archive name, you may use the following placeholders: {now}, {utcnow}, {fqdn}, {hostname}, {user} and some others.
-    "$borg" create --stats "::${name}-{now}" "$work_dir"
+    pushd "$work_dir"
+       "$borg" create --exclude-if-present .nobackup --stats "::${name}-{now}" . && retcode="0" || retcode="$?"
+    popd
+    # Check whether the above command exit with a return code > 0
+    if [[ "${retcode:-}" == 1 ]]
+    then
+        # This is a warning, the script may continue, but let's warn the admin.
+        # See: https://github.com/borgbackup/borg/issues/6989#issuecomment-1223921392
+        echo "Some warning were logged during the backup, you'd probably check whether it was severe or not" >&2
+    # Note that retcode is greater or equal to 2, which means the "borg create" command failed. Exit in such a case.
+    elif [[ "${retcode:-}" != 0 ]]
+    then
+        exit $retcode
+    fi
 
     "$borg" prune --glob-archives "${name}-*" --list --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
 
     # We prune potential manual backup older than 1 year
     "$borg" prune --list --keep-within 1y
+
+    # Compact repo after pruning it, otherwise in fact nothing will be really removed from the repo,
+    # making its actual size grow disproportionately compared to what `borg info` displays
+    # See: https://github.com/borgbackup/borg/issues/6106#issuecomment-1215449050
+    "$borg" compact
 }
 
 do_mount() {

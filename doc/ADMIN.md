@@ -35,7 +35,7 @@ Then run for example:
 - List archives: `borg list "$repository" | less`
 - List files from a specific archive: `borg list "$repository::ARCHIVE_NAME" | less`
 - View archive info: `borg info "$repository::ARCHIVE_NAME"`
-- Verify data integrity: `borg info "$repository::ARCHIVE_NAME" --verify-data`
+- Verify data integrity: `borg check "$repository::ARCHIVE_NAME" --verify-data`
 
 ## Restoring archives from Borg
 
@@ -69,4 +69,12 @@ cd /home/yunohost.app/
 borg extract "$repository::ARCHIVE_NAME" apps/nextcloud/backup/home/yunohost.app/
 mv apps/nextcloud/backup/home/yunohost.app/nextcloud ./
 rm -r apps
+```
+
+## Excluding folders from backups
+
+You may exclude a folder and its subfolders from being backed up by adding an empty file named `.nobackup` in it.
+For example (replace `/PATH/TO/FOLDER-TO-EXCLUDE` with the actual path):
+```bash
+touch /PATH/TO/FOLDER-TO-EXCLUDE/.nobackup
 ```
