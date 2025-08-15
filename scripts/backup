@@ -22,6 +22,8 @@ ynh_backup "$install_dir/logging.conf"
 
 ynh_backup --src_path="/etc/logrotate.d/$app"
 
+ynh_backup --src_path="/etc/logrotate.d/$app"
+
 #=================================================
 # END OF SCRIPT
 #=================================================
