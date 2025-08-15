@@ -87,14 +87,6 @@ ynh_config_add --template="logging.conf" --destination="$install_dir/logging.con
 chown "$app:$app" "$install_dir/logging.conf"
 
 #=================================================
-# SETUP LOGROTATE
-#=================================================
-ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
-
-# Use logrotate to manage app-specific logfile(s)
-ynh_use_logrotate --logfile="/var/log/$app/borg.log"
-
-#=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
 ynh_script_progression "Upgrading system configurations related to $app..."
@@ -106,6 +98,8 @@ yunohost service add $app --description="Deduplicating backup program" --test_st
 systemctl disable $app.service --quiet
 
 ynh_config_add --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+
+ynh_config_add_logrotate
 
 #=================================================
 # START SYSTEMD SERVICE

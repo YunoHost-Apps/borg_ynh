@@ -71,10 +71,10 @@ chown "$app:$app" "$install_dir/logging.conf"
 #=================================================
 # SETUP LOGROTATE
 #=================================================
-ynh_script_progression --message="Configuring log rotation..." --weight=1
+ynh_script_progression "Configuring log rotation..."
 
 # Use logrotate to manage application logfile(s)
-ynh_use_logrotate --logfile="/var/log/$app/borg.log"
+ynh_config_add_logrotate
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -83,6 +83,7 @@ ynh_script_progression "Adding system configurations related to $app..."
 
 # Create a dedicated systemd config
 ynh_config_add_systemd
+
 yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed" --log "/var/log/$app/borg.log"
 # Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
