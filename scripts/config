@@ -47,12 +47,13 @@ get__data_multimedia() {
     fi
 }
 get__last_backups() {
-    if [ "${old[state]}" == "repository uncreated" ]; then
+    local backup_list=$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} 2> /dev/null)
+    if [ -z "$backup_list" ]; then
         echo 'ask: "*no backups yet*"'
     else
         cat << EOF
 ask: |-
-$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
+$(sed 's/^/  /g' <<< "$backup_list")
 EOF
     fi
 }
