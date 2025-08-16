@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/backup-with-__APP__ __APP__
+ExecStart=__INSTALL_DIR__/backup-with-borg __APP__
 User=__APP__
 Group=__APP__
 

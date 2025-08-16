@@ -1,0 +1,36 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/tests.v1.schema.json
+
+test_format = 1.0
+
+[default]
+
+    args.repository = "ssh://sam@domain.tld:22/~/backup"
+    args.passphrase = "A_Passphrase"
+    args.conf = 1
+    args.data = 1
+    args.apps = "all"
+    args.on_calendar = "Daily"
+    args.mailalert = "errors_only"
+
+    # -------------------------------
+    # Commits to test upgrade from
+    # -------------------------------
+
+    [default.test_upgrade_from.159bd111c63fcce0a1b8b3d589b517aa15007a21]
+    name = "First working bookworm version/manifest v2"
+    args.repository = "ssh://sam@domain.tld:22/~/backup"
+    args.passphrase = "A_Passphrase"
+    args.conf = 1
+    args.data = 1
+    args.apps = "all"
+    args.on_calendar = "Daily"
+    args.mailalert = "errors_only"
+
+[local_directory]
+    args.repository = "/mnt/backup"
+    args.passphrase = "A_Passphrase"
+    args.conf = 1
+    args.data = 1
+    args.apps = "all"
+    args.on_calendar = "Daily"
+    args.mailalert = "errors_only"

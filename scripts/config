@@ -4,6 +4,8 @@ source /usr/share/yunohost/helpers
 
 ynh_abort_if_errors
 
+borg="$install_dir/venv/bin/borg"
+
 #=================================================
 # SPECIFIC GETTERS FOR TOML SHORT KEY
 #=================================================
@@ -11,9 +13,12 @@ ynh_abort_if_errors
 get__info() {
         cat << EOF
 ask:
-  en: "**Backup state**: ${old[state]}
+  en: "**Backup state:** ${old[state]}
 
     **Last run**: ${old[last_run]}"
+  fr: "**État de la sauvegarde :** ${old[state]}
+
+    **Dernière exécution :** ${old[last_run]}"
 EOF
     if [ "${old[state]}" == "failed" ]; then
         cat << EOF
@@ -31,10 +36,7 @@ EOF
 }
 
 get__ssh_public_key() {
-    cat << EOF
-ask:
-  en: "**Public key**: \`$(cat /root/.ssh/id_${app}_ed25519.pub || echo '')\`"
-EOF
+    cat "/root/.ssh/id_${app}_ed25519.pub" 2>/dev/null || echo "N/A"
 }
 
 get__data_multimedia() {
@@ -45,10 +47,19 @@ get__data_multimedia() {
     fi
 }
 get__last_backups() {
-    cat << EOF
-ask: |- 
-$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " borg list --short --last 50 ${old[repository]} | sed 's/^/  /g' 2> /dev/null)
+    local backup_list=$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} 2> /dev/null)
+    if [ -z "$backup_list" ]; then
+        echo 'ask: "*no backups yet*"'
+    else
+        cat << EOF
+ask: |-
+$(sed 's/^/  /g' <<< "$backup_list")
 EOF
+    fi
+}
+
+get__conf() {
+    ynh_app_setting_get --app=$app --key=conf
 }
 
 #=================================================
@@ -72,8 +83,22 @@ set__data_multimedia() {
         ynh_secure_remove /home/yunohost.multimedia/.nobackup
     fi
 }
+
+set__conf() {
+    if [ -n "${conf}" ]
+    then
+        # Update the config of the app
+        ynh_app_setting_set --app=$app --key=conf --value=$conf
+    fi
+}
+
+set__on_calendar() {
+    ynh_app_setting_set --app=$app --key="on_calendar" --value=$on_calendar
+    ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+    systemctl daemon-reload
+}
+
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
 ynh_app_config_run $1
-
