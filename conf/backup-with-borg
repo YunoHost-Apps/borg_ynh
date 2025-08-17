@@ -17,10 +17,10 @@ filter_hooks() {
     sudo ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq 2>> "$err_file"
 }
 
-healthcheck_url="$(sudo yunohost app setting "${borg_id}" healthcheck_url)"
+healthchecks_url="$(sudo yunohost app setting "${borg_id}" healthchecks_url)"
 healthcheck() {
-    if [[ -n "$healthcheck_url" ]]; then
-        curl -s -m 10 -o /dev/null --data-raw "$(echo $2 | tail --bytes=10000)" "$healthcheck_url/$1"
+    if [[ -n "$healthchecks_url" ]]; then
+        curl -s -m 10 -o /dev/null --data-raw "$(echo $2 | tail --bytes=10000)" "$healthchecks_url/$1"
     fi
 }
 

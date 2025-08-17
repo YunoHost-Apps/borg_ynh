@@ -84,7 +84,7 @@ name.fr = "Configuration de Borg"
     name = "Advanced settings"
     optional = true
 
-        [main.advanced.healthcheck_url]
+        [main.advanced.healthchecks_url]
         ask.en = "Monitoring URL (Healthchecks)"
         ask.fr = "URL de monitoring (Healthchecks)"
         type = "url"
