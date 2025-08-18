@@ -79,6 +79,14 @@ mv apps/nextcloud/backup/home/yunohost.app/nextcloud ./
 rm -r apps
 ```
 
+## Excluding folders from backups
+
+You may exclude a folder and its subfolders from being backed up by adding an empty file named `.nobackup` in it.
+For example (replace `/PATH/TO/FOLDER-TO-EXCLUDE` with the actual path):
+```bash
+touch /PATH/TO/FOLDER-TO-EXCLUDE/.nobackup
+```
+
 ## Support for remote-path (custom borg executable on remote server)
 
 In particular cases, one may need to specify a custom borg executable to be run on the remote server (borg supports this through the `--remote-path` commandline option / `BORG_REMOTE_PATH` env variable - see https://borgbackup.readthedocs.io/en/stable/usage/general.html ).

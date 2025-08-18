@@ -7,7 +7,7 @@ name = "Borg Backup"
 description.en = "Regularly create deduplicated, encrypted backups sent to another server using Borg"
 description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiffées envoyées sur un autre serveur à l'aide de Borg"
 
-version = "1.4.0~ynh3"
+version = "1.4.1~ynh1"
 
 maintainers = ["ljf"]
 
@@ -48,7 +48,7 @@ ram.runtime = "50M"
     ask.en = "Provide a strong passphrase to encrypt your backups. No blank space"
     ask.fr = "Indiquez une phrase de passe forte pour chiffrer vos sauvegardes. Sans espaces"
     help.en = "Keep it safe! There will be **no way** to restore your backup if you lose it. Do not communicate it to the remote host server holder, or anyone else."
-    help.fr = "Gardez-la précieusement ! Il sera impossible de restaurer vos sauvegardes sans celle-ci. Ne donnez pas cette clé à la personne qui gère le serveur distant - où à n'importe qui d'ailleurs."
+    help.fr = "Gardez-la précieusement ! Il sera **impossible** de restaurer vos sauvegardes sans celle-ci. Elle est destinée à rester **secrète** : ne la donnez **pas** à la personne qui gère le serveur distant - où à n'importe qui d'autre !"
     type = "password"
 
     [install.conf]
@@ -87,13 +87,12 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/borgbackup/borg/archive/refs/tags/1.4.0.tar.gz"
-    sha256 = "88d0e37bee67398ee12414c18d67502a5dbf06b1a72fbffe2e20fcd5736e7320"
+    url = "https://github.com/borgbackup/borg/archive/refs/tags/1.4.1.tar.gz"
+    sha256 = "b8c6ac0b03cf7f2673004754515f5abca6379ffd947a4be77dc210e7d4c5da59"
     # Only here to bump the package version
     prefetch = false
 
     autoupdate.strategy = "latest_github_release"
-    autoupdate.upstream = "https://github.com/borgbackup/borg"
 
     [resources.system_user]
 

@@ -52,7 +52,7 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
     # https://borgbackup.readthedocs.io/en/stable/usage/create.html#description
     # In the archive name, you may use the following placeholders: {now}, {utcnow}, {fqdn}, {hostname}, {user} and some others.
     pushd "$work_dir"
-       "$borg" create --stats "::${name}-{now}" . && retcode="0" || retcode="$?"
+       "$borg" create --exclude-if-present .nobackup --stats "::${name}-{now}" . && retcode="0" || retcode="$?"
     popd
     # Check whether the above command exit with a return code > 0
     if [[ "${retcode:-}" == 1 ]]
@@ -70,6 +70,11 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
 
     # We prune potential manual backup older than 1 year
     "$borg" prune --list --keep-within 1y
+
+    # Compact repo after pruning it, otherwise in fact nothing will be really removed from the repo,
+    # making its actual size grow disproportionately compared to what `borg info` displays
+    # See: https://github.com/borgbackup/borg/issues/6106#issuecomment-1215449050
+    "$borg" compact
 }
 
 do_mount() {
