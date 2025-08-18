@@ -20,6 +20,14 @@ if ynh_exec_warn_less yunohost service status $app >/dev/null; then
 fi
 
 #=================================================
+# REMOVE LOGROTATE CONFIGURATION
+#=================================================
+ynh_script_progression --message="Removing logrotate configuration..." --weight=1
+
+# Remove the app-specific logrotate config
+ynh_remove_logrotate
+
+#=================================================
 # REMOVE SYSTEM CONFIGURATIONS
 #=================================================
 ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
