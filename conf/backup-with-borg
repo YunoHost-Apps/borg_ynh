@@ -20,7 +20,11 @@ filter_hooks() {
 healthchecks_url="$(sudo yunohost app setting "${borg_id}" healthchecks_url)"
 healthcheck() {
     if [[ -n "$healthchecks_url" ]]; then
-        curl -s -m 10 -o /dev/null --data-raw "$(echo $2 | tail --bytes=10000)" "$healthchecks_url/$1"
+        local signal="$1"
+        # the expression "${signal:+/$signal}" adds a leading slash to the value of $signal 
+        # only if the latter is not empty, otherwise it returns an empty string.
+        local url="$healthchecks_url${signal:+/$signal}"
+        curl -s -m 10 -o /dev/null --data-raw "$(echo $2 | tail --bytes=10000)" "$url"
     fi
 }
 
