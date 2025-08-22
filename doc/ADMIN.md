@@ -30,6 +30,14 @@ export BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes
 repository="$(sudo yunohost app setting $app repository)"
 ```
 
+If additional options are needed, like the *remote path* to the borg
+executable (see *Support for remote-path* bellow), set them as well:
+```bash
+if [[ ! -z "$(sudo yunohost app setting $app remote_path)" ]]; then
+    export BORG_REMOTE_PATH="$(sudo yunohost app setting $app remote_path)"
+fi
+```
+
 Then run for example:
 
 - List archives: `borg list "$repository" | less`
@@ -78,3 +86,10 @@ For example (replace `/PATH/TO/FOLDER-TO-EXCLUDE` with the actual path):
 ```bash
 touch /PATH/TO/FOLDER-TO-EXCLUDE/.nobackup
 ```
+
+## Support for remote-path (custom borg executable on remote server)
+
+In particular cases, one may need to specify a custom borg executable to be run on the remote server (borg supports this through the `--remote-path` commandline option / `BORG_REMOTE_PATH` env variable - see https://borgbackup.readthedocs.io/en/stable/usage/general.html ).
+
+If needed, the path to the borg executable can be configured by setting its value in the optional *Remote borg command (remote-path)* entry of the configuration panel.
+
