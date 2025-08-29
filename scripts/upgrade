@@ -35,7 +35,7 @@ if [ -z "${healthchecks_url:-}" ]; then
 fi
 ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
 ynh_app_setting_set --app=$app --key="last_run" --value="-"
-
+ynh_app_setting_set --app=$app --key="cleanup_logs_older_than" --value="${cleanup_logs_older_than:-365}"
 
 if [ -z "$repository" ]; then
     repository="ssh://$ssh_user@$server/~/backup"

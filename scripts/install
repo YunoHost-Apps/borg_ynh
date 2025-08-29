@@ -39,6 +39,8 @@ ynh_app_setting_set --app=$app --key=healthchecks_url --value=""
 # passwords aren't saved by default
 ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"
 
+ynh_app_setting_set --app=$app --key=cleanup_logs_older_than --value="365"
+
 #=================================================
 # INSTALL BORG
 #=================================================
@@ -99,6 +101,16 @@ systemctl disable $app.service --quiet
 ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
+
+# Create a systemd job to cleanup the log files
+ynh_add_systemd_config --service="$app-cleanup-logs.service" --template="systemd-cleanup-logs.service"
+yunohost service add $app-cleanup-logs --description="Cleanup logs for $app" --log "/var/log/$app/cleanup-logs.log"
+systemctl disable $app-cleanup-logs.service --quiet
+
+# Configure the systemd timer
+ynh_add_config --template="systemd-cleanup-logs.timer" --destination="/etc/systemd/system/$app-cleanup-logs.timer"
+systemctl enable $app-cleanup-logs.timer --quiet
+systemctl start $app-cleanup-logs.timer
 
 #=================================================
 # END OF SCRIPT
