@@ -44,7 +44,7 @@ A borg "archive" can be exported to a `.tar` which can then be restored using th
 **NB: this command assumes that you prepared the environment just like in the previous section**
 
 ```bash
-borg export-tar "$repository::ARCHIVE_NAME" /home/yunohost/archives/ARCHIVE_NAME.tar
+borg export-tar "$repository::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
 ```
 
 Then restore using the classic workflow: 
