@@ -17,11 +17,24 @@ filter_hooks() {
     sudo ls /usr/share/yunohost/hooks/backup/ /etc/yunohost/hooks.d/backup/ | grep "\-$1_" | cut -d"-" -f2 | uniq 2>> "$err_file"
 }
 
+healthchecks_url="$(sudo yunohost app setting "${borg_id}" healthchecks_url)"
+healthcheck() {
+    if [[ -n "$healthchecks_url" ]]; then
+        local signal="$1"
+        # the expression "${signal:+/$signal}" adds a leading slash to the value of $signal 
+        # only if the latter is not empty, otherwise it returns an empty string.
+        local url="$healthchecks_url${signal:+/$signal}"
+        curl -s -m 10 -o /dev/null --data-raw "$(echo $2 | tail --bytes=10000)" "$url"
+    fi
+}
+
 fail_if_partially_failed() {
     grep Skipped|Error
 }
 sudo yunohost app setting "${borg_id}" last_run -v "${current_date}"
 sudo yunohost app setting "${borg_id}" state -v "ongoing"
+
+healthcheck "start"
 
 # Backup system part conf
 conf=$(sudo yunohost app setting "${borg_id}" conf)
@@ -74,8 +87,10 @@ repository="$(sudo yunohost app setting "${borg_id}" repository)"
 mailalert="$(sudo yunohost app setting "${borg_id}" mailalert)"
 if [[ -n "$errors" ]]; then
     sudo yunohost app setting "${borg_id}" state -v "failed"
+    healthcheck "fail" "$errors"
 else
     sudo yunohost app setting "${borg_id}" state -v "successful"
+    healthcheck
 fi
 
 if [[ -n "$errors" && $mailalert != "never" ]]; then

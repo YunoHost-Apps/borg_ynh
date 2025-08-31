@@ -65,6 +65,11 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
 
     # We prune potential manual backup older than 1 year
     "$borg" prune --list --keep-within 1y
+
+    # Compact repo after pruning it, otherwise in fact nothing will be really removed from the repo,
+    # making its actual size grow disproportionately compared to what `borg info` displays
+    # See: https://github.com/borgbackup/borg/issues/6106#issuecomment-1215449050
+    "$borg" compact
 }
 
 do_mount() {
