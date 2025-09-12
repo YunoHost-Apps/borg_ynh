@@ -32,6 +32,7 @@ if [[ "${mailalert:-}" != "always" && "${mailalert:-}" != "errors_only" && "${ma
 fi
 ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
 ynh_app_setting_set --app=$app --key="last_run" --value="-"
+ynh_app_setting_set --app=$app --key=logs_retention --value=""
 
 
 if [ -z "$repository" ]; then

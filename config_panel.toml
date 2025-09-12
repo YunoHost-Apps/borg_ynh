@@ -80,6 +80,13 @@ name.fr = "Configuration de Borg"
         help.en = "App list separated by comma. You can write 'all' to select all apps, even those installed after this Borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
         help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les applications, même celles installées après cette application Borg. Vous pouvez également sélectionner toutes les applications, mais certaines applications en précédant par 'exclude:' une liste d’applications séparées par des virgules."
 
+        [main.advanced.logs_retention]
+        ask.en = "Logs retention (in days)"
+        ask.fr = "Rétention des logs (en jours)"
+        type = "number"
+        min = 0
+        optional = true
+
 [list]
 name.en = "Last backups list"
 name.fr = "Liste des dernières sauvegardes"

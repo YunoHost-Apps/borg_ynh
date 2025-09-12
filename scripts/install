@@ -37,6 +37,8 @@ ynh_app_setting_set --app=$app --key=last_run --value="$last_run"
 # passwords aren't saved by default
 ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"
 
+ynh_app_setting_set --app=$app --key=logs_retention --value=""
+
 #=================================================
 # INSTALL BORG
 #=================================================
