@@ -92,6 +92,13 @@ name.fr = "Configuration de Borg"
         help.fr = "Utiliser un service de monitoring pour détecter les échecs silencieux. C'est optionnel et actuellement destiné à fonctionner avec Healthchecks. Si vous ne connaissez pas, vous pouvez ignorer ou jeter un œil à ce service: https://healthchecks.io"
         optional = true
 
+        [main.advanced.logs_retention]
+        ask.en = "Logs retention (in days)"
+        ask.fr = "Rétention des logs (en jours)"
+        type = "number"
+        min = 0
+        optional = true
+
 [list]
 name.en = "Last backups list"
 name.fr = "Liste des dernières sauvegardes"

@@ -39,7 +39,7 @@ ynh_app_setting_set --app=$app --key=healthchecks_url --value=""
 # passwords aren't saved by default
 ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"
 
-ynh_app_setting_set --app=$app --key=cleanup_logs_older_than --value="365"
+ynh_app_setting_set --app=$app --key=logs_retention --value="365"
 
 #=================================================
 # INSTALL BORG
