@@ -19,15 +19,16 @@ do_need_mount() {
 }
 
 do_backup() {
-    export BORG_PASSPHRASE
-    export BORG_REPO
-    export BORG_RSH
-    export BORG_LOGGING_CONF
-    export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
     work_dir="$1"
     name="$2"
     size="$3"
     description="$4"
+    export BORG_PASSPHRASE
+    export BORG_REPO
+    export BORG_RSH
+    export BORG_LOGGING_CONF
+    export BORG_FILES_CACHE_SUFFIX="${name}"
+    export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
     set +e
     if ! "$borg" list > /dev/null 2>&1; then
         "$borg" init -e repokey
@@ -73,14 +74,15 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
 }
 
 do_mount() {
-    export BORG_PASSPHRASE
-    export BORG_REPO
-    export BORG_RSH
-    export BORG_LOGGING_CONF
     work_dir="$1"
     name="$2"
     size="$3"
     description="$4"
+
+    export BORG_PASSPHRASE
+    export BORG_REPO
+    export BORG_RSH
+    export BORG_LOGGING_CONF
     "$borg" mount "::$name" "$work_dir"
 }
 
