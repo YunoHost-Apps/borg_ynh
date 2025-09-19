@@ -33,9 +33,13 @@ fi
 if [ -z "${healthchecks_url:-}" ]; then
     ynh_app_setting_set --app=$app --key="healthchecks_url" --value=""
 fi
+if [ -z "${logs_retention:-}" ]; then
+  logs_retention=""
+  ynh_app_setting_set --app=$app --key="logs_retention" --value=""
+fi
+
 ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
 ynh_app_setting_set --app=$app --key="last_run" --value="-"
-
 
 if [ -z "$repository" ]; then
     repository="ssh://$ssh_user@$server/~/backup"
@@ -114,13 +118,24 @@ ynh_script_progression --message="Upgrading system configurations related to $ap
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
-yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"  --log "/var/log/$app/borg.log"
+yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service -p ActiveState --value | grep -v failed"  --log "/var/log/$app/borg.log"
 # Disable the service, this is to prevent the service from being triggered at boot time
 systemctl disable $app.service --quiet
 
 ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
+
+# Create a systemd job to cleanup the log files
+ynh_add_systemd_config --service="$app-cleanup-logs" --template="systemd-cleanup-logs.service"
+yunohost service add $app-cleanup-logs --description="Cleanup logs for $app" --log "/var/log/$app/cleanup-logs.log" \
+  --test_status="systemctl show $app-cleanup-logs.service -p ActiveState --value | grep -v failed"
+systemctl disable $app-cleanup-logs.service --quiet
+
+# Configure the systemd timer
+ynh_add_config --template="systemd-cleanup-logs.timer" --destination="/etc/systemd/system/$app-cleanup-logs.timer"
+systemctl enable $app-cleanup-logs.timer --quiet
+systemctl start $app-cleanup-logs.timer
 
 #=================================================
 # END OF SCRIPT

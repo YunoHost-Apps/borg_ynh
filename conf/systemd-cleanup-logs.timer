@@ -1,0 +1,8 @@
+[Unit]
+Description=Run __APP__ log cleanup regularly
+
+[Timer]
+OnCalendar=Weekly
+
+[Install]
+WantedBy=timers.target

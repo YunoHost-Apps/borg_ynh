@@ -103,6 +103,12 @@ set__on_calendar() {
     systemctl daemon-reload
 }
 
+set__logs_rentention() {
+    ynh_app_setting_set --app="$app" --key="logs_retention" --value="$logs_retention"
+    ynh_add_systemd_config --service="$app-cleanup-logs.service" --template="systemd-cleanup-logs.service"
+    systemctl daemon-reload
+}
+
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
