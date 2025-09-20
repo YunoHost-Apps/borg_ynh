@@ -48,6 +48,12 @@ if [ -z "$repository" ]; then
     ynh_app_setting_delete $app ssh_user
 fi
 
+# Add support for new remote_path option which didn't exist before
+remote_path="$(ynh_app_setting_get $app remote_path)"
+if [ -z "$remote_path" ]; then
+    ynh_app_setting_set $app remote_path ""
+fi
+
 if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
     yunohost service remove $app.timer
     systemctl enable $app.timer --quiet
