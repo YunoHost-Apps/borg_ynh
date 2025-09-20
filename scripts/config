@@ -10,8 +10,12 @@ borg="$install_dir/venv/bin/borg"
 # SPECIFIC GETTERS FOR TOML SHORT KEY
 #=================================================
 
+get__on_calendar() {
+    ynh_app_setting_get --app="$app" --key="on_calendar"
+}
+
 get__info() {
-        cat << EOF
+    cat << EOF
 ask:
   en: "**Backup state:** ${old[state]}
 
@@ -46,6 +50,7 @@ get__data_multimedia() {
         echo "value: true"
     fi
 }
+
 get__last_backups() {
     local backup_list
     if [ "$(ynh_app_setting_get $app remote_path)" != "" ]; then

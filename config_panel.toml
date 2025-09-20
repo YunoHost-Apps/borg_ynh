@@ -29,7 +29,7 @@ name.fr = "Configuration de Borg"
         type = "string"
         help.en = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app: `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With the Borg Server App, you can't specify another repo path than `~/backup`."
         help.fr = "Spécifier un dépôt local (`/mount/my_external_harddrive/backups`) ou un dépôt distant (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). Si vous prévoyez d’utiliser une application borgserver_ynh distante : `USER` n'est *pas* censé être un utilisateur existant sur le serveur invité, il sera créé *sur le serveur hôte* lors de l’installation de l'application Borg Server. Avec l'application Borg Server, vous ne pouvez pas spécifier un autre chemin de dépôt que `~/backup`."
-  
+
         [main.general.ssh_public_key]
         ask.en = "Public key"
         ask.fr = "Clé publique"
@@ -47,7 +47,7 @@ name.fr = "Configuration de Borg"
         type = "string"
         help.en = "For example: `Monthly`, `Weekly`, `Daily` (=every day at midnight), `Hourly`, `Sat *-*-1..7 18:00:00` (=the first saturday of every month at 18:00), `4:00` (=every day at 4 AM), `5,17:00` (=every day at 5 AM and 5 PM). See the [systemd OnCalendar format for full syntax doc](https://wiki.archlinux.org/index.php/Systemd/Timers#Realtime_timer)"
         bind = "null"
-        
+
         [main.general.mailalert]
         ask.en = "Mail alert"
         ask.fr = "Alerte mail"
@@ -57,7 +57,7 @@ name.fr = "Configuration de Borg"
         choices.never = "Never alert me"
         help.en = "Alerts are sent to members of the admins group"
         help.fr = "Les alertes sont envoyées aux membres du groupe admins"
-        
+
     [main.content]
     name.en = "What should be backed up?"
     name.fr = "Que faut-il sauvegarder ?"
@@ -84,6 +84,18 @@ name.fr = "Configuration de Borg"
         type = "tags"
         help.en = "App list separated by comma. You can write 'all' to select all apps, even those installed after this Borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
         help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les applications, même celles installées après cette application Borg. Vous pouvez également sélectionner toutes les applications, mais certaines applications en précédant par 'exclude:' une liste d’applications séparées par des virgules."
+
+    [main.advanced]
+    name = "Advanced settings"
+    optional = true
+
+        [main.advanced.healthchecks_url]
+        ask.en = "Monitoring URL (Healthchecks)"
+        ask.fr = "URL de monitoring (Healthchecks)"
+        type = "url"
+        help.en = "Use a monitor service to detect silent failures. It's optional and currently meant to work with Healthchecks. If you don't know what it is, just leave it blank or look it up to this service: https://healthchecks.io"
+        help.fr = "Utiliser un service de monitoring pour détecter les échecs silencieux. C'est optionnel et actuellement destiné à fonctionner avec Healthchecks. Si vous ne connaissez pas, vous pouvez ignorer ou jeter un œil à ce service: https://healthchecks.io"
+        optional = true
 
 [list]
 name.en = "Last backups list"
