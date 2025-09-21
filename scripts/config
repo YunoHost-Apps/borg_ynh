@@ -54,10 +54,9 @@ get__data_multimedia() {
 get__last_backups() {
     local backup_list
     if [ "$(ynh_app_setting_get $app remote_path)" != "" ]; then
-        backup_list=$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " BORG_REMOTE_PATH="$(ynh_app_setting_get $app remote_path)" "$borg" list --short --last 50 ${old[repository]} 2> /dev/null)
-    else
-        backup_list=$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} 2> /dev/null)
+        export BORG_REMOTE_PATH="$(ynh_app_setting_get $app remote_path)"
     fi
+    local backup_list=$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} 2> /dev/null)
     if [ -z "$backup_list" ]; then
         echo 'ask: "*no backups yet*"'
     else
