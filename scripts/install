@@ -35,6 +35,7 @@ last_run="-"
 ynh_app_setting_set --app=$app --key=last_run --value="$last_run"
 
 ynh_app_setting_set --app=$app --key=healthchecks_url --value=""
+ynh_app_setting_set --app=$app --key=remote_path --value=""
 
 # passwords aren't saved by default
 ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"

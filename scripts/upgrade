@@ -33,6 +33,9 @@ fi
 if [ -z "${healthchecks_url:-}" ]; then
     ynh_app_setting_set --app=$app --key="healthchecks_url" --value=""
 fi
+if [ -z "${remote_path:-}" ]; then
+    ynh_app_setting_set --app=$app --key="remote_path" --value=""
+fi
 ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
 ynh_app_setting_set --app=$app --key="last_run" --value="-"
 
