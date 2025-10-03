@@ -33,6 +33,9 @@ fi
 if [ -z "${healthchecks_url:-}" ]; then
     ynh_app_setting_set --app=$app --key="healthchecks_url" --value=""
 fi
+if [ -z "${remote_path:-}" ]; then
+    ynh_app_setting_set --app=$app --key="remote_path" --value=""
+fi
 ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
 ynh_app_setting_set --app=$app --key="last_run" --value="-"
 
@@ -46,6 +49,12 @@ if [ -z "$repository" ]; then
     ynh_app_setting_set $app repository "$repository"
     ynh_app_setting_set $app server "$server"
     ynh_app_setting_delete $app ssh_user
+fi
+
+# Add support for new remote_path option which didn't exist before
+remote_path="$(ynh_app_setting_get $app remote_path)"
+if [ -z "$remote_path" ]; then
+    ynh_app_setting_set $app remote_path ""
 fi
 
 if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
