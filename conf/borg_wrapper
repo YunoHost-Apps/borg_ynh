@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# This script is a wrapper to let the user run the
+# "borg" command when using `yunohost app shell borg`.
+#
+# It sources the "BORG_*" env variables necessary prior
+# to running as root the borg command asked by the user.
+
+set -ea
+source __INSTALL_DIR__/.env
+sudo --preserve-env="__ENV_KEEP__" __INSTALL_DIR__/venv/bin/borg "$@"
