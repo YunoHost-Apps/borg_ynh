@@ -4,7 +4,7 @@ source /usr/share/yunohost/helpers
 
 ynh_abort_if_errors
 
-borg="$install_dir/venv/bin/borg"
+borg_with_env_vars="$install_dir/bin/borg"
 
 #=================================================
 # SPECIFIC GETTERS FOR TOML SHORT KEY
@@ -56,10 +56,7 @@ get__last_backups() {
     # Source the env file inside the command substitution ("$(...)")
     # so the variables don't pollute the rest of the function and of the script.
     # Indeed the command substitution spawns a subshell which is convenient here.
-    backup_list=$( \
-        source "$install_dir/.env" \
-        "$borg" list --short --last 50 "${repository}" 2> /dev/null \
-    )
+    backup_list=$(ynh_exec_as "$app" "$borg_with_env_vars" list --short --last 50 "${repository}" 2> /dev/null)
     if [ -z "$backup_list" ]; then
         echo 'ask: "*no backups yet*"'
     else
