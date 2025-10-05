@@ -7,8 +7,8 @@ set -a
 source __INSTALL_DIR__/.env
 set +a
 
-if ssh-keygen -F "__SERVER__" >/dev/null ; then
-    export BORG_RSH="${BORG_RSH/oStrictHostKeyChecking=no/oStrictHostKeyChecking=yes}"
+if ! ssh-keygen -F "__SERVER__" >/dev/null ; then
+    export BORG_RSH="${BORG_RSH/oStrictHostKeyChecking=yes/oStrictHostKeyChecking=no}"
 fi
 
 do_need_mount() {
