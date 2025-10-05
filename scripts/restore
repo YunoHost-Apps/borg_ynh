@@ -48,13 +48,9 @@ ynh_restore_file --origin_path="$install_dir/.env"
 chmod 0400 "$install_dir/.env"
 chown "$app:$app" "$install_dir/.env"
 
-ynh_restore_file --origin_path="$data_dir"
-chown -R "$app:root" "$data_dir"
-_gen_and_save_public_key
-
 ynh_restore_file --origin_path="$install_dir/bin"
-chown -R "$app:root" "$install_dir/bin"
-chmod 0500 "$install_dir/bin/borg"
+chown -R "$app:$app" "$install_dir/bin"
+chmod 0550 "$install_dir/bin/borg"
 
 #=================================================
 # RESTORE THE LOGROTATE CONFIGURATION

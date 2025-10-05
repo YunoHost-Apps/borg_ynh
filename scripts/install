@@ -92,10 +92,10 @@ ynh_add_config --template="env" --destination="$install_dir/.env"
 chmod 0400 "$install_dir/.env"
 chown "$app:$app" "$install_dir/.env"
 
-install -o "$app" -m 0700 -d "$install_dir/bin"
+install -o "$app" -g "$app" -m 0770 -d "$install_dir/bin"
 ynh_add_config --template="bin_borg" --destination="$install_dir/bin/borg"
 chmod 0550 "$install_dir/bin/borg"
-chown "root:$app" "$install_dir/bin/borg"
+chown "$app:$app" "$install_dir/bin/borg"
 
 #=================================================
 # SETUP LOGROTATE
