@@ -4,6 +4,9 @@
 # COMMON VARIABLES
 #=================================================
 
+private_key_filename="id_${app}_ed25519"
+public_key_filename="id_${app}_ed25519.pub"
+
 #=================================================
 # PERSONAL HELPERS
 #=================================================
@@ -17,13 +20,18 @@ install_borg_with_pip () {
     ynh_exec_as "$app" "$venvpy" -m pip install borgbackup[pyfuse3]=="$BORG_VERSION"
 }
 
+make_ssh_dir() {
+    install -o $app -g $app -m 0700 -d "$data_dir/.ssh"
+}
+
 _gen_and_save_public_key() {
     public_key=""
 
     if [[ -n "$server" ]]; then
-        private_key="/root/.ssh/id_${app}_ed25519"
+        make_ssh_dir
+        private_key="$data_dir/.ssh/$private_key_filename"
         if [ ! -f "$private_key" ]; then
-            ssh-keygen -q -t ed25519 -N "" -f "$private_key"
+            ynh_exec_as "$app" ssh-keygen -q -t ed25519 -N "" -f "$private_key"
         fi
         public_key=$(cat "$private_key.pub")
     fi

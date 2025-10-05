@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -ea
+source __INSTALL_DIR__/.env
+sudo --preserve-env="__ENV_KEEP__" __INSTALL_DIR__/venv/bin/borg "$@"
