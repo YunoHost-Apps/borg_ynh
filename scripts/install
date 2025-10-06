@@ -41,7 +41,7 @@ ynh_app_setting_set --app=$app --key=remote_path --value=""
 ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"
 
 # $PATH with borg, useful to make borg available when using the `yunohost app shell` command
-path_with_borg="$install_dir/bin:$PATH"
+path_with_borg="$install_dir/wrapper:$PATH"
 
 # env_keep for sudoers
 env_keep=$(cat ../conf/env | cut -d "=" -f 1 | tr "\n" " ")
@@ -92,10 +92,10 @@ ynh_add_config --template="env" --destination="$install_dir/.env"
 chmod 0400 "$install_dir/.env"
 chown "$app:$app" "$install_dir/.env"
 
-install -o "$app" -g "$app" -m 0770 -d "$install_dir/bin"
-ynh_add_config --template="borg_wrapper" --destination="$install_dir/bin/borg"
-chmod 0550 "$install_dir/bin/borg"
-chown "$app:$app" "$install_dir/bin/borg"
+install -o "$app" -g "$app" -m 0770 -d "$install_dir/wrapper"
+ynh_add_config --template="borg_wrapper" --destination="$install_dir/wrapper/borg"
+chmod 0550 "$install_dir/wrapper/borg"
+chown "$app:$app" "$install_dir/wrapper/borg"
 
 #=================================================
 # SETUP LOGROTATE
