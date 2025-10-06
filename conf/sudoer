@@ -1,1 +1,2 @@
 __APP__ ALL=(root) NOPASSWD: __INSTALL_DIR__/backup-with-borg, __INSTALL_DIR__/venv/bin/borg, /usr/bin/yunohost backup create *, /usr/bin/yunohost app setting *, /bin/ls, /usr/bin/test
+Defaults!__INSTALL_DIR__/venv/bin/borg env_keep+="__ENV_KEEP__"

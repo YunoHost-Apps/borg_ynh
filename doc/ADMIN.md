@@ -20,42 +20,29 @@ The config panel has a "Last backup list" that allow to have quick look at the r
 
 However, you may want to manually inspect that the backups are indeed made regularly and contain the expected content.
 
-First, prepare the environment with the appropriate borg variables, etc:
+First, open a shell session logged in as "borg":
 
 ```bash
-app=borg
-PATH="/var/www/$app/venv/bin/:$PATH"
-export BORG_PASSPHRASE="$(sudo yunohost app setting $app passphrase)" 
-export BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes"
-repository="$(sudo yunohost app setting $app repository)"
-```
-
-If additional options are needed, like the *remote path* to the borg
-executable (see *Support for remote-path* bellow), set them as well:
-```bash
-if [[ ! -z "$(sudo yunohost app setting $app remote_path)" ]]; then
-    export BORG_REMOTE_PATH="$(sudo yunohost app setting $app remote_path)"
-fi
+yunohost app shell borg # Or borg__2, borg__3, ... check your borg client app ids using `yunohost app list`
 ```
 
 Then run for example:
 
-- List archives: `borg list "$repository" | less`
-- List files from a specific archive: `borg list "$repository::ARCHIVE_NAME" | less`
-- View archive info: `borg info "$repository::ARCHIVE_NAME"`
-- Verify data integrity: `borg check "$repository::ARCHIVE_NAME" --verify-data`
+- List archives: `borg list | less`
+- List files from a specific archive: `borg list "::ARCHIVE_NAME" | less`
+- View archive info: `borg info "::ARCHIVE_NAME"`
+- Verify data integrity: `borg check "::ARCHIVE_NAME" --verify-data`
 
 ## Restoring archives from Borg
 
 A borg "archive" can be exported to a `.tar` which can then be restored using the classic Yunohost backup restore workflow:
 
-**NB: this command assumes that you prepared the environment just like in the previous section**
-
+As root, run (replace `ARCHIVE_NAME` by the relevant backup name and `BORG_APP` by `borg`, or `borg__2`, `backup__3`, ...):
 ```bash
-borg export-tar "$repository::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
+/var/www/BORG_APP/bin/borg export-tar "::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
 ```
 
-Then restore using the classic workflow: 
+Then restore using the classic workflow:
 - from the command line: `yunohost backup restore ARCHIVE_NAME`
 - or in the webadmin > Backups
 
@@ -66,15 +53,14 @@ For apps containing a large amount of data, restoring *everything* all at once i
 First, borg can export a .tar archive but ignore the path corresponding to the app's data. For example, to export a tar archive for Nextcloud, but without its data:
 
 ```bash
-borg export-tar --exclude apps/nextcloud/backup/home/yunohost.app "$repository::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
-yunohost backup restore ARCHIVE_NAME
+/var/www/BORG_APP/bin/borg export-tar --exclude apps/nextcloud/backup/home/yunohost.app "::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
 ```
 
 Then extract Nextcloud's data directly into the right location, **without** going through the classic YunoHost backup restore process:
 
 ```bash
 cd /home/yunohost.app/
-borg extract "$repository::ARCHIVE_NAME" apps/nextcloud/backup/home/yunohost.app/
+/var/www/BORG_APP/bin/borg extract "$repository::ARCHIVE_NAME" apps/nextcloud/backup/home/yunohost.app/
 mv apps/nextcloud/backup/home/yunohost.app/nextcloud ./
 rm -r apps
 ```
@@ -89,7 +75,6 @@ touch /PATH/TO/FOLDER-TO-EXCLUDE/.nobackup
 
 ## Support for remote-path (custom borg executable on remote server)
 
-In particular cases, one may need to specify a custom borg executable to be run on the remote server (borg supports this through the `--remote-path` commandline option / `BORG_REMOTE_PATH` env variable - see https://borgbackup.readthedocs.io/en/stable/usage/general.html ).
+In particular cases, one may need to specify a custom borg executable to be run on the remote server (borg supports this through the `--remote-path` commandline option / `BORG_REMOTE_PATH` env variable - see <https://borgbackup.readthedocs.io/en/stable/usage/general.html>).
 
 If needed, the path to the borg executable can be configured by setting its value in the optional *Remote borg command (remote-path)* entry of the configuration panel.
-
