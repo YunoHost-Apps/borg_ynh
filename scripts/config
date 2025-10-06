@@ -4,7 +4,7 @@ source /usr/share/yunohost/helpers
 
 ynh_abort_if_errors
 
-borg_with_env_vars="$install_dir/bin/borg"
+borg_with_env_vars="$install_dir/wrapper/borg"
 
 #=================================================
 # SPECIFIC GETTERS FOR TOML SHORT KEY

@@ -39,7 +39,7 @@ A borg "archive" can be exported to a `.tar` which can then be restored using th
 
 As root, run (replace `ARCHIVE_NAME` by the relevant backup name and `BORG_APP` by `borg`, or `borg__2`, `backup__3`, ...):
 ```bash
-/var/www/BORG_APP/bin/borg export-tar "::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
+/var/www/BORG_APP/wrapper/borg export-tar "::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
 ```
 
 Then restore using the classic workflow:
@@ -53,14 +53,14 @@ For apps containing a large amount of data, restoring *everything* all at once i
 First, borg can export a .tar archive but ignore the path corresponding to the app's data. For example, to export a tar archive for Nextcloud, but without its data:
 
 ```bash
-/var/www/BORG_APP/bin/borg export-tar --exclude apps/nextcloud/backup/home/yunohost.app "::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
+/var/www/BORG_APP/wrapper/borg export-tar --exclude apps/nextcloud/backup/home/yunohost.app "::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
 ```
 
 Then extract Nextcloud's data directly into the right location, **without** going through the classic YunoHost backup restore process:
 
 ```bash
 cd /home/yunohost.app/
-/var/www/BORG_APP/bin/borg extract "$repository::ARCHIVE_NAME" apps/nextcloud/backup/home/yunohost.app/
+/var/www/BORG_APP/wrapper/borg extract "$repository::ARCHIVE_NAME" apps/nextcloud/backup/home/yunohost.app/
 mv apps/nextcloud/backup/home/yunohost.app/nextcloud ./
 rm -r apps
 ```
