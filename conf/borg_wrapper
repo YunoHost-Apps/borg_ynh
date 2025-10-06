@@ -6,6 +6,14 @@
 # It sources the "BORG_*" env variables necessary prior
 # to running as root the borg command asked by the user.
 
-set -ea
+set -eEu -o pipefail
+if env | grep -q "^BORG_"; then
+    echo -e '\033[31mError:\033[0m You seem to have set "BORG_*" env variables that will interfer with this helper.' >&2
+    echo 'Please rather source then "__INSTALL_DIR__/.env" (`source __INSTALL_DIR__/.env`) and use directly this binary: __INSTALL_DIR__/venv/bin/borg' >&2
+    echo 'Otherwise unset the "BORG_*" (`unset BORG_MY_VAR` + `export BORG_MY_VAR`) env variables prior to rerunning this wrapper.' >&2
+    exit 1
+fi
+
+set -a
 source __INSTALL_DIR__/.env
 sudo --preserve-env="__ENV_KEEP__" __INSTALL_DIR__/venv/bin/borg "$@"
