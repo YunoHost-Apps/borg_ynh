@@ -58,14 +58,13 @@ In `yuno` : `ssh -i /root/.ssh/id_borg_ed25519 yurem@rem.tld` . If you can get i
 In `yuno` now, you should be able to list backups in `rem` with the following command:
 
 ```bash
-SRV=yurem@rem.tld:/home/yurem/backup
-BORG_RSH="ssh -i /root/.ssh/id_borg_ed25519 -oStrictHostKeyChecking=yes " borg list $SRV
+/var/www/borg/wrapper/borg list
 ```
 
 You can then reimport one to `yuno` with:
 
 ```bash
-BORG_RSH="ssh -i /root/.ssh/id_borg_ed25519 -oStrictHostKeyChecking=yes " borg export-tar $SRV::auto_BACKUP_NAME /home/yunohost.backup/archives/auto_BACKUP_NAME.tar.gz
+/var/www/borg/wrapper/borg export-tar ::auto_BACKUP_NAME /home/yunohost.backup/archives/auto_BACKUP_NAME.tar.gz
 ```
 
 And then restore the archive in `yuno` with:
@@ -82,14 +81,12 @@ For Nextcloud, the best is probably to reimport the backup without the data. And
 For that, you can do the following (as root):
 
 ```bash
-SRV=yurem@rem.tld:/home/yurem/backup
-
 # export the app without data
-BORG_RSH="ssh -i /root/.ssh/id_borg_ed25519 -oStrictHostKeyChecking=yes " borg export-tar -e apps/nextcloud/backup/home/yunohost.app $SRV::auto_nextcloud_XX_XX_XX_XX:XX /home/yunohost.backup/archives/auto_nextcloud_XX_XX_XX_XX:XX.tar.gz
+/var/www/borg/wrapper/borg export-tar -e apps/nextcloud/backup/home/yunohost.app '::auto_nextcloud_XX_XX_XX_XX:XX' '/home/yunohost.backup/archives/auto_nextcloud_XX_XX_XX_XX:XX.tar.gz'
 
 # extract the data from the backup to the nextcloud folder
 cd /home/yunohost.app/nextcloud
-BORG_RSH="ssh -i /root/.ssh/id_borg_ed25519 -oStrictHostKeyChecking=yes " borg extract $SRV::auto_nextcloud_XX_XX_XX_XX:XX apps/nextcloud/backup/home/yunohost.app/nextcloud/
+/var/www/borg/wrapper/borg extract '::auto_nextcloud_XX_XX_XX_XX:XX' 'apps/nextcloud/backup/home/yunohost.app/nextcloud/'
 mv apps/nextcloud/backup/home/yunohost.app/nextcloud/data data
 rm -r apps
 

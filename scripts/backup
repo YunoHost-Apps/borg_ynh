@@ -19,6 +19,8 @@ ynh_backup "/root/.ssh/id_${app}_ed25519.pub" || true
 
 ynh_backup "$install_dir/backup-with-borg"
 ynh_backup "$install_dir/logging.conf"
+ynh_backup "$install_dir/wrapper"
+ynh_backup "$install_dir/.env"
 
 ynh_backup "/etc/logrotate.d/$app"
 
