@@ -21,6 +21,10 @@ if [[ "${mailalert:-}" != "always" && "${mailalert:-}" != "errors_only" && "${ma
     ynh_app_setting_set --key="mailalert" --value="errors_only"
     export mailalert="errors_only"
 fi
+
+if [ -z "${healthchecks_url:-}" ]; then
+    ynh_app_setting_set --key="healthchecks_url" --value=""
+fi
 ynh_app_setting_set --key="state" --value="not run since last update"
 ynh_app_setting_set --key="last_run" --value="-"
 
