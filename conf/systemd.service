@@ -6,6 +6,7 @@ After=network.target
 Type=oneshot
 User=__APP__
 Group=__APP__
+Environment=PATH=__PATH_WITH_BORG__
 ExecStart=/usr/bin/sudo __INSTALL_DIR__/backup-with-borg __APP__
 
 #[Install]
