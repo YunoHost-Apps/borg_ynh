@@ -47,8 +47,6 @@ chown -R $app:$app "/var/log/$app"
 chmod u+w "/var/log/$app"
 
 #=================================================
-# SPECIFIC SETUP
-#=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
 ynh_script_progression "Setting up backup method..."

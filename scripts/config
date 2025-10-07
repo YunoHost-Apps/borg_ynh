@@ -2,8 +2,6 @@
 
 source /usr/share/yunohost/helpers
 
-#REMOVEME? ynh_abort_if_errors
-
 borg="$install_dir/venv/bin/borg"
 
 #=================================================
