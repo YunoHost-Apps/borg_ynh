@@ -8,8 +8,12 @@ borg="$install_dir/venv/bin/borg"
 # SPECIFIC GETTERS FOR TOML SHORT KEY
 #=================================================
 
+get__on_calendar() {
+    ynh_app_setting_get --app="$app" --key="on_calendar"
+}
+
 get__info() {
-        cat << EOF
+    cat << EOF
 ask:
   en: "**Backup state:** ${old[state]}
 
@@ -44,8 +48,15 @@ get__data_multimedia() {
         echo "value: true"
     fi
 }
+
 get__last_backups() {
-    local backup_list=$(BORG_PASSPHRASE="$(ynh_app_setting_get $app passphrase)" BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes " "$borg" list --short --last 50 ${old[repository]} 2> /dev/null)
+
+    local backup_list
+    # Source the env file inside the command substitution ("$(...)")
+    # so the variables don't pollute the rest of the function and of the script.
+    # Indeed the command substitution spawns a subshell which is convenient here.
+    backup_list=$(ynh_exec_as_app "$borg_with_env_vars" list --short --last 50 "${repository}" 2> /dev/null)
+
     if [ -z "$backup_list" ]; then
         echo 'ask: "*no backups yet*"'
     else
@@ -73,6 +84,11 @@ validate__on_calendar() {
 # SPECIFIC SETTERS FOR TOML SHORT KEYS
 #=================================================
 
+set__repository() {
+    ynh_app_setting_set --app="$app" --key=repository --value="$repository"
+    ynh_add_config --template="env" --destination="$install_dir/.env"
+}
+
 set__data_multimedia() {
     if [ "$data_multimedia" == "0" ]; then
         mkdir -p /home/yunohost.multimedia/
@@ -94,6 +110,11 @@ set__on_calendar() {
     ynh_app_setting_set --app=$app --key="on_calendar" --value=$on_calendar
     ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
     systemctl daemon-reload
+}
+
+set__remote_path() {
+    ynh_app_setting_set --app="$app" --key=remote_path --value="$remote_path"
+    ynh_add_config --template="env" --destination="$install_dir/.env"
 }
 
 #=================================================

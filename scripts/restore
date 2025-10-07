@@ -38,6 +38,14 @@ chown "$app:$app" "$install_dir/backup-with-borg"
 ynh_restore "$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
+ynh_restore_file --origin_path="$install_dir/.env"
+chmod 0400 "$install_dir/.env"
+chown "$app:$app" "$install_dir/.env"
+
+ynh_restore_file --origin_path="$install_dir/wrapper"
+chown -R "$app:$app" "$install_dir/wrapper"
+chmod 0550 "$install_dir/wrapper/borg"
+
 #=================================================
 # RESTORE SYSTEM CONFIGURATIONS
 #=================================================

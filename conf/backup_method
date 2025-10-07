@@ -2,16 +2,13 @@
 set -Eeuo pipefail
 
 borg="__INSTALL_DIR__/venv/bin/borg"
-app="__APP__"
 
-BORG_PASSPHRASE="$(yunohost app setting "$app" passphrase)"
-BORG_REPO="$(yunohost app setting "$app" repository)"
-BORG_LOGGING_CONF="__INSTALL_DIR__/logging.conf"
+set -a
+source __INSTALL_DIR__/.env
+set +a
 
-if ssh-keygen -F "__SERVER__" >/dev/null ; then
-    BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=yes "
-else
-    BORG_RSH="ssh -i /root/.ssh/id_${app}_ed25519 -oStrictHostKeyChecking=no "
+if ! ssh-keygen -F "__SERVER__" >/dev/null ; then
+    export BORG_RSH="${BORG_RSH/oStrictHostKeyChecking=yes/oStrictHostKeyChecking=no}"
 fi
 
 do_need_mount() {
@@ -19,11 +16,6 @@ do_need_mount() {
 }
 
 do_backup() {
-    export BORG_PASSPHRASE
-    export BORG_REPO
-    export BORG_RSH
-    export BORG_LOGGING_CONF
-    export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
     work_dir="$1"
     name="$2"
     size="$3"
@@ -73,10 +65,6 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
 }
 
 do_mount() {
-    export BORG_PASSPHRASE
-    export BORG_REPO
-    export BORG_RSH
-    export BORG_LOGGING_CONF
     work_dir="$1"
     name="$2"
     size="$3"
