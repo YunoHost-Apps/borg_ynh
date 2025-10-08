@@ -1,6 +1,10 @@
-BORG_PASSPHRASE=__PASSPHRASE__
-BORG_REPO=__REPOSITORY__
-BORG_LOGGING_CONF=__INSTALL_DIR__/logging.conf
-BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
-BORG_RSH="ssh -i /root/.ssh/id___APP___ed25519 -oStrictHostKeyChecking=yes "
-BORG_REMOTE_PATH=__REMOTE_PATH__
+# ⚠️ This file is readonly and not meant to be edited: any changes will be lost at the next upgrade.
+# Configure the borg app through the webadmin or run the relevant command lines instead to change values.
+# https://doc.yunohost.org/en/admin/apps/#application-configuration
+
+BORG_PASSPHRASE='__PASSPHRASE__'
+BORG_REPO='__REPOSITORY__'
+BORG_LOGGING_CONF='__INSTALL_DIR__/logging.conf'
+BORG_RELOCATED_REPO_ACCESS_IS_OK='yes'
+BORG_RSH='ssh -i /root/.ssh/id___APP___ed25519 -oStrictHostKeyChecking=yes '
+BORG_REMOTE_PATH='__REMOTE_PATH__'
