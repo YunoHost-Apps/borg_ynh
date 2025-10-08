@@ -7,6 +7,9 @@ set -a
 source __INSTALL_DIR__/.env
 set +a
 
+# Only take advantage of logging.conf here. Not meaningful for the wrapper typically.
+export BORG_LOGGING_CONF='__INSTALL_DIR__/logging.conf'
+
 if ! ssh-keygen -F "__SERVER__" >/dev/null ; then
     export BORG_RSH="${BORG_RSH/oStrictHostKeyChecking=yes/oStrictHostKeyChecking=no}"
 fi
