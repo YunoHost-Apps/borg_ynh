@@ -44,7 +44,7 @@ ynh_app_setting_set --app=$app --key=passphrase --value="$passphrase"
 path_with_borg="$install_dir/wrapper:$PATH"
 
 # env_keep for sudoers
-env_keep=$(cat ../conf/env | cut -d "=" -f 1 | tr "\n" " ")
+env_keep=$(cat ../conf/env | sed '/^#/d' | cut -d "=" -f 1 | tr "\n" " ")
 
 # By default, set the remote_path to borg (just like the upstream project)
 remote_path="borg"
