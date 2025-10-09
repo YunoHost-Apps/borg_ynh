@@ -34,3 +34,12 @@ test_format = 1.0
     args.apps = "all"
     args.on_calendar = "Daily"
     args.mailalert = "errors_only"
+
+[custom_on_calendar]
+    args.repository = "ssh://sam@domain.tld:22/~/backup"
+    args.passphrase = "A_Passphrase"
+    args.conf = 1
+    args.data = 1
+    args.apps = "all"
+    args.on_calendar = "Mon *-*-* 03:20:00"
+    args.mailalert = "errors_only"

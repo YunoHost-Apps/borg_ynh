@@ -9,7 +9,7 @@ description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiff
 
 version = "1.4.1~ynh3"
 
-maintainers = ["ljf"]
+maintainers = ["ljf", "fflorent"]
 
 [upstream]
 license = "BSD-3-Clause"
