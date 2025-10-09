@@ -2,7 +2,7 @@
 
 source /usr/share/yunohost/helpers
 
-borg="$install_dir/venv/bin/borg"
+borg_with_env_vars="$install_dir/wrapper/borg"
 
 #=================================================
 # SPECIFIC GETTERS FOR TOML SHORT KEY
