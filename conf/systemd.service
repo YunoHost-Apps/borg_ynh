@@ -4,10 +4,10 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/sudo __INSTALL_DIR__/backup-with-borg __APP__
 User=__APP__
 Group=__APP__
 Environment=PATH=__PATH_WITH_BORG__
+ExecStart=/usr/bin/sudo __INSTALL_DIR__/backup-with-borg __APP__
 
 #[Install]
 #WantedBy=multi-user.target

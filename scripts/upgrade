@@ -1,42 +1,33 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
-upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
-# STANDARD UPGRADE STEPS
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..."  --weight=1
+ynh_script_progression "Stopping $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
-ynh_systemd_action --service_name=$app.timer --action="stop"
+ynh_systemctl --service=$app --action="stop"
+
+ynh_systemctl --service=$app.timer --action="stop"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_script_progression --message="Ensuring downward compatibility..."  --weight=1
+ynh_script_progression "Ensuring downward compatibility..."
 
 if [[ "${mailalert:-}" != "always" && "${mailalert:-}" != "errors_only" && "${mailalert:-}" != "never" ]]; then
-    ynh_app_setting_set --app=$app --key="mailalert" --value="errors_only"
+    ynh_app_setting_set --key="mailalert" --value="errors_only"
     export mailalert="errors_only"
 fi
 
 if [ -z "${healthchecks_url:-}" ]; then
-    ynh_app_setting_set --app=$app --key="healthchecks_url" --value=""
+    ynh_app_setting_set --key="healthchecks_url" --value=""
 fi
 
 if [ -z "${remote_path:-}" ]; then
-    ynh_app_setting_set --app=$app --key="remote_path" --value="borg"
+    ynh_app_setting_set --key="remote_path" --value="borg"
 fi
 
 # The config panel used to set bad values for "on_calendar". Users
@@ -45,19 +36,20 @@ fi
 #
 # In case the value is incorrect, let's instead retrieve it from
 # the systemd timer config file.
-if ynh_compare_current_package_version --comparison le --version 1.4.1~ynh2 && ! systemd-analyze calendar "$on_calendar" &>/dev/null; then
+if ynh_app_upgrading_from_version_before 1.4.1~ynh2 && ! systemd-analyze calendar "$on_calendar" &>/dev/null; then
     ynh_print_info --message='Fixing stored value for "on_calendar" setting (Issue 224)'
     on_calendar=$(systemctl cat "$app.timer" | grep -Po "OnCalendar=\K.*")
-    ynh_app_setting_set --app=$app --key="on_calendar" --value="$on_calendar"
+    ynh_app_setting_set --key="on_calendar" --value="$on_calendar"
 fi
 
 path_with_borg="$install_dir/wrapper:$PATH"
 
 env_keep=$(cat ../conf/env | sed '/^#/d' | cut -d "=" -f 1 | tr "\n" " ")
 
-ynh_app_setting_set --app=$app --key="state" --value="not run since last update"
-ynh_app_setting_set --app=$app --key="last_run" --value="-"
-
+ynh_app_setting_set_default --key="state" --value="not run since last update"
+ynh_app_setting_set_default --key="last_run" --value="-"
+ynh_app_setting_set_default --key="healthchecks_url" --value=""
+ynh_app_setting_set_default --key=remote_path --value=""
 
 if [ -z "$repository" ]; then
     repository="ssh://$ssh_user@$server/~/backup"
@@ -65,15 +57,9 @@ if [ -z "$repository" ]; then
     if [[ $server == *":"* ]]; then
         server="[$(echo "$server" | cut -d":" -f1)]:$(echo "$server" | cut -d":" -f2)"
     fi
-    ynh_app_setting_set $app repository "$repository"
-    ynh_app_setting_set $app server "$server"
+    ynh_app_setting_set --key=repository --value="$repository"
+    ynh_app_setting_set --key=server --value="$server"
     ynh_app_setting_delete $app ssh_user
-fi
-
-# Add support for new remote_path option which didn't exist before
-remote_path="$(ynh_app_setting_get $app remote_path)"
-if [ -z "$remote_path" ]; then
-    ynh_app_setting_set $app remote_path ""
 fi
 
 if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
@@ -87,15 +73,15 @@ fi
 
 # Clear legacy stuff
 if [ -d /opt/borg-env ]; then
-    ynh_secure_remove --file="/opt/borg-env"
-    ynh_secure_remove --file="/usr/local/bin/borg"
-    ynh_secure_remove --file="/usr/local/bin/backup-with-borg"
+    ynh_safe_rm "/opt/borg-env"
+    ynh_safe_rm "/usr/local/bin/borg"
+    ynh_safe_rm "/usr/local/bin/backup-with-borg"
 fi
 
 #=================================================
 # UPGRADE BORG
 #=================================================
-ynh_script_progression --message="Upgrading Borg..." --weight=1
+ynh_script_progression "Upgrading Borg..."
 
 install_borg_with_pip
 
@@ -108,54 +94,54 @@ chmod u+w "/var/log/$app"
 #=================================================
 # SETUP THE BACKUP METHOD
 #=================================================
-ynh_script_progression --message="Setting up backup method..." --weight=1
+ynh_script_progression "Setting up backup method..."
 
 mkdir -p /etc/yunohost/hooks.d/backup
 mkdir -p /etc/yunohost/hooks.d/backup_method
 mkdir -p /usr/share/yunohost/backup_method
 
-ynh_add_config --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
+ynh_config_add --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
-ynh_add_config --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
+ynh_config_add --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
 chmod u+x "$install_dir/backup-with-borg"
 chown "$app:$app" "$install_dir/backup-with-borg"
 
-ynh_add_config --template="sudoer" --destination="/etc/sudoers.d/$app"
+ynh_config_add --template="sudoer" --destination="/etc/sudoers.d/$app"
 chown root:root "/etc/sudoers.d/$app"
 
-ynh_add_config --template="logging.conf" --destination="$install_dir/logging.conf"
+ynh_config_add --template="logging.conf" --destination="$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
-ynh_add_config --template="env" --destination="$install_dir/.env"
+ynh_config_add --template="env" --destination="$install_dir/.env"
 chmod 0400 "$install_dir/.env"
 chown "$app:$app" "$install_dir/.env"
 
 install -o "$app" -g "$app" -m 0770 -d "$install_dir/wrapper"
-ynh_add_config --template="borg_wrapper" --destination="$install_dir/wrapper/borg"
+ynh_config_add --template="borg_wrapper" --destination="$install_dir/wrapper/borg"
 chmod 0550 "$install_dir/wrapper/borg"
 chown "$app:$app" "$install_dir/wrapper/borg"
 
 #=================================================
-# SETUP LOGROTATE
-#=================================================
-ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
-
-# Use logrotate to manage app-specific logfile(s)
-ynh_use_logrotate --logfile="/var/log/$app/borg.log"
-
-#=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
+ynh_script_progression "Upgrading system configurations related to $app..."
 
-# Create a dedicated systemd config
-ynh_add_systemd_config
+ynh_config_add_systemd
+
 yunohost service add $app --description="Deduplicating backup program" --test_status="systemctl show $app.service  -p ActiveState --value | grep -v failed"  --log "/var/log/$app/borg.log"
-# Disable the service, this is to prevent the service from being triggered at boot time
+
 systemctl disable $app.service --quiet
 
-ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+ynh_config_add --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
+
+ynh_config_add_logrotate
+
+#=================================================
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression "Starting $app's systemd service..."
+
 systemctl enable $app.timer --quiet
 systemctl start $app.timer
 
@@ -163,4 +149,4 @@ systemctl start $app.timer
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --last
+ynh_script_progression "Upgrade of $app completed"

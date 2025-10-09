@@ -94,7 +94,7 @@ name.fr = "Configuration de Borg"
         ask.fr = "URL de monitoring (Healthchecks)"
         type = "url"
         help.en = "Use a monitor service to detect silent failures. It's optional and currently meant to work with Healthchecks. If you don't know what it is, just leave it blank or look it up to this service: https://healthchecks.io"
-        help.fr = "Utiliser un service de monitoring pour détecter les échecs silencieux. C'est optionnel et actuellement destiné à fonctionner avec Healthchecks. Si vous ne connaissez pas, vous pouvez ignorer ou jeter un œil à ce service: https://healthchecks.io"
+        help.fr = "Utiliser un service de monitoring pour détecter les échecs silencieux. C'est optionnel et actuellement destiné à fonctionner avec Healthchecks. Si vous ne connaissez pas, vous pouvez ignorer ou jeter un œil à ce service : https://healthchecks.io"
         optional = true
 
 [list]
