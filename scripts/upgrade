@@ -39,21 +39,17 @@ fi
 if ynh_app_upgrading_from_version_before 1.4.1~ynh2 && ! systemd-analyze calendar "$on_calendar" &>/dev/null; then
     ynh_print_info --message='Fixing stored value for "on_calendar" setting (Issue 224)'
     on_calendar=$(systemctl cat "$app.timer" | grep -Po "OnCalendar=\K.*")
-    ynh_app_setting_set --app=$app --key="on_calendar" --value="$on_calendar"
+    ynh_app_setting_set --key="on_calendar" --value="$on_calendar"
 fi
 
 path_with_borg="$install_dir/wrapper:$PATH"
 
 env_keep=$(cat ../conf/env | sed '/^#/d' | cut -d "=" -f 1 | tr "\n" " ")
 
-ynh_app_setting_set --key="state" --value="not run since last update"
-ynh_app_setting_set --key="last_run" --value="-"
-
-if [ -z "${healthchecks_url:-}" ]; then
-    ynh_app_setting_set --key="healthchecks_url" --value=""
-fi
-ynh_app_setting_set --key="state" --value="not run since last update"
-ynh_app_setting_set --key="last_run" --value="-"
+ynh_app_setting_set_default --key="state" --value="not run since last update"
+ynh_app_setting_set_default --key="last_run" --value="-"
+ynh_app_setting_set_default --key="healthchecks_url" --value=""
+ynh_app_setting_set_default --key=remote_path --value=""
 
 if [ -z "$repository" ]; then
     repository="ssh://$ssh_user@$server/~/backup"
@@ -61,15 +57,9 @@ if [ -z "$repository" ]; then
     if [[ $server == *":"* ]]; then
         server="[$(echo "$server" | cut -d":" -f1)]:$(echo "$server" | cut -d":" -f2)"
     fi
-    ynh_app_setting_set $app repository "$repository"
-    ynh_app_setting_set $app server "$server"
+    ynh_app_setting_set --key=repository --value="$repository"
+    ynh_app_setting_set --key=server --value="$server"
     ynh_app_setting_delete $app ssh_user
-fi
-
-# Add support for new remote_path option which didn't exist before
-remote_path="$(ynh_app_setting_get $app remote_path)"
-if [ -z "$remote_path" ]; then
-    ynh_app_setting_set $app remote_path ""
 fi
 
 if grep "borg.timer" /etc/yunohost/services.yml > /dev/null ; then
