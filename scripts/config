@@ -76,7 +76,7 @@ get__conf() {
 #=================================================
 validate__on_calendar() {
 
-    (systemd-analyze calendar $on_calendar > /dev/null) ||
+    (systemd-analyze calendar "$on_calendar" > /dev/null) ||
         echo 'Please follow systemd OnCalendar format: https://man.archlinux.org/man/systemd.time.7#CALENDAR_EVENTS'
 }
 
@@ -107,7 +107,7 @@ set__conf() {
 }
 
 set__on_calendar() {
-    ynh_app_setting_set --app=$app --key="on_calendar" --value=$on_calendar
+    ynh_app_setting_set --app=$app --key="on_calendar" --value="$on_calendar"
     ynh_add_config --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
     systemctl daemon-reload
 }

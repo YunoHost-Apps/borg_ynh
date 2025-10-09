@@ -12,7 +12,9 @@ If you want to test correct Borg Apps setup before scheduled time, you can start
 systemctl start borg
 ```
 
-Once the backup completes, you can check that a backup is listed in the webadmin > Applications > Borg > 'Last backups list'.
+Once the backup completes, you can check that a backup is listed in the panel `Web Admin > Applications > Borg > 'Last backups list'`.
+
+If you have a shell session, you will find more details on borg execution logs in `/var/log/borg/borg.log`
 
 ## Manually running `borg` commands
 

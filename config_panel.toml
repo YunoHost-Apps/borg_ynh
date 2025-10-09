@@ -39,7 +39,7 @@ name.fr = "Configuration de Borg"
         [main.general.remote_path]
         ask.en = "Remote borg command (remote-path)"
         type = "string"
-        help = "Optionally, specify a custom remote-path option for borg execution (excerpt from docs: *BORG_REMOTE_PATH: When set, use the given path as borg executable on the remote (defaults to “borg” if unset)*). Leave empty if unsure."
+        help = "(Optional) Set BORG_REMOTE_PATH variable in order to use the given path as borg executable on the remote server (defaults to “borg” if unset). Leave empty if unsure."
 
         [main.general.on_calendar]
         ask.en = "When and at which frequency should the backups be performed?"
