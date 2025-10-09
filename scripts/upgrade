@@ -36,7 +36,7 @@ fi
 #
 # In case the value is incorrect, let's instead retrieve it from
 # the systemd timer config file.
-if ynh_compare_current_package_version --comparison le --version 1.4.1~ynh2 && ! systemd-analyze calendar "$on_calendar" &>/dev/null; then
+if ynh_app_upgrading_from_version_before 1.4.1~ynh2 && ! systemd-analyze calendar "$on_calendar" &>/dev/null; then
     ynh_print_info --message='Fixing stored value for "on_calendar" setting (Issue 224)'
     on_calendar=$(systemctl cat "$app.timer" | grep -Po "OnCalendar=\K.*")
     ynh_app_setting_set --app=$app --key="on_calendar" --value="$on_calendar"
