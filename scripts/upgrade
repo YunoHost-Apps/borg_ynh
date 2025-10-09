@@ -123,12 +123,12 @@ chown root:root "/etc/sudoers.d/$app"
 ynh_config_add --template="logging.conf" --destination="$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
-ynh_add_config --template="env" --destination="$install_dir/.env"
+ynh_config_add --template="env" --destination="$install_dir/.env"
 chmod 0400 "$install_dir/.env"
 chown "$app:$app" "$install_dir/.env"
 
 install -o "$app" -g "$app" -m 0770 -d "$install_dir/wrapper"
-ynh_add_config --template="borg_wrapper" --destination="$install_dir/wrapper/borg"
+ynh_config_add --template="borg_wrapper" --destination="$install_dir/wrapper/borg"
 chmod 0550 "$install_dir/wrapper/borg"
 chown "$app:$app" "$install_dir/wrapper/borg"
 
