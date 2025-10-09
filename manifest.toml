@@ -20,18 +20,21 @@ cpe = "cpe:2.3:a:borg_project:borg"
 fund = "https://www.borgbackup.org/support/fund.html"
 
 [integration]
-yunohost = ">= 11.2.20"
+yunohost = ">= 12.1.17"
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
+
 ldap = "not_relevant"
 sso = "not_relevant"
+
 disk = "50M"
 ram.build = "500M"
 ram.runtime = "50M"
 
 [install]
     [install.repository]
-    ask.en = "In which borg repository location do you want to backup your files ?"
+    ask.en = "In which borg repository location do you want to backup your files?"
     ask.fr = "Dans quel repo borg souhaitez-vous sauvegarder vos fichiers ?"
     help.en = "Specify a local repository (`/mount/my_external_harddrive/backups`) or a remote repository (`ssh://USER@DOMAIN.TLD:PORT/~/backup`). If you plan to use a remote borgserver_ynh app : `USER` is *not* meant to be an existing user on the guest server, instead, it will be created *on the host server* during the installation of the Borg Server App. With borgserver_ynh apps you can't specify another repo path than `~/backup`."
     type = "string"
@@ -72,7 +75,7 @@ ram.runtime = "50M"
     default = "Daily"
 
     [install.mailalert]
-    ask.en = "Do you want admin to receive mail notifications on backups ?"
+    ask.en = "Do you want admin to receive mail notifications on backups?"
     ask.fr = "Souhaitez-vous recevoir des notifications par mail à chaque sauvegarde ?"
     type = "select"
     choices = ["always", "errors_only", "never"]

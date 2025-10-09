@@ -42,6 +42,7 @@ A borg "archive" can be exported to a `.tar` which can then be restored using th
 As root, run (replace `ARCHIVE_NAME` by the relevant backup name and `BORG_APP` by `borg`, or `borg__2`, `backup__3`, ...):
 ```bash
 /var/www/BORG_APP/wrapper/borg export-tar "::ARCHIVE_NAME" /home/yunohost.backup/archives/ARCHIVE_NAME.tar
+
 ```
 
 Then restore using the classic workflow:
