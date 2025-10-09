@@ -2,8 +2,6 @@
 
 source /usr/share/yunohost/helpers
 
-ynh_abort_if_errors
-
 borg_with_env_vars="$install_dir/wrapper/borg"
 
 #=================================================
@@ -52,11 +50,13 @@ get__data_multimedia() {
 }
 
 get__last_backups() {
+
     local backup_list
     # Source the env file inside the command substitution ("$(...)")
     # so the variables don't pollute the rest of the function and of the script.
     # Indeed the command substitution spawns a subshell which is convenient here.
-    backup_list=$(ynh_exec_as "$app" "$borg_with_env_vars" list --short --last 50 "${repository}" 2> /dev/null)
+    backup_list=$(ynh_exec_as_app "$borg_with_env_vars" list --short --last 50 "${repository}" 2> /dev/null)
+
     if [ -z "$backup_list" ]; then
         echo 'ask: "*no backups yet*"'
     else
@@ -68,7 +68,7 @@ EOF
 }
 
 get__conf() {
-    ynh_app_setting_get --app=$app --key=conf
+    ynh_app_setting_get --key=conf
 }
 
 #=================================================
@@ -94,7 +94,7 @@ set__data_multimedia() {
         mkdir -p /home/yunohost.multimedia/
         touch /home/yunohost.multimedia/.nobackup
     else
-        ynh_secure_remove /home/yunohost.multimedia/.nobackup
+        ynh_safe_rm /home/yunohost.multimedia/.nobackup
     fi
 }
 
@@ -102,7 +102,7 @@ set__conf() {
     if [ -n "${conf}" ]
     then
         # Update the config of the app
-        ynh_app_setting_set --app=$app --key=conf --value=$conf
+        ynh_app_setting_set --key=conf --value=$conf
     fi
 }
 
@@ -117,7 +117,5 @@ set__remote_path() {
     ynh_add_config --template="env" --destination="$install_dir/.env"
 }
 
-#=================================================
-# GENERIC FINALIZATION
 #=================================================
 ynh_app_config_run $1
