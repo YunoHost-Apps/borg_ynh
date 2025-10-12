@@ -11,7 +11,7 @@ It shall NOT be edited by hand.
 Regularly create deduplicated, encrypted backups sent to another server using Borg
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://www.borgbackup.org)
-[![Version: 1.4.1~ynh4](https://img.shields.io/badge/Version-1.4.1~ynh4-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/borg/)
+[![Version: 1.4.1~ynh5](https://img.shields.io/badge/Version-1.4.1~ynh5-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/borg/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/borg"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
