@@ -7,7 +7,7 @@ name = "Borg Backup"
 description.en = "Regularly create deduplicated, encrypted backups sent to another server using Borg"
 description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiffées envoyées sur un autre serveur à l'aide de Borg"
 
-version = "1.4.1~ynh3"
+version = "1.4.1~ynh4"
 
 maintainers = ["ljf", "fflorent"]
 
@@ -20,7 +20,7 @@ cpe = "cpe:2.3:a:borg_project:borg"
 fund = "https://www.borgbackup.org/support/fund.html"
 
 [integration]
-yunohost = ">= 11.2.20"
+yunohost = ">= 12.1.28"
 architectures = "all"
 multi_instance = true
 ldap = "not_relevant"
