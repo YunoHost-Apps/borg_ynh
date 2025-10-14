@@ -39,8 +39,8 @@ ynh_app_setting_set --key=passphrase --value="$passphrase"
 # $PATH with borg, useful to make borg available when using the `yunohost app shell` command
 path_with_borg="$install_dir/wrapper:$PATH"
 
-# env_keep for sudoers
-env_keep=$(cat ../conf/env | sed '/^#/d' | cut -d "=" -f 1 | tr "\n" " ")
+# env_keep for sudoers. This line extracts the environment variable names from env.jinja.
+env_keep=$(grep -Po '^\w+(?==)' ../conf/env.jinja | tr "\n" " ")
 
 # By default, set the remote_path to borg (just like the upstream project)
 remote_path="borg"
@@ -82,7 +82,7 @@ chown root:root "/etc/sudoers.d/$app"
 ynh_config_add --template="logging.conf" --destination="$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
-ynh_config_add --template="env" --destination="$install_dir/.env"
+ynh_config_add --template="env.jinja" --destination="$install_dir/.env" --jinja
 chmod 0400 "$install_dir/.env"
 chown "$app:$app" "$install_dir/.env"
 
