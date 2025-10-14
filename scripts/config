@@ -86,7 +86,7 @@ validate__on_calendar() {
 
 set__repository() {
     ynh_app_setting_set --app="$app" --key=repository --value="$repository"
-    ynh_add_config --template="env" --destination="$install_dir/.env"
+    ynh_add_config --template="env.jinja" --destination="$install_dir/.env" --jinja
 }
 
 set__data_multimedia() {
@@ -114,7 +114,7 @@ set__on_calendar() {
 
 set__remote_path() {
     ynh_app_setting_set --app="$app" --key=remote_path --value="$remote_path"
-    ynh_add_config --template="env" --destination="$install_dir/.env"
+    ynh_add_config --template="env.jinja" --destination="$install_dir/.env" --jinja
 }
 
 #=================================================
