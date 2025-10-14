@@ -104,9 +104,11 @@ mkdir -p /usr/share/yunohost/backup_method
 ynh_config_add --template="backup_method" --destination="/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
+# To avoid privilege escalation, let's only assign the group to borg
+# so it is able to execute the command but can't alter the binary.
 ynh_config_add --template="backup-with-borg" --destination="$install_dir/backup-with-borg"
-chmod u+x "$install_dir/backup-with-borg"
-chown "$app:$app" "$install_dir/backup-with-borg"
+chmod 0550 "$install_dir/backup-with-borg"
+chown "root:$app" "$install_dir/backup-with-borg"
 
 ynh_config_add --template="sudoer" --destination="/etc/sudoers.d/$app"
 chown root:root "/etc/sudoers.d/$app"
@@ -118,10 +120,10 @@ ynh_config_add --template="env.jinja" --destination="$install_dir/.env" --jinja
 chmod 0400 "$install_dir/.env"
 chown "$app:$app" "$install_dir/.env"
 
-install -o "$app" -g "$app" -m 0770 -d "$install_dir/wrapper"
+install -o "root" -g "$app" -m 0750 -d "$install_dir/wrapper"
 ynh_config_add --template="borg_wrapper" --destination="$install_dir/wrapper/borg"
 chmod 0550 "$install_dir/wrapper/borg"
-chown "$app:$app" "$install_dir/wrapper/borg"
+chown "root:$app" "$install_dir/wrapper/borg"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
