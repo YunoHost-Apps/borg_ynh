@@ -5,12 +5,16 @@
 #=================================================
 
 install_borg_with_pip () {
-    ynh_exec_as_app python3 -m venv --upgrade "$install_dir/venv"
+    # Install borg as root, to avoid privilege escalation as we run borg as root using sudo.
+    # Assign the group to borg so it is able to execute the command but can't alter the binary.
+    python3 -m venv --upgrade "$install_dir/venv"
     venvpy="$install_dir/venv/bin/python3"
 
-    ynh_exec_as_app "$venvpy" -m pip install --upgrade setuptools wheel
+    "$venvpy" -m pip install --upgrade setuptools wheel
     BORG_VERSION=$(ynh_app_upstream_version)
-    ynh_exec_as_app "$venvpy" -m pip install borgbackup[pyfuse3]=="$BORG_VERSION"
+    "$venvpy" -m pip install borgbackup[pyfuse3]=="$BORG_VERSION"
+    chown -R "root:$app" "$install_dir/venv"
+    chmod -R g-w "$install_dir/venv"
 }
 
 _gen_and_save_public_key() {

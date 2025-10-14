@@ -93,6 +93,8 @@ ram.runtime = "50M"
     [resources.system_user]
 
     [resources.install_dir]
+    owner = "root:rwx" # Avoid escalation issue as we run use sudo to run some scripts
+    group = "__APP__:r-x"
 
     [resources.permissions]
 
