@@ -9,7 +9,9 @@ borg_with_env_vars="$install_dir/wrapper/borg"
 #=================================================
 
 get__on_calendar() {
-    ynh_app_setting_get --app="$app" --key="on_calendar"
+    cat << EOF
+    value: '$(ynh_app_setting_get --app="$app" --key="on_calendar")'
+EOF
 }
 
 get__info() {
