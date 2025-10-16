@@ -9,6 +9,7 @@ borg_with_env_vars="$install_dir/wrapper/borg"
 #=================================================
 
 get__on_calendar() {
+# YAML seems to hate systemd timer patterns like `*-*-* 03:30:00` so format custom YAML manually
     cat << EOF
     value: '$(ynh_app_setting_get --app="$app" --key="on_calendar")'
 EOF
