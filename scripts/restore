@@ -13,8 +13,6 @@ install_borg_with_pip
 _gen_and_save_public_key
 
 mkdir -p "/var/log/$app"
-chown -R $app:$app "/var/log/$app"
-chmod u+w "/var/log/$app"
 
 #=================================================
 # ACTIVATE BACKUP METHODS
@@ -29,7 +27,6 @@ ynh_restore "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 chmod go=--- "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 ynh_restore "/etc/sudoers.d/$app"
-chown root:root "/etc/sudoers.d/$app"
 
 ynh_restore "$install_dir/backup-with-borg"
 chmod 0550 "$install_dir/backup-with-borg"
@@ -39,11 +36,11 @@ ynh_restore "$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
 ynh_restore "$install_dir/.env"
-chmod 0400 "$install_dir/.env"
-chown "$app:$app" "$install_dir/.env"
+chmod 0440 "$install_dir/.env"
+chown "root:$app" "$install_dir/.env"
 
 ynh_restore "$install_dir/wrapper"
-chown -R "$app:$app" "$install_dir/wrapper"
+chown -R "root:$app" "$install_dir/wrapper"
 chmod 0550 "$install_dir/wrapper/borg"
 chown "root:$app" "$install_dir/wrapper/borg"
 

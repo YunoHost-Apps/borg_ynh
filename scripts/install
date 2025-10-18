@@ -28,10 +28,10 @@ ynh_app_setting_set --key=state --value="$state"
 last_run="-"
 ynh_app_setting_set --key=last_run --value="$last_run"
 
-ynh_app_setting_set --app=$app --key=healthchecks_url --value=""
+ynh_app_setting_set --key=healthchecks_url --value=""
 
-ynh_app_setting_set --app=$app --key=healthchecks_url --value=""
-ynh_app_setting_set --app=$app --key=remote_path --value=""
+ynh_app_setting_set --key=healthchecks_url --value=""
+ynh_app_setting_set --key=remote_path --value=""
 
 # passwords aren't saved by default
 ynh_app_setting_set --key=passphrase --value="$passphrase"
@@ -44,8 +44,7 @@ env_keep=$(grep -Po '^\w+(?==)' ../conf/env.jinja | tr "\n" " ")
 
 # By default, set the remote_path to borg (just like the upstream project)
 remote_path="borg"
-ynh_app_setting_set --app=$app --key=remote_path --value="$remote_path"
-
+ynh_app_setting_set --key=remote_path --value="$remote_path"
 
 #=================================================
 # INSTALL BORG
@@ -57,8 +56,6 @@ install_borg_with_pip
 _gen_and_save_public_key
 
 mkdir -p "/var/log/$app"
-chown -R $app:$app "/var/log/$app"
-chmod u+w "/var/log/$app"
 
 #=================================================
 # SETUP THE BACKUP METHOD
@@ -79,14 +76,13 @@ chmod 0550 "$install_dir/backup-with-borg"
 chown "root:$app" "$install_dir/backup-with-borg"
 
 ynh_config_add --template="sudoer" --destination="/etc/sudoers.d/$app"
-chown root:root "/etc/sudoers.d/$app"
 
 ynh_config_add --template="logging.conf" --destination="$install_dir/logging.conf"
 chown "$app:$app" "$install_dir/logging.conf"
 
 ynh_config_add --template="env.jinja" --destination="$install_dir/.env" --jinja
-chmod 0400 "$install_dir/.env"
-chown "$app:$app" "$install_dir/.env"
+chmod 0440 "$install_dir/.env"
+chown "root:$app" "$install_dir/.env"
 
 install -o "root" -g "$app" -m 0750 -d "$install_dir/wrapper"
 ynh_config_add --template="borg_wrapper" --destination="$install_dir/wrapper/borg"

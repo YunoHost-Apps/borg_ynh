@@ -11,7 +11,7 @@ borg_with_env_vars="$install_dir/wrapper/borg"
 get__on_calendar() {
 # YAML seems to hate systemd timer patterns like `*-*-* 03:30:00` so format custom YAML manually
     cat << EOF
-    value: '$(ynh_app_setting_get --app="$app" --key="on_calendar")'
+    value: '$(ynh_app_setting_get --key="on_calendar")'
 EOF
 }
 
@@ -88,7 +88,7 @@ validate__on_calendar() {
 #=================================================
 
 set__repository() {
-    ynh_app_setting_set --app="$app" --key=repository --value="$repository"
+    ynh_app_setting_set --key=repository --value="$repository"
     ynh_config_add --template="env.jinja" --destination="$install_dir/.env" --jinja
 }
 
@@ -110,13 +110,13 @@ set__conf() {
 }
 
 set__on_calendar() {
-    ynh_app_setting_set --app=$app --key="on_calendar" --value="$on_calendar"
+    ynh_app_setting_set --key="on_calendar" --value="$on_calendar"
     ynh_config_add --template="systemd.timer" --destination="/etc/systemd/system/$app.timer"
     systemctl daemon-reload
 }
 
 set__remote_path() {
-    ynh_app_setting_set --app="$app" --key=remote_path --value="$remote_path"
+    ynh_app_setting_set --key=remote_path --value="$remote_path"
     ynh_config_add --template="env.jinja" --destination="$install_dir/.env" --jinja
 }
 
