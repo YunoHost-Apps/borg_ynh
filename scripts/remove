@@ -12,6 +12,8 @@ if ynh_hide_warnings yunohost service status $app >/dev/null; then
     yunohost service remove $app
 fi
 
+ynh_safe_rm "/etc/sudoers.d/$app"
+
 #=================================================
 # REMOVE LOGROTATE CONFIGURATION
 #=================================================
