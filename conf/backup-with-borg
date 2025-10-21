@@ -21,7 +21,7 @@ healthchecks_url="$(sudo yunohost app setting "${borg_id}" healthchecks_url)"
 healthcheck() {
     if [[ -n "$healthchecks_url" ]]; then
         local signal="$1"
-        # the expression "${signal:+/$signal}" adds a leading slash to the value of $signal 
+        # the expression "${signal:+/$signal}" adds a leading slash to the value of $signal
         # only if the latter is not empty, otherwise it returns an empty string.
         local url="$healthchecks_url${signal:+/$signal}"
         curl -s -m 10 -o /dev/null --data-raw "$(echo $2 | tail --bytes=10000)" "$url"
@@ -71,6 +71,16 @@ for application in $(sudo ls /etc/yunohost/apps/); do
         errors+="\nThe backup miserably failed to backup $application application."
     fi
 done
+
+borg="__INSTALL_DIR__/wrapper/borg"
+
+# We prune potential manual backup older than 1 year
+"$borg" prune --keep-within 1y
+
+# Compact repo after pruning it, otherwise in fact nothing will be really removed from the repo,
+# making its actual size grow disproportionately compared to what `borg info` displays
+# See: https://github.com/borgbackup/borg/issues/6106#issuecomment-1215449050
+"$borg" compact
 
 #=========================================================
 # SEND MAIL TO NOTIFY ABOUT SUCCEEDED OR FAILED OPERATIONS
