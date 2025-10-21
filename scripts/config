@@ -41,7 +41,19 @@ EOF
 }
 
 get__ssh_public_key() {
-    cat "/root/.ssh/id_${app}_ed25519.pub" 2>/dev/null || echo "N/A"
+    # Only display the public key when it's a remote borg repository
+    repository="$(ynh_app_setting_get $app repository)"
+    if [[ "$repository" == ssh://* ]]; then
+        cat << EOF
+ask:
+  en: |-
+    **Public key**: \`$(cat /root/.ssh/id_${app}_ed25519.pub || echo '')\`
+
+    *This is the SSH public key that needs to be declared on the remote Borg server (somewhere in an \`authorized_keys\` file, for instance), so that the local borg can connect to its remote repository.*
+EOF
+    else
+        echo "ask: \" \""
+    fi
 }
 
 get__data_multimedia() {
