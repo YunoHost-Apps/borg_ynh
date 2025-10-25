@@ -26,10 +26,6 @@ if [ -z "${healthchecks_url:-}" ]; then
     ynh_app_setting_set --key="healthchecks_url" --value=""
 fi
 
-if [ -z "${remote_path:-}" ]; then
-    ynh_app_setting_set --key="remote_path" --value="borg"
-fi
-
 # The config panel used to set bad values for "on_calendar". Users
 # especially experienced issues when they set values that contain spaces,
 # which seem to be replaced with semi-colons (;).
@@ -50,7 +46,8 @@ env_keep=$(grep -Po '^\w+(?==)' ../conf/env.jinja | tr "\n" " ")
 ynh_app_setting_set_default --key="state" --value="not run since last update"
 ynh_app_setting_set_default --key="last_run" --value="-"
 ynh_app_setting_set_default --key="healthchecks_url" --value=""
-ynh_app_setting_set_default --key=remote_path --value=""
+remote_path="${remote_path:-}"
+ynh_app_setting_set_default --key="remote_path" --value=""
 
 if [ -z "$repository" ]; then
     repository="ssh://$ssh_user@$server/~/backup"

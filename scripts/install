@@ -30,8 +30,8 @@ ynh_app_setting_set --key=last_run --value="$last_run"
 
 ynh_app_setting_set --key=healthchecks_url --value=""
 
-ynh_app_setting_set --key=healthchecks_url --value=""
-ynh_app_setting_set --key=remote_path --value=""
+remote_path=""
+ynh_app_setting_set --key=remote_path --value="$remote_path"
 
 # passwords aren't saved by default
 ynh_app_setting_set --key=passphrase --value="$passphrase"
@@ -41,10 +41,6 @@ path_with_borg="$install_dir/wrapper:$PATH"
 
 # env_keep for sudoers. This line extracts the environment variable names from env.jinja.
 env_keep=$(grep -Po '^\w+(?==)' ../conf/env.jinja | tr "\n" " ")
-
-# By default, set the remote_path to borg (just like the upstream project)
-remote_path="borg"
-ynh_app_setting_set --key=remote_path --value="$remote_path"
 
 #=================================================
 # INSTALL BORG
