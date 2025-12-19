@@ -39,6 +39,7 @@ healthcheck "start"
 # Backup system part conf
 conf=$(sudo yunohost app setting "${borg_id}" conf)
 if [[ "$conf" = "1" ]]; then
+    # run yunohost backup using custom method specified in "backup_method" script
     if ! sudo yunohost backup create -n auto_conf --method "${borg_id}_app" --system $(filter_hooks conf) 2>> "$err_file" >> "$log_file" ; then
         errors+="\nThe backup miserably failed to backup system configurations."
     fi
@@ -47,6 +48,7 @@ fi
 # Backup system data
 data=$(sudo yunohost app setting "${borg_id}" data)
 if [[ "$data" = "1" ]]; then
+    # run yunohost backup using custom method specified in "backup_method" script
     if ! sudo yunohost backup create -n auto_data --method "${borg_id}_app" --system $(filter_hooks data) 2>> "$err_file" >> "$log_file" ; then
         errors+="\nThe backup miserably failed to backup system data."
     fi
@@ -67,6 +69,7 @@ for application in $(sudo ls /etc/yunohost/apps/); do
         continue
     fi
 
+    # run yunohost backup using custom method specified in "backup_method" script
     if ! sudo yunohost backup create -n "auto_$application" --method "${borg_id}_app" --apps "$application" 2>> "$err_file" >> "$log_file" ; then
         errors+="\nThe backup miserably failed to backup $application application."
     fi
@@ -86,6 +89,58 @@ borg="__INSTALL_DIR__/wrapper/borg"
 # SEND MAIL TO NOTIFY ABOUT SUCCEEDED OR FAILED OPERATIONS
 #=========================================================
 
+sendErrorEmail() {
+
+    MAIL_CONTENT=$(echo -e "
+There's been an error while backing up your beloved YunoHost server.
+
+
+$errors
+
+
+
+**********************************************
+Here are info logs from the operation:
+**********************************************
+$(cat $log_file)
+**********************************************
+
+
+**********************************************
+Here are error logs from the operation:
+**********************************************
+$(cat $err_file)
+**********************************************
+
+
+**********************************************
+Last logs in global ${borg_id} log file:
+**********************************************
+$(tail -n 50 "/var/log/${borg_id}/borg.log")
+**********************************************
+    ")
+
+    echo -e "$MAIL_CONTENT" | mail -a "Content-Type: text/plain; charset=UTF-8" -s "[borg] Backup failed from $domain onto $repository" root
+
+}
+
+sendSuccessEmail() {
+
+    MAIL_CONTENT=$(echo -e "
+Your beloved YunoHost server has been successfully backed up.
+
+
+**********************************************
+Here are info logs from the operation:
+**********************************************
+$(cat $log_file)
+**********************************************
+    ")
+
+    echo -e "$MAIL_CONTENT" | mail -a "Content-Type: text/plain; charset=UTF-8" -s "[borg] Backup succeeded from $domain onto $repository" root
+
+}
+
 partial_errors="$(cat "$log_file" | grep -E "Error|Skipped")"
 if [ -n "$partial_errors" ]; then
     errors+="\nSome backup partially failed:\n$partial_errors"
@@ -104,9 +159,9 @@ else
 fi
 
 if [[ -n "$errors" && $mailalert != "never" ]]; then
-    cat <(echo -e "$errors\n\n\n") "$log_file" "$err_file" | mail -a "Content-Type: text/plain; charset=UTF-8" -s "[borg] Backup failed from $domain onto $repository" root
+    sendErrorEmail
     exit 1
 elif [ "$mailalert" == "always" ]; then
-    cat "$log_file" | mail -a "Content-Type: text/plain; charset=UTF-8" -s "[borg] Backup succeeded from $domain onto $repository" root
+    sendSuccessEmail
     exit 0
 fi
