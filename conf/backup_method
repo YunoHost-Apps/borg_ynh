@@ -59,7 +59,9 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
         exit $retcode
     fi
 
-    "$borg" prune --glob-archives "${name}-*" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
+    # https://manpages.debian.org/testing/borgbackup/borg-placeholders.1.en.html
+    # {now} is by default in ISO-8601 format. e.g. YYYY-MM-DDTHH:MM:SS
+    "$borg" prune --glob-archives "${name}-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
 }
 
 do_mount() {
