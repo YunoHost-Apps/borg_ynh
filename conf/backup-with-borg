@@ -41,6 +41,8 @@ conf=$(sudo yunohost app setting "${borg_id}" conf)
 if [[ "$conf" = "1" ]]; then
     if ! sudo yunohost backup create -n auto_conf --method "${borg_id}_app" --system $(filter_hooks conf) 2>> "$err_file" >> "$log_file" ; then
         errors+="\nThe backup miserably failed to backup system configurations."
+    else
+        "$borg" prune --keep-within 1y --glob-archives "auto_conf-*"
     fi
 fi
 
@@ -49,6 +51,8 @@ data=$(sudo yunohost app setting "${borg_id}" data)
 if [[ "$data" = "1" ]]; then
     if ! sudo yunohost backup create -n auto_data --method "${borg_id}_app" --system $(filter_hooks data) 2>> "$err_file" >> "$log_file" ; then
         errors+="\nThe backup miserably failed to backup system data."
+    else
+        "$borg" prune --keep-within 1y --glob-archives "auto_data-*"
     fi
 fi
 
@@ -69,13 +73,12 @@ for application in $(sudo ls /etc/yunohost/apps/); do
 
     if ! sudo yunohost backup create -n "auto_$application" --method "${borg_id}_app" --apps "$application" 2>> "$err_file" >> "$log_file" ; then
         errors+="\nThe backup miserably failed to backup $application application."
+    else
+        "$borg" prune --keep-within 1y --glob-archives "auto_${application}-*"
     fi
 done
 
 borg="__INSTALL_DIR__/wrapper/borg"
-
-# We prune potential manual backup older than 1 year
-"$borg" prune --keep-within 1y
 
 # Compact repo after pruning it, otherwise in fact nothing will be really removed from the repo,
 # making its actual size grow disproportionately compared to what `borg info` displays
