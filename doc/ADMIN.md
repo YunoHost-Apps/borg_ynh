@@ -1,3 +1,30 @@
+## Allowing borg to connect to remote server via SSH
+
+If you selected a remote borg server as backup target (*starting with `ssh://`*), borg will connect to it with SSH using a SSH public key that was generated for that purpose during this app installation.
+
+In principle, you'll only need to provide that SSH public key to the remote server administrator so that remote backups can be performed.
+
+### Installing "Borg server" on a remote yunohost server
+
+Chances are you wish to use the "Borg server" app if the remote server runs Yunohost.
+
+You should then install the "Borg Server" app there, with the following credentials (you may need to send this to your friend):
+
+- Remote user: *the USER, as set in `ssh://USER@DOMAIN.TLD:PORT/~/backup`*
+- SSH Public key: *as displayed in the config panel above*
+
+Or directly using command line on the remote server:
+
+`yunohost app install https://github.com/YunoHost-Apps/borgserver_ynh -a "ssh_user=USER&public_key=PUBLIC_KEY"`
+
+NB: the SSH user is not meant to pre-exist on the server on which borgserver is installed!
+
+### Configuring SSH access on other remote Borg servers
+
+Alternatively, any remote Borg repository could be used, even if not running on yunohost, provided the local borg is able to connect via SSH.
+
+You'll then need to make sure the corresponding SSH public key (*as displayed in the config panel above*) is installed on the remote account (adding this public key to `~USER/.ssh/authorized_keys` on the remote server).
+
 ## Reminder regarding the passphrase
 
 The passphrase is the only way to decrypt your backups. You should make sure to keep it safe in some place "outside" your server to cover the scenario where your server is destroyed for some reason.
