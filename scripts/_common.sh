@@ -4,6 +4,8 @@
 # COMMON VARIABLES AND CUSTOM HELPERS
 #=================================================
 
+ssh_regex='^ssh://([^@]*)@([^:/]*)(:[0-9]+)?/(.*)$'
+
 install_borg_with_pip () {
     # Install borg as root, to avoid privilege escalation as we run borg as root using sudo.
     # Assign the group to borg so it is able to execute the command but can't alter the binary.
@@ -29,4 +31,23 @@ _gen_and_save_public_key() {
     fi
 
     ynh_app_setting_set --key=public_key --value="$public_key"
+}
+
+save_user_and_server_from_repo() {
+    local repository="$1"
+
+    if [[ "$repository" =~ $ssh_regex ]]; then
+        ssh_user="${BASH_REMATCH[1]}"
+        server="${BASH_REMATCH[2]}"
+        port="${BASH_REMATCH[3]}"
+        if [[ -n "$port" ]]; then
+            server="[$server]$port"
+        fi
+    else
+        ssh_user=""
+        server=""
+    fi
+
+    ynh_app_setting_set --key=ssh_user --value="$ssh_user"
+    ynh_app_setting_set --key=server --value="$server"
 }

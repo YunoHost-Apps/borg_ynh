@@ -10,7 +10,13 @@ set +a
 # Only take advantage of logging.conf here. Not meaningful for the wrapper typically.
 export BORG_LOGGING_CONF='__INSTALL_DIR__/logging.conf'
 
-if ! ssh-keygen -F "__SERVER__" >/dev/null ; then
+# We may just use _._SERVER_._ (without dots) here... But its value might have
+# changed if the administrator had modified the repository from the config panel.
+# At the contrary there is no reason for _._APP_._ (without dots) to change, so let's
+# take advantage of that and spare the regeneration of this file when modifying the repository.
+server=$(yunohost app setting "__APP__" "server")
+
+if ! ssh-keygen -F "$server" >/dev/null ; then
     export BORG_RSH="${BORG_RSH/oStrictHostKeyChecking=yes/oStrictHostKeyChecking=no}"
 fi
 
