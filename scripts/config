@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source _common.sh
+
 source /usr/share/yunohost/helpers
 
 borg_with_env_vars="$install_dir/wrapper/borg"
@@ -89,6 +91,7 @@ validate__on_calendar() {
 
 set__repository() {
     ynh_app_setting_set --key=repository --value="$repository"
+    save_user_and_server_from_repo "$repository"
     ynh_config_add --template="env.jinja" --destination="$install_dir/.env" --jinja
 }
 
