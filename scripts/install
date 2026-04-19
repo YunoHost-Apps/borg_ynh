@@ -7,21 +7,7 @@ source /usr/share/yunohost/helpers
 # STORE SETTINGS FROM MANIFEST
 #=================================================
 
-ssh_regex='^ssh://([^@]*)@([^:/]*)(:[0-9]+)?/(.*)$'
-if [[ "$repository" =~ $ssh_regex ]]; then
-    ssh_user="${BASH_REMATCH[1]}"
-    server="${BASH_REMATCH[2]}"
-    port="${BASH_REMATCH[3]}"
-    if [[ -n "$port" ]]; then
-        server="[$server]$port"
-    fi
-else
-    ssh_user=""
-    server=""
-fi
-
-ynh_app_setting_set --key=ssh_user --value="$ssh_user"
-ynh_app_setting_set --key=server --value="$server"
+save_user_and_server_from_repo "$repository"
 
 state="repository uncreated"
 ynh_app_setting_set --key=state --value="$state"
