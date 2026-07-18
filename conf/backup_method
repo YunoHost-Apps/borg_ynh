@@ -20,6 +20,21 @@ if ! ssh-keygen -F "$server" >/dev/null ; then
     export BORG_RSH="${BORG_RSH/oStrictHostKeyChecking=yes/oStrictHostKeyChecking=no}"
 fi
 
+set_pruning_arguments() {
+    local -n args=$1
+    args=()
+    hourly=$(yunohost app setting "__APP__" "pruning_hourly")
+    daily=$(yunohost app setting "__APP__" "pruning_daily")
+    weekly=$(yunohost app setting "__APP__" "pruning_weekly")
+    monthly=$(yunohost app setting "__APP__" "pruning_monthly")
+    yearly=$(yunohost app setting "__APP__" "pruning_yearly")
+    args+=("--keep-hourly" "${hourly:-2}")
+    args+=("--keep-daily" "${daily:-7}")
+    args+=("--keep-weekly" "${weekly:-8}")
+    args+=("--keep-monthly" "${monthly:-12}")
+    args+=("--keep-yearly" "${monthly:-0}")
+}
+
 do_need_mount() {
     true
 }
@@ -65,9 +80,14 @@ This is an automated message from your beloved YunoHost server." | /usr/bin/mail
         exit $retcode
     fi
 
-    # https://manpages.debian.org/testing/borgbackup/borg-placeholders.1.en.html
-    # {now} is by default in ISO-8601 format. e.g. YYYY-MM-DDTHH:MM:SS
-    "$borg" prune --glob-archives "${name}-????-??-??T??:??:??" --keep-hourly 2 --keep-daily=7 --keep-weekly=8 --keep-monthly=12
+    if [ "$(yunohost app setting "__APP__" "pruning_enabled")" != "false" ]; then
+        local borg_prune_args
+        set_pruning_arguments borg_prune_args
+
+        # https://manpages.debian.org/testing/borgbackup/borg-placeholders.1.en.html
+        # {now} is by default in ISO-8601 format. e.g. YYYY-MM-DDTHH:MM:SS
+        "$borg" prune --glob-archives "${name}-????-??-??T??:??:??" "${borg_prune_args[@]}"
+    fi
 }
 
 do_mount() {

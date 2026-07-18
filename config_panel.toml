@@ -85,11 +85,16 @@ name.fr = "Configuration de Borg"
         help.en = "App list separated by comma. You can write 'all' to select all apps, even those installed after this Borg app. You can also select all apps but some apps by writing 'exclude:' following by an app list separated by comma."
         help.fr = "Liste d'applications séparées par des virgules. Vous pouvez écrire 'all' pour sélectionner toutes les applications, même celles installées après cette application Borg. Vous pouvez également sélectionner toutes les applications, mais certaines applications en précédant par 'exclude:' une liste d’applications séparées par des virgules."
 
-    [main.advanced]
-    name = "Advanced settings"
+[advanced]
+name.en = "Advanced settings"
+name.fr = "Paramètres avancés"
+
+    [advanced.monitor]
+    name.en = "Monitor backup health"
+    name.fr = "Superviser la santé des backups"
     optional = true
 
-        [main.advanced.healthchecks_url]
+        [advanced.monitor.healthchecks_url]
         ask.en = "Monitoring URL (Healthchecks)"
         ask.fr = "URL de monitoring (Healthchecks)"
         type = "url"
@@ -97,13 +102,86 @@ name.fr = "Configuration de Borg"
         help.fr = "Utiliser un service de monitoring pour détecter les échecs silencieux. C'est optionnel et actuellement destiné à fonctionner avec Healthchecks. Si vous ne connaissez pas, vous pouvez ignorer ou jeter un œil à ce service : https://healthchecks.io"
         optional = true
 
+    [advanced.pruning]
+    name.en = "Pruning of old backups"
+    name.fr = "Nettoyage des anciennes sauvegardes"
+    optional = true
+
+        [advanced.pruning.pruning_help]
+        type = "alert"
+        style = "info"
+        ask = """\
+        Take a look at the `borg prune` command documentation for more information: \n \
+        <https://borgbackup.readthedocs.io/en/stable/usage/prune.html>
+        """
+        # The following not seem to work:
+        # ask.fr = """\
+        # Lisez la documentation de la commande `borg prune` pour plus d'information (en anglais):
+        #
+        # https://borgbackup.readthedocs.io/en/stable/usage/prune.html
+        # """
+
+        [advanced.pruning.pruning_enabled]
+        ask.en = "Enable the pruning of the old backups"
+        ask.fr = "Activer le nettoyage des anciennes sauvegardes"
+        yes = "true"
+        no = "false"
+        type = "boolean"
+        default = true
+
+        [advanced.pruning.pruning_hourly]
+        ask.en = "Number of the latest hourly backups to keep"
+        ask.fr = "Nombre des dernières sauvegardes horaires à conserver"
+        type = "number"
+        default = 2
+        visible = "pruning_enabled"
+
+        [advanced.pruning.pruning_daily]
+        ask.en = "Number of the latest daily backups to keep"
+        ask.fr = "Nombre des dernières sauvegardes journalières à conserver"
+        type = "number"
+        default = 7
+        visible = "pruning_enabled"
+
+        [advanced.pruning.pruning_weekly]
+        ask.en = "Number of the latest weekly backups to keep"
+        ask.fr = "Nombre des dernières sauvegardes hebdomadaires à conserver"
+        type = "number"
+        default = 8
+        visible = "pruning_enabled"
+
+        [advanced.pruning.pruning_monthly]
+        ask.en = "Number of the latest monthly backups to keep"
+        ask.fr = "Nombre des dernières sauvegardes mensuelles à conserver"
+        type = "number"
+        default = 12
+        visible = "pruning_enabled"
+
+        [advanced.pruning.pruning_yearly]
+        ask.en = "Number of the latest yearly backups to keep"
+        ask.fr = "Nombre des dernières sauvegardes annuelles à conserver"
+        type = "number"
+        default = 0
+        visible = "pruning_enabled"
+
+        [advanced.pruning.keep_manual_within]
+        ask.en = "Keep all manual backups within this interval"
+        ask.fr = "Garder toutes les backups manuelles selon cet intervalle"
+        help.en = 'The interval should be of the following form: `<integer><character>`, where char is: “H” (hourly), “d” (daily), “w” (weekly), “m” (monthly), “y” (yearly).'
+        help.fr = "L'intervalle doit être de la forme suivante: `<entier><caractère>`, où caractère est : “H” (*hourly* / horaire), “d” (*daily* / journalier), “w” (*weekly* / hebdomadaire), “m” (*monthly* / mensuel), “y” (*yearly* / annuel)."
+        type = "string"
+        default = "1y"
+        pattern.regexp = '^\d+[Hdwmy]$'
+        pattern.error = 'The interval should be of the following form: “<integer><character>”, where char is “H” (hourly), “d” (daily), “w” (weekly), “m” (monthly), “y” (yearly).'
+        visible = "pruning_enabled"
+
 [list]
 name.en = "Last backups list"
 name.fr = "Liste des dernières sauvegardes"
 
     [list.list]
     name = ""
-    
+
         [list.list.last_backups]
         ask = ""
         type = "markdown"
