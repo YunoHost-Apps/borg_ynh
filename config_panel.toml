@@ -91,7 +91,7 @@ name.fr = "Paramètres avancés"
 
     [advanced.monitor]
     name.en = "Monitor backup health"
-    name.fr = "Superviser la santé des backups"
+    name.fr = "Superviser la santé des sauvegardes"
     optional = true
 
         [advanced.monitor.healthchecks_url]
@@ -166,7 +166,7 @@ name.fr = "Paramètres avancés"
 
         [advanced.pruning.keep_manual_within]
         ask.en = "Keep all manual backups within this interval"
-        ask.fr = "Garder toutes les backups manuelles selon cet intervalle"
+        ask.fr = "Garder toutes les sauvegardes manuelles selon cet intervalle"
         help.en = 'The interval should be of the following form: `<integer><character>`, where char is: “H” (hourly), “d” (daily), “w” (weekly), “m” (monthly), “y” (yearly).'
         help.fr = "L'intervalle doit être de la forme suivante: `<entier><caractère>`, où caractère est : “H” (*hourly* / horaire), “d” (*daily* / journalier), “w” (*weekly* / hebdomadaire), “m” (*monthly* / mensuel), “y” (*yearly* / annuel)."
         type = "string"
