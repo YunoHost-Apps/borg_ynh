@@ -32,7 +32,7 @@ set_pruning_arguments() {
     args+=("--keep-daily" "${daily:-7}")
     args+=("--keep-weekly" "${weekly:-8}")
     args+=("--keep-monthly" "${monthly:-12}")
-    args+=("--keep-yearly" "${monthly:-0}")
+    args+=("--keep-yearly" "${yearly:-0}")
 }
 
 do_need_mount() {
