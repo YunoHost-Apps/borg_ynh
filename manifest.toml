@@ -7,7 +7,7 @@ name = "Borg Backup"
 description.en = "Regularly create deduplicated, encrypted backups sent to another server using Borg"
 description.fr = "Créez régulièrement des sauvegardes dédupliquées et chiffées envoyées sur un autre serveur à l'aide de Borg"
 
-version = "1.4.4~ynh3"
+version = "1.4.5~ynh1"
 
 maintainers = ["ljf", "fflorent"]
 
@@ -83,8 +83,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/borgbackup/borg/archive/refs/tags/1.4.4.tar.gz"
-    sha256 = "aa9dc916cb9de22bbf7e883f83e723b0cef1d816a86d9e37b434e051f873ee72"
+    url = "https://github.com/borgbackup/borg/archive/refs/tags/1.4.5.tar.gz"
+    sha256 = "ce7aa6ec25029a2878b660d7e38f2720dc16fcf2b5c80780d4bf7494d4b29c04"
     # Only here to bump the package version
     prefetch = false
 
