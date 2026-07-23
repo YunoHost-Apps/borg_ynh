@@ -22,6 +22,7 @@ fi
 
 set_pruning_arguments() {
     local -n args=$1
+    local hourly daily weekly monthly yearly
     args=()
     hourly=$(yunohost app setting "__APP__" "pruning_hourly")
     daily=$(yunohost app setting "__APP__" "pruning_daily")
