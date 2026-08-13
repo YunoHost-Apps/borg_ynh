@@ -35,6 +35,21 @@ ynh_safe_rm "/etc/systemd/system/$app.timer"
 ynh_safe_rm "/etc/yunohost/hooks.d/backup_method/05-${app}_app"
 
 #=================================================
+# REMOVE THE SSH KEYS
+#=================================================
+
+if [ "${YNH_APP_PURGE:-0}" -eq "1" ]; then
+    ynh_script_progression "Removing the SSH keys installed by $app..."
+    ynh_safe_rm "/root/.ssh/id_${app}_ed25519"
+    ynh_safe_rm "/root/.ssh/id_${app}_ed25519.pub"
+else
+    ynh_print_info "Removing without purge, so keeping the SSH keys '/root/.ssh/id_${app}_ed25519' and '/root/.ssh/id_${app}_ed25519.pub'."
+    ynh_print_info "You might be interested in deleting them (these keys give access to the backup repository). If so, do that manually."
+    ynh_print_info "But please be sure you would still be able to retrieve your backups before doing so."
+fi
+
+
+#=================================================
 # END OF SCRIPT
 #=================================================
 
