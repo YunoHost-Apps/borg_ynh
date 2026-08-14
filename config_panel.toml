@@ -36,6 +36,21 @@ name.fr = "Configuration de Borg"
         type = "string"
         readonly = true
 
+        [main.general.change_passphrase]
+        ask.en = "Change the backup passphrase"
+        ask.fr = "Modifier le phrase de passe des sauvegardes"
+        type = "boolean"
+        bind = "null"
+
+        [main.general.new_passphrase]
+        ask.en = "Fill your new passphrase (NEEDS TO BE STRONG)"
+        ask.fr = "Renseignez votre nouvelle phrase de passe (DOIT ÊTRE ROBUSTE)"
+        type = "password"
+        bind = "null"
+        help.en = "Keep it safe! There will be **no way** to restore your backup if you lose it. Do not communicate it to the remote host server holder, or anyone else."
+        help.fr = "Gardez-la précieusement ! Il sera **impossible** de restaurer vos sauvegardes sans celle-ci. Elle est destinée à rester **secrète** : ne la donnez **pas** à la personne qui gère le serveur distant - où à n'importe qui d'autre !"
+        visible = "change_passphrase"
+
         [main.general.remote_path]
         ask.en = "Remote borg command (remote-path)"
         type = "string"
