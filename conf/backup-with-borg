@@ -77,12 +77,16 @@ borg="__INSTALL_DIR__/wrapper/borg"
 if [ "$(sudo yunohost app setting "${borg_id}" "pruning_enabled")" != "false" ]; then
     # We prune potential manual backup older than 1 year
     keep_within="$(sudo yunohost app setting "${borg_id}" "keep_manual_within")"
-    "$borg" prune --keep-within "${keep_within:-1y}"
+    if ! "$borg" prune --keep-within "${keep_within:-1y}"; then
+        errors+="TODO" # FIXME: renseigner une erreur
+    fi
 
     # Compact repo after pruning it, otherwise in fact nothing will be really removed from the repo,
     # making its actual size grow disproportionately compared to what `borg info` displays
     # See: https://github.com/borgbackup/borg/issues/6106#issuecomment-1215449050
-    "$borg" compact
+    if ! "$borg" compact; then
+        errors+="TODO" # FIXME:
+    fi
 fi
 
 #=========================================================
